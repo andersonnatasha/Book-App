@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQAlchemy()
 
+
 class User(db.Model):
     """A user"""
 
@@ -20,10 +21,17 @@ class User(db.Model):
     gender = db.Column(db.String(17))
     created_at = db.Column(db.DateTime)
 
+
 class Books(db.Model):
     """A book"""
 
     __tablename__ = 'books'
+
+    book_id = db.Column(db.Integer,
+                        primary_key=True,
+                        autoincrement=True)
+
+
 
 class ReadBooksCollection(db.Model):
     """A collection of read books"""

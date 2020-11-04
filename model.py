@@ -22,7 +22,7 @@ class User(db.Model):
     created_at = db.Column(db.DateTime)
 
 
-class Books(db.Model):
+class Book(db.Model):
     """A book"""
 
     __tablename__ = 'books'

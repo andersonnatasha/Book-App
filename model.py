@@ -24,3 +24,7 @@ class ReadBooksCollection(db.Model):
     """A collection of read books."""
 
     __tablename__ = 'read_books_collection'
+
+    read_books_collection_id = db.Column(db.Integer,
+                                         primary_key=True,
+                                         autoincrement=True)

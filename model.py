@@ -13,3 +13,5 @@ class User(db.Model):
                         primary_key=True,
                         autoincrement=True
                         )
+    full_name = db.Column(db.String(50),
+                          nullable=False)

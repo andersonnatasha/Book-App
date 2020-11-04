@@ -118,6 +118,7 @@ class LikedBooksCollection(db.Model):
                         )
     book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
 
+
 class ToBeReadCollection(db.Model):
     """A collection of books the user wants to read"""
 
@@ -126,3 +127,8 @@ class ToBeReadCollection(db.Model):
     tbr_collection_id = db.Column(db.Integer,
                                   primary_key=True,
                                   autoincrement=True)
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey('users.user_id'),
+                        nullable=False
+                        )
+    book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))

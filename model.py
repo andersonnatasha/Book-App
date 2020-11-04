@@ -2,7 +2,7 @@
 
 from flask_sqlalchemy import SQLAlchemy
 
-db = SQAlchemy()
+db = SQLAlchemy()
 
 
 class User(db.Model):
@@ -66,7 +66,7 @@ class Author(db.Model):
 class Category(db.Model):
     """A book category"""
 
-    __table__ = 'categories'
+    __tablename__ = 'categories'
 
     category_id = db.Column(db.Integer,
                             primary_key=True,
@@ -78,7 +78,7 @@ class Category(db.Model):
 class BookCategory(db.Model):
     """Category of a specific book"""
 
-    __table__ = 'books_categories'
+    __tablename__ = 'books_categories'
 
     book_categories_id = db.Column(db.Integer,
                                    primary_key=True,

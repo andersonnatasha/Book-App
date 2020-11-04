@@ -18,3 +18,4 @@ class User(db.Model):
     email = db.Column(db.String(50),
                      nullable=False)
     gender = db.Column(db.String(17))
+    created_at = db.Column(db.DateTime)

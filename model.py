@@ -42,6 +42,11 @@ class Authors(db.Model):
 
     __tablename__ = 'authors'
 
+    author_id = db.Column(db.Integer,
+                          primary_key=True
+                          autoincrement=True)
+
+
 class ReadBooksCollection(db.Model):
     """A collection of read books"""
 

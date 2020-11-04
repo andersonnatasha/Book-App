@@ -14,13 +14,17 @@ class User(db.Model):
                         primary_key=True,
                         autoincrement=True
                         )
+    email = db.Column(db.String(50),
+                     nullable=False,
+                     unique=True
+                     )
     full_name = db.Column(db.String(50),
                           nullable=False)
-    email = db.Column(db.String(50),
-                     nullable=False)
     gender = db.Column(db.String(17))
     created_at = db.Column(db.DateTime)
 
+    def __repr__(self):
+        return f'<User user_id={self.user_id} email={self.email}>'
 
 class Book(db.Model):
     """A book"""
@@ -73,6 +77,7 @@ class Category(db.Model):
                             autoincrement=True
                             )
     category = db.Column(db.String(50), nullable=False)
+
 
 
 class BookCategory(db.Model):

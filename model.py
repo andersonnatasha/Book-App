@@ -54,6 +54,8 @@ class Author(db.Model):
 class Category(db.Model):
     """A book category"""
 
+    __table__ = 'categories'
+
 
 Class ReadBooksCollection(db.Model):
     """A collection of read books"""

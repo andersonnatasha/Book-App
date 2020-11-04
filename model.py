@@ -37,6 +37,7 @@ class Book(db.Model):
                                  secondary="book_category",
                                  backref='books')
 
+
 class Author(db.Model):
     """An author"""
 
@@ -51,6 +52,7 @@ class Author(db.Model):
                       nullable=False)
     book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
 
+
 class Category(db.Model):
     """A book category"""
 
@@ -59,7 +61,7 @@ class Category(db.Model):
     category_id = db.Column(db.Integer,
                             primary_key=True,
                             autoincrement=True)
-
+    category = db.Column(db.String(50))
 
 
 Class ReadBooksCollection(db.Model):

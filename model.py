@@ -4,9 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQAlchemy()
 
-
 class User(db.Model):
-    """A user"""
+    """A user."""
 
     __tablename__ = 'users'
 
@@ -15,13 +14,12 @@ class User(db.Model):
                         autoincrement=True
                         )
     full_name = db.Column(db.String(50),
-                          nullable=False
-                          )
+                          nullable=False)
     email = db.Column(db.String(50),
-                     nullable=False
-                     )
+                     nullable=False)
     gender = db.Column(db.String(17))
     created_at = db.Column(db.DateTime)
+
 
 
 class Book(db.Model):
@@ -76,6 +74,7 @@ class Category(db.Model):
                             )
     category = db.Column(db.String(50), nullable=False)
 
+
 class BookCategory(db.Model):
     """Category of a specific book"""
 
@@ -104,7 +103,12 @@ class ReadBooksCollection(db.Model):
                         )
     book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
 
+
 class LikedBooksCollection(db.Model):
     """A collection of liked books"""
 
     __tablename__ = 'liked_books_collections'
+
+    liked_book_collection_id = db.Column(db.Integer,
+                                         primary_key=True,
+                                         autoincrement=True)

@@ -29,3 +29,4 @@ class ReadBooksCollection(db.Model):
                                          primary_key=True,
                                          autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))

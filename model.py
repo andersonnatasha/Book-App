@@ -40,7 +40,7 @@ class Book(db.Model):
 class Authors(db.Model):
     """An author"""
 
-
+    __tablename__ = 'authors'
 
 class ReadBooksCollection(db.Model):
     """A collection of read books"""

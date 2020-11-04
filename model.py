@@ -43,8 +43,12 @@ class Authors(db.Model):
     __tablename__ = 'authors'
 
     author_id = db.Column(db.Integer,
-                          primary_key=True
+                          primary_key=True,
                           autoincrement=True)
+    fname = db.Column(db.String(25),
+                      nullable=False)
+    lname = db.Column(db.String(40),
+                      nullable=False)
 
 
 class ReadBooksCollection(db.Model):

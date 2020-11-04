@@ -30,7 +30,7 @@ class Books(db.Model):
     book_id = db.Column(db.Integer,
                         primary_key=True,
                         autoincrement=True)
-
+    title = db.Column(db.String(250))
 
 
 class ReadBooksCollection(db.Model):

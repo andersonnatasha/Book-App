@@ -15,9 +15,11 @@ class User(db.Model):
                         autoincrement=True
                         )
     full_name = db.Column(db.String(50),
-                          nullable=False)
+                          nullable=False
+                          )
     email = db.Column(db.String(50),
-                     nullable=False)
+                     nullable=False
+                     )
     gender = db.Column(db.String(17))
     created_at = db.Column(db.DateTime)
 
@@ -29,13 +31,18 @@ class Book(db.Model):
 
     book_id = db.Column(db.Integer,
                         primary_key=True,
-                        autoincrement=True)
-    title = db.Column(db.String(250))
-    author_id = db.Column(db.Integer, db.ForeignKey('authors.author_id'))
+                        autoincrement=True
+                        )
+    title = db.Column(db.String(250), nullable=False)
+    author_id = db.Column(db.Integer,
+                          db.ForeignKey('authors.author_id'),
+                          nullable=False
+                          )
     liked = db.Column(db.Boolean)
     categories = db.relationship('Category',
                                  secondary="books_categories",
-                                 backref='books')
+                                 backref='books'
+                                 )
 
 
 class Author(db.Model):
@@ -45,12 +52,17 @@ class Author(db.Model):
 
     author_id = db.Column(db.Integer,
                           primary_key=True,
-                          autoincrement=True)
+                          autoincrement=True
+                          )
     fname = db.Column(db.String(25),
                       nullable=False)
     lname = db.Column(db.String(40),
-                      nullable=False)
-    book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
+                      nullable=False
+                      )
+    book_id = db.Column(db.Integer,
+                        db.ForeignKey('books.book_id'),
+                        nullable=False
+                        )
 
 
 class Category(db.Model):
@@ -60,8 +72,9 @@ class Category(db.Model):
 
     category_id = db.Column(db.Integer,
                             primary_key=True,
-                            autoincrement=True)
-    category = db.Column(db.String(50))
+                            autoincrement=True
+                            )
+    category = db.Column(db.String(50), nullable=False)
 
 class BookCategory(db.Model):
     """Category of a specific book"""
@@ -70,7 +83,8 @@ class BookCategory(db.Model):
 
     book_categories_id = db.Column(db.Integer,
                                    primary_key=True,
-                                   autoincrement=True)
+                                   autoincrement=True
+                                   )
     book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
     category = db.Column(db.Integer, db.ForeignKey('categories.category_id'))
 
@@ -82,8 +96,12 @@ class ReadBooksCollection(db.Model):
 
     read_books_collection_id = db.Column(db.Integer,
                                          primary_key=True,
-                                         autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+                                         autoincrement=True
+                                         )
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey('users.user_id'),
+                        nullable=False
+                        )
     book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
 
 class LikedBooksCollection(db.Model):

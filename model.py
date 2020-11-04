@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQAlchemy()
 
+
 class User(db.Model):
     """A user."""
 
@@ -19,7 +20,6 @@ class User(db.Model):
                      nullable=False)
     gender = db.Column(db.String(17))
     created_at = db.Column(db.DateTime)
-
 
 
 class Book(db.Model):

@@ -83,7 +83,7 @@ class Category(db.Model):
                             primary_key=True,
                             autoincrement=True
                             )
-    category = db.Column(db.String(50), nullable=False)
+    category = db.Column(db.String(50), nullable=False, unique=True)
 
     def __repr__(self):
         f'<Category category_id={self.category_id} category={self.category}>'
@@ -94,12 +94,21 @@ class BookCategory(db.Model):
 
     __tablename__ = 'books_categories'
 
-    book_categories_id = db.Column(db.Integer,
+    book_category_id = db.Column(db.Integer,
                                    primary_key=True,
                                    autoincrement=True
                                    )
-    book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
-    category = db.Column(db.Integer, db.ForeignKey('categories.category_id'))
+    book_id = db.Column(db.Integer,
+                        db.ForeignKey('books.book_id'),
+                        nullable=False
+                        )
+    category_id = db.Column(db.Integer,
+                            db.ForeignKey('categories.category_id'),
+                            nullable=False
+                            )
+
+    def __repr__(self):
+        f'<BookCategory book_id={self.book_id} categories_id={self.categories_id}>'
 
 
 class ReadBooksCollection(db.Model):

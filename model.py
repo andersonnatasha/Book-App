@@ -75,13 +75,18 @@ class BookCategory(db.Model):
     category = db.Column(db.Integer, db.ForeignKey('categories.category_id'))
 
 
-Class ReadBooksCollection(db.Model):
+class ReadBooksCollection(db.Model):
     """A collection of read books"""
 
-    __tablename__ = 'read_books_collection'
+    __tablename__ = 'read_books_collections'
 
     read_books_collection_id = db.Column(db.Integer,
                                          primary_key=True,
                                          autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
+
+class LikedBooksCollection(db.Model):
+    """A collection of liked books"""
+
+    __tablename__ = 'liked_books_collections'

@@ -56,6 +56,11 @@ class Category(db.Model):
 
     __table__ = 'categories'
 
+    category_id = db.Column(db.Integer,
+                            primary_key=True,
+                            autoincrement=True)
+
+
 
 Class ReadBooksCollection(db.Model):
     """A collection of read books"""

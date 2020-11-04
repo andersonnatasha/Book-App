@@ -32,6 +32,7 @@ class Book(db.Model):
                         autoincrement=True)
     title = db.Column(db.String(250))
     author_id = db.Column(db.Integer, db.ForeignKey('authors.author_id'))
+    liked = db.Column(db.Boolean)
     categories = db.relationship('Category',
                                  secondary="book_category",
                                  backref='books')

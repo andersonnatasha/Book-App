@@ -26,6 +26,7 @@ class User(db.Model):
     def __repr__(self):
         return f'<User user_id={self.user_id} email={self.email}>'
 
+
 class Book(db.Model):
     """A book"""
 
@@ -69,6 +70,9 @@ class Author(db.Model):
                         nullable=False
                         )
 
+    def __repr__(self):
+        f'<Author author_id={self.author_id} lname={self.lname}>'
+
 
 class Category(db.Model):
     """A book category"""
@@ -81,6 +85,8 @@ class Category(db.Model):
                             )
     category = db.Column(db.String(50), nullable=False)
 
+    def __repr__(self):
+        f'<Category category_id={self.category_id} category={self.category}>'
 
 
 class BookCategory(db.Model):

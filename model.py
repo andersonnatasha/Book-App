@@ -63,6 +63,10 @@ class Category(db.Model):
                             autoincrement=True)
     category = db.Column(db.String(50))
 
+class BookCategory(db.Model):
+    """Category of a specific book"""
+
+
 
 Class ReadBooksCollection(db.Model):
     """A collection of read books"""

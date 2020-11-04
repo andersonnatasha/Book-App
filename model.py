@@ -36,7 +36,6 @@ class Book(db.Model):
                                  secondary="book_category",
                                  backref='books')
 
-
 class ReadBooksCollection(db.Model):
     """A collection of read books"""
 

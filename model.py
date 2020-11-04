@@ -32,6 +32,9 @@ class Book(db.Model):
                         autoincrement=True)
     title = db.Column(db.String(250))
     author_id = db.Column(db.Integer, db.ForeignKey('authors.author_id'))
+    categories = db.relationship('Category',
+                                 secondary="book_category",
+                                 backref='books')
 
 
 class ReadBooksCollection(db.Model):

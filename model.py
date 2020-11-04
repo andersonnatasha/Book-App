@@ -34,7 +34,7 @@ class Book(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('authors.author_id'))
     liked = db.Column(db.Boolean)
     categories = db.relationship('Category',
-                                 secondary="book_categories",
+                                 secondary="books_categories",
                                  backref='books')
 
 
@@ -66,11 +66,13 @@ class Category(db.Model):
 class BookCategory(db.Model):
     """Category of a specific book"""
 
-    __table__ = 'book_categories'
+    __table__ = 'books_categories'
 
     book_categories_id = db.Column(db.Integer,
                                    primary_key=True,
                                    autoincrement=True)
+    book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
+    category = db.Column(db.Integer, db.ForeignKey('categories.category_id'))
 
 
 Class ReadBooksCollection(db.Model):

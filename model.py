@@ -66,6 +66,8 @@ class Category(db.Model):
 class BookCategory(db.Model):
     """Category of a specific book"""
 
+    __table__ = 'book_categories'
+
 
 
 Class ReadBooksCollection(db.Model):

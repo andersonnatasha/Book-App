@@ -23,6 +23,8 @@ class User(db.Model):
 class Books(db.Model):
     """A book"""
 
+    __tablename__ = 'books'
+
 class ReadBooksCollection(db.Model):
     """A collection of read books"""
 

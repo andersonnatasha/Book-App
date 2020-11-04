@@ -31,6 +31,7 @@ class Books(db.Model):
                         primary_key=True,
                         autoincrement=True)
     title = db.Column(db.String(250))
+    author_id = db.Column(db.Integer, db.ForeignKey('authors.author_id'))
 
 
 class ReadBooksCollection(db.Model):

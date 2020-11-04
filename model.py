@@ -20,5 +20,7 @@ class User(db.Model):
     gender = db.Column(db.String(17))
     created_at = db.Column(db.DateTime)
 
-class ReadBooksShelf(db.Model):
-    """A bookshelf of read books."""
+class ReadBooksCollection(db.Model):
+    """A collection of read books."""
+
+    __tablename__ = 'read_books_collection'

@@ -17,3 +17,4 @@ class User(db.Model):
                           nullable=False)
     email = db.Column(db.String(50),
                      nullable=False)
+    gender = db.Column(db.String(17))

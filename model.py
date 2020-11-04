@@ -46,6 +46,9 @@ class Book(db.Model):
                                  backref='books'
                                  )
 
+    def __repr__(self):
+        return f'<Book book_id={self.book_id} title={self.title}'
+
 
 class Author(db.Model):
     """An author"""

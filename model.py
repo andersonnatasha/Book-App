@@ -19,3 +19,6 @@ class User(db.Model):
                      nullable=False)
     gender = db.Column(db.String(17))
     created_at = db.Column(db.DateTime)
+
+class ReadBooksShelf(db.Model):
+    """A bookshelf of read books."""

@@ -51,8 +51,11 @@ class Author(db.Model):
                       nullable=False)
     book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
 
+class Category(db.Model):
+    """A book category"""
 
-class ReadBooksCollection(db.Model):
+
+Class ReadBooksCollection(db.Model):
     """A collection of read books"""
 
     __tablename__ = 'read_books_collection'

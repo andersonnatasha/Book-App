@@ -15,3 +15,5 @@ class User(db.Model):
                         )
     full_name = db.Column(db.String(50),
                           nullable=False)
+    email = db.Column(db.String(50),
+                     nullable=False)

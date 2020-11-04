@@ -112,3 +112,8 @@ class LikedBooksCollection(db.Model):
     liked_book_collection_id = db.Column(db.Integer,
                                          primary_key=True,
                                          autoincrement=True)
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey('users.user_id'),
+                        nullable=False
+                        )
+    book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))

@@ -48,7 +48,8 @@ class Book(db.Model):
                                  )
 
     def __repr__(self):
-        return f'<Book book_id={self.book_id} title={self.title}'
+        return f'<Book book_id={self.book_id} title={self.title}>'
+
 
 class BookCopy(db.Model):
     """A copy of a book"""
@@ -134,7 +135,7 @@ class ReadBooksCollection(db.Model):
                         db.ForeignKey('users.user_id'),
                         nullable=False
                         )
-    book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
+    book_copy_id = db.Column(db.Integer, db.ForeignKey('book_copy.book_copy_id'))
 
     def __repr__(self):
         return f'<ReadBooksCollection read_books_collection_id={self.read_books_collection_id} user_id={self.user_id}'
@@ -152,7 +153,7 @@ class LikedBooksCollection(db.Model):
                         db.ForeignKey('users.user_id'),
                         nullable=False
                         )
-    book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
+    book_copy_id = db.Column(db.Integer, db.ForeignKey('book_copy.book_id'))
 
     def __repr__(self):
         return f'<LikedBooksCollection liked_book_collection_id={self.liked_book_collection_id} user_id={self.user_id}>'
@@ -170,7 +171,7 @@ class ToBeReadCollection(db.Model):
                         db.ForeignKey('users.user_id'),
                         nullable=False
                         )
-    book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
+    book_copy_id = db.Column(db.Integer, db.ForeignKey('book_copy.book_copy_id'))
 
     def __repr__(self):
         return f'ToBeReadCollection tbr_collection_id={self.tbr_collection_id} user_id={self.user_id}'
@@ -190,7 +191,7 @@ class Bookshelf(db.Model):
                         db.ForeignKey('users.user_id'),
                         nullable=False
                         )
-    book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
+    book_copy_id = db.Column(db.Integer, db.ForeignKey('book_copy.book_copy_id'))
 
     def __repr__(self):
         return f'Bookshelf bookshelf_id={self.bookshelf_id} name={self.name}'

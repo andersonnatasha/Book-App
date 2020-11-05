@@ -126,6 +126,10 @@ class ReadBooksCollection(db.Model):
                         )
     book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
 
+    def __repr__(self):
+        f'<ReadBooksCollection read_books_collection_id={self.read_books_collection_id} user_id={self.user_id}'
+
+
 
 class LikedBooksCollection(db.Model):
     """A collection of liked books"""

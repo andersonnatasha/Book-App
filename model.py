@@ -6,7 +6,7 @@ db = SQLAlchemy()
 
 
 class User(db.Model):
-    """A user."""
+    """A user"""
 
     __tablename__ = 'users'
 
@@ -15,11 +15,15 @@ class User(db.Model):
                         autoincrement=True
                         )
     email = db.Column(db.String(50),
+                     unique=True,
                      nullable=False,
-                     unique=True
                      )
+    password = db.Column(db.String(25),
+                         nullable=False,
+                         )
     full_name = db.Column(db.String(50),
-                          nullable=False)
+                         nullable=False
+                          )
     gender = db.Column(db.String(17))
     created_at = db.Column(db.DateTime)
 
@@ -37,15 +41,13 @@ class Book(db.Model):
                         autoincrement=True
                         )
     title = db.Column(db.String(250), nullable=False)
-    author_id = db.Column(db.Integer,
-                          db.ForeignKey('authors.author_id'),
-                          nullable=False
-                          )
     liked = db.Column(db.Boolean)
     categories = db.relationship('Category',
                                  secondary="books_categories",
                                  backref='books'
                                  )
+
+    # author = a list of author objects
 
     def __repr__(self):
         return f'<Book book_id={self.book_id} title={self.title}>'
@@ -65,6 +67,7 @@ class BookCopy(db.Model):
                         nullable=False
                         )
 
+
 class Author(db.Model):
     """An author"""
 
@@ -79,10 +82,8 @@ class Author(db.Model):
     lname = db.Column(db.String(40),
                       nullable=False
                       )
-    book_id = db.Column(db.Integer,
-                        db.ForeignKey('books.book_id'),
-                        nullable=False
-                        )
+
+    book = db.relationship('Book', backref ='author')
 
     def __repr__(self):
         return f'<Author author_id={self.author_id} lname={self.lname}>'
@@ -200,7 +201,7 @@ class Bookshelf(db.Model):
         return f'<Bookshelf bookshelf_id={self.bookshelf_id} name={self.name}>'
 
 
-def connect_to_db(flask_app, db_uri='postgresql:///ratings', echo=True):
+def connect_to_db(flask_app, db_uri='postgresql:///bookslibrary', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     flask_app.config['SQLALCHEMY_ECHO'] = echo
     flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

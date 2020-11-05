@@ -29,6 +29,14 @@ def create_book(title, liked=None, categories=None)
 
     return book
 
+
+def create_book_copy(book)
+    """Create a copy of a particular book."""
+
+    book_copy = BookCopy(book=book)
+
+    return book_copy
+
 if __name__ == '__main__':
     from server import app
     connect_to_db(app)

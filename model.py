@@ -162,6 +162,9 @@ class ToBeReadCollection(db.Model):
                         )
     book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
 
+    def __repr__(self):
+        return f'ToBeReadCollection tbr_collection_id={self.tbr_collection_id} user_id={self.user_id}'
+
 
 def connect_to_db(flask_app, db_uri='postgresql:///ratings', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri

@@ -67,6 +67,8 @@ class BookCopy(db.Model):
                         nullable=False
                         )
 
+    def __repr__(self):
+        return f'<BookCopy book_copy_id={self.book_copy_id} book_id={self.book_id}>'
 
 class Author(db.Model):
     """An author"""

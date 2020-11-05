@@ -27,6 +27,8 @@ class User(db.Model):
     gender = db.Column(db.String(17))
     created_at = db.Column(db.DateTime)
 
+    read_book_collection = db.relationship('ReadBooksCollection')
+
     def __repr__(self):
         return f'<User user_id={self.user_id} email={self.email}>'
 
@@ -47,7 +49,9 @@ class Book(db.Model):
                                  backref='books'
                                  )
 
-    # author = a list of author objects
+    author = db.relationship('Author')
+    book_copy = db.relationship('BookCopy')
+    book_category = db.relationship('BookCategory')
 
     def __repr__(self):
         return f'<Book book_id={self.book_id} title={self.title}>'
@@ -67,8 +71,12 @@ class BookCopy(db.Model):
                         nullable=False
                         )
 
+    book = db.relationship('Book')
+    read_book_collection = db.relationship('ReadBooksCollection')
+
     def __repr__(self):
         return f'<BookCopy book_copy_id={self.book_copy_id} book_id={self.book_id}>'
+
 
 class Author(db.Model):
     """An author"""
@@ -86,7 +94,7 @@ class Author(db.Model):
                       )
     book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
 
-    book = db.relationship('Book', backref ='author')
+    book = db.relationship('Book')
 
     def __repr__(self):
         return f'<Author author_id={self.author_id} lname={self.lname}>'
@@ -125,8 +133,11 @@ class BookCategory(db.Model):
                             nullable=False
                             )
 
+    book = db.relationship('Book')
+    category =db.relationship('Category')
+
     def __repr__(self):
-        return f'<BookCategory book_id={self.book_id} categories_id={self.categories_id}>'
+        return f'<BookCategory book_id={self.book_id} category_id={self.book_category_id}>'
 
 
 class ReadBooksCollection(db.Model):
@@ -144,8 +155,12 @@ class ReadBooksCollection(db.Model):
                         )
     book_copy_id = db.Column(db.Integer, db.ForeignKey('book_copies.book_copy_id'))
 
+    book_copy = db.relationship('BookCopy')
+    user = db.relationship('User')
+
+
     def __repr__(self):
-        return f'<ReadBooksCollection read_books_collection_id={self.read_books_collection_id} user_id={self.user_id}'
+        return f'<ReadBooksCollection read_books_collection_id={self.read_books_collection_id} user_id={self.user_id}>'
 
 
 class LikedBooksCollection(db.Model):

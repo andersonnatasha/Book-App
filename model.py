@@ -50,6 +50,16 @@ class Book(db.Model):
     def __repr__(self):
         return f'<Book book_id={self.book_id} title={self.title}'
 
+class BookCopy(db.Model):
+    """A copy of a book"""
+
+    __tablename__ = "book_copy"
+
+    book_copy_id = db.Column(db.Integer)
+    book_id = db.Column(db.Integer,
+                        db.ForeignKey('books.book_id'),
+                        nullable=False
+                        )
 
 class Author(db.Model):
     """An author"""

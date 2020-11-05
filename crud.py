@@ -35,7 +35,16 @@ def create_book_copy(book)
 
     book_copy = BookCopy(book=book)
 
+    db.session.add(book_copy)
+    db.session.commit()
+
     return book_copy
+
+def create_author(fname, lname, book)
+
+    author = Author(fname=fname,
+                    lname=lname,
+                    book=book)
 
 if __name__ == '__main__':
     from server import app

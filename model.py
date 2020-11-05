@@ -71,7 +71,7 @@ class Author(db.Model):
                         )
 
     def __repr__(self):
-        f'<Author author_id={self.author_id} lname={self.lname}>'
+        return f'<Author author_id={self.author_id} lname={self.lname}>'
 
 
 class Category(db.Model):
@@ -86,7 +86,7 @@ class Category(db.Model):
     category = db.Column(db.String(50), nullable=False, unique=True)
 
     def __repr__(self):
-        f'<Category category_id={self.category_id} category={self.category}>'
+        return f'<Category category_id={self.category_id} category={self.category}>'
 
 
 class BookCategory(db.Model):
@@ -108,7 +108,7 @@ class BookCategory(db.Model):
                             )
 
     def __repr__(self):
-        f'<BookCategory book_id={self.book_id} categories_id={self.categories_id}>'
+        return f'<BookCategory book_id={self.book_id} categories_id={self.categories_id}>'
 
 
 class ReadBooksCollection(db.Model):
@@ -127,8 +127,7 @@ class ReadBooksCollection(db.Model):
     book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
 
     def __repr__(self):
-        f'<ReadBooksCollection read_books_collection_id={self.read_books_collection_id} user_id={self.user_id}'
-
+        return f'<ReadBooksCollection read_books_collection_id={self.read_books_collection_id} user_id={self.user_id}'
 
 
 class LikedBooksCollection(db.Model):
@@ -144,6 +143,9 @@ class LikedBooksCollection(db.Model):
                         nullable=False
                         )
     book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
+
+    def __repr__(self):
+        return f'<LikedBooksCollection liked_book_collection_id={self.liked_book_collection_id} user_id={self.user_id}>'
 
 
 class ToBeReadCollection(db.Model):

@@ -17,6 +17,17 @@ def create_user(email, password, full_name=None, gender=None, created_at):
 
     return user
 
+def create_book(title, liked=None, categories=None)
+    """Create and return a new book."""
+
+    book = Book(title=title,
+                liked=liked,
+                catrgories=categories)
+
+    db.session.add(book)
+    db.session.commit()
+
+    return book
 
 if __name__ == '__main__':
     from server import app

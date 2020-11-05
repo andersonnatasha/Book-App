@@ -53,7 +53,7 @@ def create_author(fname, lname, book):
 
 
 def create_category(category):
-    """create and return a category."""
+    """Create and return a category."""
 
     category = Category(category=category)
 
@@ -63,6 +63,15 @@ def create_category(category):
     return category
 
 
+def create_book_category(book, category):
+    """Create and return a category for a specific book."""
+
+    book_category = BookCategory(book=book, category=category)
+
+    db.session.add(book_category)
+    db.session.commit()
+
+    return book_category
 
 
 if __name__ == '__main__':

@@ -54,9 +54,11 @@ class Book(db.Model):
 class BookCopy(db.Model):
     """A copy of a book"""
 
-    __tablename__ = "book_copy"
+    __tablename__ = "book_copies"
 
-    book_copy_id = db.Column(db.Integer)
+    book_copy_id = db.Column(db.Integer,
+                             primary_key=True,
+                             autoincrement=True)
     book_id = db.Column(db.Integer,
                         db.ForeignKey('books.book_id'),
                         nullable=False
@@ -174,7 +176,7 @@ class ToBeReadCollection(db.Model):
     book_copy_id = db.Column(db.Integer, db.ForeignKey('book_copy.book_copy_id'))
 
     def __repr__(self):
-        return f'ToBeReadCollection tbr_collection_id={self.tbr_collection_id} user_id={self.user_id}'
+        return f'<ToBeReadCollection tbr_collection_id={self.tbr_collection_id} user_id={self.user_id}>'
 
 
 class Bookshelf(db.Model):
@@ -194,7 +196,7 @@ class Bookshelf(db.Model):
     book_copy_id = db.Column(db.Integer, db.ForeignKey('book_copy.book_copy_id'))
 
     def __repr__(self):
-        return f'Bookshelf bookshelf_id={self.bookshelf_id} name={self.name}'
+        return f'<Bookshelf bookshelf_id={self.bookshelf_id} name={self.name}>'
 
 
 def connect_to_db(flask_app, db_uri='postgresql:///ratings', echo=True):

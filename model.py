@@ -58,7 +58,8 @@ class BookCopy(db.Model):
 
     book_copy_id = db.Column(db.Integer,
                              primary_key=True,
-                             autoincrement=True)
+                             autoincrement=True
+                             )
     book_id = db.Column(db.Integer,
                         db.ForeignKey('books.book_id'),
                         nullable=False
@@ -137,7 +138,7 @@ class ReadBooksCollection(db.Model):
                         db.ForeignKey('users.user_id'),
                         nullable=False
                         )
-    book_copy_id = db.Column(db.Integer, db.ForeignKey('book_copy.book_copy_id'))
+    book_copy_id = db.Column(db.Integer, db.ForeignKey('book_copies.book_copy_id'))
 
     def __repr__(self):
         return f'<ReadBooksCollection read_books_collection_id={self.read_books_collection_id} user_id={self.user_id}'
@@ -155,7 +156,7 @@ class LikedBooksCollection(db.Model):
                         db.ForeignKey('users.user_id'),
                         nullable=False
                         )
-    book_copy_id = db.Column(db.Integer, db.ForeignKey('book_copy.book_id'))
+    book_copy_id = db.Column(db.Integer, db.ForeignKey('book_copies.book_copy_id'))
 
     def __repr__(self):
         return f'<LikedBooksCollection liked_book_collection_id={self.liked_book_collection_id} user_id={self.user_id}>'
@@ -173,7 +174,7 @@ class ToBeReadCollection(db.Model):
                         db.ForeignKey('users.user_id'),
                         nullable=False
                         )
-    book_copy_id = db.Column(db.Integer, db.ForeignKey('book_copy.book_copy_id'))
+    book_copy_id = db.Column(db.Integer, db.ForeignKey('book_copies.book_copy_id'))
 
     def __repr__(self):
         return f'<ToBeReadCollection tbr_collection_id={self.tbr_collection_id} user_id={self.user_id}>'
@@ -193,7 +194,7 @@ class Bookshelf(db.Model):
                         db.ForeignKey('users.user_id'),
                         nullable=False
                         )
-    book_copy_id = db.Column(db.Integer, db.ForeignKey('book_copy.book_copy_id'))
+    book_copy_id = db.Column(db.Integer, db.ForeignKey('book_copies.book_copy_id'))
 
     def __repr__(self):
         return f'<Bookshelf bookshelf_id={self.bookshelf_id} name={self.name}>'

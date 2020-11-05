@@ -82,6 +82,7 @@ class Author(db.Model):
     lname = db.Column(db.String(40),
                       nullable=False
                       )
+    book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
 
     book = db.relationship('Book', backref ='author')
 

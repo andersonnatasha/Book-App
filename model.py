@@ -166,6 +166,26 @@ class ToBeReadCollection(db.Model):
         return f'ToBeReadCollection tbr_collection_id={self.tbr_collection_id} user_id={self.user_id}'
 
 
+class Bookshelf(db.Model):
+    """A bookself"""
+
+    __tablename__ = 'bookshelves'
+
+    bookshelf_id = db.Column(db.Integer,
+                             primary_key=True,
+                             autoincrement=True)
+    name = db.Column(db.String(50),
+                     nullable=False)
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey('users.user_id'),
+                        nullable=False
+                        )
+    book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
+
+    def __repr__(self):
+        return f'Bookshelf bookshelf_id={self.bookshelf_id} name={self.name}'
+
+
 def connect_to_db(flask_app, db_uri='postgresql:///ratings', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     flask_app.config['SQLALCHEMY_ECHO'] = echo

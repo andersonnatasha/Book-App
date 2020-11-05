@@ -214,6 +214,7 @@ class Bookshelf(db.Model):
                         nullable=False
                         )
     book_copy_id = db.Column(db.Integer, db.ForeignKey('book_copies.book_copy_id'))
+    created_at = db.Column(db.DateTime)
 
     def __repr__(self):
         return f'<Bookshelf bookshelf_id={self.bookshelf_id} name={self.name}>'

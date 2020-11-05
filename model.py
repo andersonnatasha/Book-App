@@ -25,7 +25,7 @@ class User(db.Model):
                          nullable=False
                           )
     gender = db.Column(db.String(17))
-    created_at = db.Column(db.DateTime)
+    created_at = db.Column(db.DateTime, nullable=False)
 
     read_book_collection = db.relationship('ReadBooksCollection')
 
@@ -214,7 +214,7 @@ class Bookshelf(db.Model):
                         nullable=False
                         )
     book_copy_id = db.Column(db.Integer, db.ForeignKey('book_copies.book_copy_id'))
-    created_at = db.Column(db.DateTime)
+    created_at = db.Column(db.DateTime, nullale=False)
 
     def __repr__(self):
         return f'<Bookshelf bookshelf_id={self.bookshelf_id} name={self.name}>'

@@ -4,7 +4,7 @@ from model import db, User, Book, BookCopy, Author, Category, BookCategory, conn
 
 
 
-if __name == '__main__':
+if __name__ == '__main__':
     from server import app
     connect_to_db(app)
     

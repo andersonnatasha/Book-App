@@ -121,19 +121,19 @@ class BookCategory(db.Model):
 
 
 class ReadBook(db.Model):
-    """A read book"""
+    """A user's read book"""
 
     __tablename__ = 'read_books'
 
-    read_book = db.Column(db.Integer,
+    read_book_id = db.Column(db.Integer,
+                         db.ForeignKey('books.book_id'),
                          primary_key=True,
-                         autoincrement=True
-                                         )
+                         )
+
     user_id = db.Column(db.Integer,
                         db.ForeignKey('users.user_id'),
-                        nullable=False
+                        primary_key=True
                         )
-    book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
 
     book= db.relationship('Book')
     user = db.relationship('User')
@@ -144,18 +144,19 @@ class ReadBook(db.Model):
 
 
 class LikedBook(db.Model):
-    """A liked book"""
+    """A user's liked book"""
 
     __tablename__ = 'liked_books'
 
     liked_book_id = db.Column(db.Integer,
-                             primary_key=True,
-                             autoincrement=True)
+                         db.ForeignKey('books.book_id'),
+                         primary_key=True,
+                         )
+
     user_id = db.Column(db.Integer,
                         db.ForeignKey('users.user_id'),
-                        nullable=False
+                        primary_key=True
                         )
-    book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
 
     book = db.relationship('Book')
     user = db.relationship('User')
@@ -165,24 +166,24 @@ class LikedBook(db.Model):
 
 
 class ToBeReadBook(db.Model):
-    """A book to be read"""
+    """A user's book to be read"""
 
     __tablename__ = 'to_be_read_books'
 
     to_be_read_book_id = db.Column(db.Integer,
-                             primary_key=True,
-                             autoincrement=True)
+                         db.ForeignKey('books.book_id'),
+                         primary_key=True,
+                         )
     user_id = db.Column(db.Integer,
                         db.ForeignKey('users.user_id'),
-                        nullable=False
+                        primary_key=True
                         )
-    book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
 
     book = db.relationship('Book')
     user = db.relationship('User')
 
     def __repr__(self):
-        return f'<ToBeReadBook to_be_read_book_id={self.to_be_read_book_id user_id={self.user_id}>'
+        return f'<ToBeReadBook to_be_read_book_id={self.to_be_read_book_id} user_id={self.user_id}>'
 
 
 class Bookshelf(db.Model):
@@ -204,6 +205,31 @@ class Bookshelf(db.Model):
 
     def __repr__(self):
         return f'<Bookshelf bookshelf_id={self.bookshelf_id} name={self.name}>'
+
+
+class BookInBookshelf(db.Model):
+    """A book in a particular book self"""
+
+    __tablename__ = 'books_in_bookshelves'
+
+    book_in_book_shelf_id = db.Column(db.Integer,
+                         db.ForeignKey('books.book_id'),
+                         primary_key=True,
+                         )
+    bookshelf_id = db.Column(db.Integer,
+                            db.ForeignKey('bookshelves.bookshelf_id'),
+                            primary_key=True)
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey('users.user_id'),
+                        primary_key=True
+                        )
+
+    book = db.relationship('Book')
+    user = db.relationship('User')
+
+    def __repr__(self):
+        return f'<BookInBookShelf book_in_bookself_id={self.book_in_book_shelf_id} bookshelf_id={self.bookshelf_id} user_id={self.user_id}>'
+
 
 
 def connect_to_db(flask_app, db_uri='postgresql:///bookslibrary', echo=True):

@@ -28,7 +28,6 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, nullable=False)
     gender = db.Column(db.String(17))
 
-    read_book_collection = db.relationship('ReadBooksCollection')
 
     def __repr__(self):
         return f'<User user_id={self.user_id} email={self.email}>'
@@ -47,7 +46,7 @@ class Book(db.Model):
     categories = db.relationship('Category',
                                  secondary="books_categories",
                                  backref='books'
-    )
+                                )
 
     author = db.relationship('Author')
     book_category = db.relationship('BookCategory')
@@ -117,13 +116,13 @@ class BookCategory(db.Model):
     category =db.relationship('Category')
 
     def __repr__(self):
-        return f'<BookCategory book_id={self.book_id} category_id={self.book_category_id}>'
+        return f'<BookCategory book_category_id={self.book_category_id} book_id={self.book_id} category_id={self.category_id} >'
 
 
-class BookStatus(db.Model):
-    """The status of a book in a user's Library"""
+class BookTagsStatus(db.Model):
+    """Status of tags on a particular book in a user's Library"""
 
-    __tablename__ = 'book_statuses'
+    __tablename__ = 'book_tags_statuses'
 
     book_id = db.Column(db.Integer,
                          db.ForeignKey('books.book_id'),
@@ -135,8 +134,13 @@ class BookStatus(db.Model):
                         )
 
     read = db.Column(db.Boolean)
+    read_date = db.Column(db.DateTime) # date read tag was added
+
     liked = db.Column(db.Boolean)
+    liked_date = db.Column(db.DateTime) # date liked tag was added
+
     to_be_read = db.Column(db.Boolean)
+    to_be_read_date = db.Column(db.DateTime) #date to be read tag was added
 
     book = db.relationship('Book')
     user = db.relationship('User')
@@ -156,7 +160,6 @@ class Bookshelf(db.Model):
                         db.ForeignKey('users.user_id'),
                         nullable=False
                         )
-    book = db.Column(db.Integer, db.ForeignKey('books.book_id'))
     #created_at = db.Column(db.DateTime, nullale=False)
 
     def __repr__(self):
@@ -179,13 +182,10 @@ class BookInBookshelf(db.Model):
                         db.ForeignKey('users.user_id'),
                         primary_key=True
                         )
-    liked = db.Column(db.Boolean,
-                     db.Foreignkey('books.liked'))
 
 
     book = db.relationship('Book')
     user = db.relationship('User')
-    liked = db.relationship('Book')
 
     def __repr__(self):
         return f'<BookInBookShelf book_in_bookself_id={self.book_in_book_shelf_id} bookshelf_id={self.bookshelf_id} user_id={self.user_id}>'

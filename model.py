@@ -73,7 +73,7 @@ class BookCopy(db.Model):
                         )
 
     book = db.relationship('Book')
-    read_book_collection = db.relationship('ReadBooksCollection')
+    #read_book_collection = db.relationship('ReadBooksCollection')
 
     def __repr__(self):
         return f'<BookCopy book_copy_id={self.book_copy_id} book_id={self.book_id}>'
@@ -111,6 +111,7 @@ class Category(db.Model):
                             autoincrement=True
                             )
     category = db.Column(db.String(50), nullable=False, unique=True)
+
 
     def __repr__(self):
         return f'<Category category_id={self.category_id} category={self.category}>'
@@ -154,14 +155,32 @@ class ReadBooksCollection(db.Model):
                         db.ForeignKey('users.user_id'),
                         nullable=False
                         )
-    book_copy_id = db.Column(db.Integer, db.ForeignKey('book_copies.book_copy_id'))
 
-    book_copy = db.relationship('BookCopy')
     user = db.relationship('User')
-
+    book_in_read_books_collections = db.relationship('BookInReadBooksCollection')
 
     def __repr__(self):
         return f'<ReadBooksCollection read_books_collection_id={self.read_books_collection_id} user_id={self.user_id}>'
+
+
+class BookInReadBooksCollection(db.Model):
+    """A copy of a book in a read books collection"""
+
+    __tablename__ = 'books_in_read_books_collections'
+
+    books_in_read_books_collections_id = db.Column(db.Integer,
+                                         primary_key=True,
+                                         autoincrement=True
+                                         )
+    read_books_collection_id = db.Column(db.Integer,
+                                        db.ForeignKey('read_books_collections.read_books_collection_id'))
+    book_copy_id = db.Column(db.Integer, db.ForeignKey('book_copies.book_copy_id'))
+
+    read_books_collection = db.relationship('ReadBooksCollection')
+    book_copy = db.relationship('BookCopy')
+
+    def __repr__(self):
+        return f'<BookInReadBooksCollection book_in_read_books_collection_id={self.books_in_read_books_collections_id} book_copy={self.book_copy_id}>'
 
 
 class LikedBooksCollection(db.Model):

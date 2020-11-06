@@ -1,6 +1,6 @@
 """CRUD operations"""
 
-from model import db, User, Book, BookCopy, Author, Category, BookCategory, ReadBooksCollection, connect_to_db
+from model import db, User, Book, BookCopy, Author, Category, BookCategory, ReadBook, connect_to_db
 
 
 def create_user(email, password, full_name, birthday, created_at, gender=None):
@@ -64,15 +64,15 @@ def create_book_category(book, category):
     return book_category
 
 
-def create_read_books_collection(user):
-    """Create and return a read books collection for a user."""
+def create_read_book(book, user):
+    """Create and return a read book of a user."""
 
-    read_books_collection = ReadBooksCollection(user=user)
+    read_book = ReadBook(book=book, user=user)
 
-    db.session.add(read_books_collection)
+    db.session.add(read_book)
     db.session.commit()
 
-    return read_books_collection
+    return read_book
 
 
 if __name__ == '__main__':

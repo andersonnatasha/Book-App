@@ -5,10 +5,19 @@ import crud
 
 from jinja2 import StrictUndefined
 
-app = Flask(__name__)
+import os
 
+app = Flask(__name__)
+app.secrect_key = os.environ['FLASK_KEY']
+
+
+@app.route('/')
+def homepage():
+    """View homepage"""
+
+    return render_template('homepage.html')
 
 
 if __name__ == '__main__':
+    connect_to_db(app)
     app.run(host='0.0.0.0', debug=True)
-

@@ -18,12 +18,12 @@ def create_user(email, password, full_name, birthday, created_at, gender=None):
 
     return user
 
-def create_book(title, liked=None, categories=None):
+def create_book(title, liked=None):
     """Create and return a new book."""
 
     book = Book(title=title,
                 liked=liked,
-                catrgories=categories)
+                )
 
     db.session.add(book)
     db.session.commit()

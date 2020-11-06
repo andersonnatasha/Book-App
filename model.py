@@ -44,14 +44,14 @@ class Book(db.Model):
                         autoincrement=True
                         )
     title = db.Column(db.String(250), nullable=False)
-    liked = db.Column(db.Boolean)
     categories = db.relationship('Category',
                                  secondary="books_categories",
                                  backref='books'
-                                 )
+    )
 
     author = db.relationship('Author')
     book_category = db.relationship('BookCategory')
+
 
     def __repr__(self):
         return f'<Book book_id={self.book_id} title={self.title}>'
@@ -120,70 +120,26 @@ class BookCategory(db.Model):
         return f'<BookCategory book_id={self.book_id} category_id={self.book_category_id}>'
 
 
-class ReadBook(db.Model):
-    """A user's read book"""
+class BookStatus(db.Model):
+    """The status of a book in a user's Library"""
 
-    __tablename__ = 'read_books'
+    __tablename__ = 'book_statuses'
 
-    read_book_id = db.Column(db.Integer,
+    book_id = db.Column(db.Integer,
                          db.ForeignKey('books.book_id'),
                          primary_key=True,
                          )
-
     user_id = db.Column(db.Integer,
                         db.ForeignKey('users.user_id'),
                         primary_key=True
                         )
 
-    book= db.relationship('Book')
-    user = db.relationship('User')
-
-
-    def __repr__(self):
-        return f'<ReadBook read_book={self.read_book_id} book={self.book_id}>'
-
-
-class LikedBook(db.Model):
-    """A user's liked book"""
-
-    __tablename__ = 'liked_books'
-
-    liked_book_id = db.Column(db.Integer,
-                         db.ForeignKey('books.book_id'),
-                         primary_key=True,
-                         )
-
-    user_id = db.Column(db.Integer,
-                        db.ForeignKey('users.user_id'),
-                        primary_key=True
-                        )
+    read = db.Column(db.Boolean)
+    liked = db.Column(db.Boolean)
+    to_be_read = db.Column(db.Boolean)
 
     book = db.relationship('Book')
     user = db.relationship('User')
-
-    def __repr__(self):
-        return f'<LikeBook liked_book_id={self.liked_book_id} user_id={self.user_id}>'
-
-
-class ToBeReadBook(db.Model):
-    """A user's book to be read"""
-
-    __tablename__ = 'to_be_read_books'
-
-    to_be_read_book_id = db.Column(db.Integer,
-                         db.ForeignKey('books.book_id'),
-                         primary_key=True,
-                         )
-    user_id = db.Column(db.Integer,
-                        db.ForeignKey('users.user_id'),
-                        primary_key=True
-                        )
-
-    book = db.relationship('Book')
-    user = db.relationship('User')
-
-    def __repr__(self):
-        return f'<ToBeReadBook to_be_read_book_id={self.to_be_read_book_id} user_id={self.user_id}>'
 
 
 class Bookshelf(db.Model):
@@ -223,9 +179,13 @@ class BookInBookshelf(db.Model):
                         db.ForeignKey('users.user_id'),
                         primary_key=True
                         )
+    liked = db.Column(db.Boolean,
+                     db.Foreignkey('books.liked'))
+
 
     book = db.relationship('Book')
     user = db.relationship('User')
+    liked = db.relationship('Book')
 
     def __repr__(self):
         return f'<BookInBookShelf book_in_bookself_id={self.book_in_book_shelf_id} bookshelf_id={self.bookshelf_id} user_id={self.user_id}>'

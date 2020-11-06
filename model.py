@@ -24,6 +24,7 @@ class User(db.Model):
     full_name = db.Column(db.String(50),
                          nullable=False
                           )
+    birthday = db.Column(db.DateTime, nullable=False)
     gender = db.Column(db.String(17))
     created_at = db.Column(db.DateTime, nullable=False)
 

@@ -4,30 +4,55 @@
 
 {% block body %} 
 <form action="/register" method="POST">
-<label>Email</label>
-email:
-<input type="text" name="email" required>
-<label>Submit</label>
-<input type="submit"
+  <label>Whats your email?</label>
+  <input type="text" name="email" required>
 
-<label>Confirm Email</label>
-confirm email:
-<input type="text" name="confirm-email" required>
-<input type="submit">
+  <label>Confirm your email</label>
+  <input type="text" name="confirm-email" required>
 
-<label>Password</label>
-password:
-<input type="password" name="password" minlength="10" required>
-<input type="submit">
+  <label>Create a password</label>
+   <input type="password" name="password" minlength="10" required>
 
-<label>Confirm Password</label>
-confirm password:
-<input type="password" name="confirm-password" minlength="10" required>
-<input type="submit">
+  <label>Confirm your password</label>
+  <input type="password" name="confirm-password" minlength="10" required>
 
-<label>Profile Name</label>
+  <label> What should we call you?</label>
+  <input type="text" name="profile-name" required>
 
+  <label>What's your date of birth?</label>
+  <select name="birth-month" required>
+    <option value="january">January</option>
+    <option value="february">February</option>
+    <option value="march">March</option>
+    <option value="april">April</option>
+    <option value="map">May</option>
+    <option value="june">June</option>
+    <option value="july">July</option>
+    <option value="august">August</option>
+    <option value="september">September</option>
+    <option value="october">October</option>
+    <option value="november">November</option>
+    <option value="december">December</option>
+  </select>
 
+  <label>What's your gender?</label>
 
+    <input type="radio" name="gender" value="female">
+    <label>Female</label>
+
+    <input type="radio" name="gender" value="male">
+    <label>Male</label>
+
+    <input type="radio" name="gender" value="Non-binary">
+    <label>Non-binary</label>
+
+    <input type="radio" name="gender" value="Non-binary">
+    <label>Prefer Not To Say</label>
+
+  <input type="submit">
 
 </form>
+
+<p>Have an account? <a href="/log-in">Log in</a>. </p>
+
+{% endblock %}

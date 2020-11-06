@@ -7,7 +7,7 @@ def create_user(email, password, full_name, birthday, created_at, gender=None):
     """Create and return a new user."""
 
     user = User(email=email,
-                password=password
+                password=password,
                 full_name=full_name,
                 gender=gender,
                 created_at=created_at)

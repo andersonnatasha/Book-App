@@ -1,4 +1,4 @@
-"""Models for book app."""
+"""Models for book app"""
 
 from flask_sqlalchemy import SQLAlchemy
 
@@ -51,7 +51,6 @@ class Book(db.Model):
                                  )
 
     author = db.relationship('Author')
-    book_copy = db.relationship('BookCopy')
     book_category = db.relationship('BookCategory')
 
     def __repr__(self):
@@ -136,12 +135,12 @@ class ReadBook(db.Model):
                         )
     book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
 
-    book_copy = db.relationship('BookCopy')
+    book= db.relationship('Book')
     user = db.relationship('User')
 
 
     def __repr__(self):
-        return f'<ReadBook read_book={self.read_book_id} book_copy={self.book_id}>'
+        return f'<ReadBook read_book={self.read_book_id} book={self.book_id}>'
 
 
 class LikedBook(db.Model):
@@ -158,7 +157,7 @@ class LikedBook(db.Model):
                         )
     book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
 
-    book_copy = db.relationship('BookCopy')
+    book = db.relationship('Book')
     user = db.relationship('User')
 
     def __repr__(self):
@@ -179,7 +178,7 @@ class ToBeReadBook(db.Model):
                         )
     book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
 
-    book_copy = db.relationship('BookCopy')
+    book = db.relationship('Book')
     user = db.relationship('User')
 
     def __repr__(self):
@@ -187,7 +186,7 @@ class ToBeReadBook(db.Model):
 
 
 class Bookshelf(db.Model):
-    """A bookself"""
+    """A user's bookself"""
 
     __tablename__ = 'bookshelves'
 
@@ -200,7 +199,7 @@ class Bookshelf(db.Model):
                         db.ForeignKey('users.user_id'),
                         nullable=False
                         )
-    book_copy_id = db.Column(db.Integer, db.ForeignKey('book_copies.book_copy_id'))
+    book = db.Column(db.Integer, db.ForeignKey('books.book_id'))
     #created_at = db.Column(db.DateTime, nullale=False)
 
     def __repr__(self):

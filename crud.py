@@ -3,7 +3,7 @@
 from model import db, User, Book, BookCopy, Author, Category, BookCategory, connect_to_db
 
 
-def create_user(email, password, full_name=None, gender=None, created_at):
+def create_user(email, password, full_name, birthday, created_at, gender=None):
     """Create and return a new user."""
 
     user = User(email=email,

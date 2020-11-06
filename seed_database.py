@@ -20,6 +20,7 @@ model.db.create_all()
 fake = Faker()
 
 # Create 10 random users with unique emails
+# and create read books collection
 for n in range(10):
     email = f'user{n+1}@test.com'
     password = f'testpassword{n+1}'
@@ -27,7 +28,10 @@ for n in range(10):
     birthday = datetime.strptime(fake.date(), '%Y-%m-%d')
     created_at = datetime.strptime(fake.date(), '%Y-%m-%d')
 
-    crud.create_user(email, password, full_name, birthday, created_at)
+    db_user = crud.create_user(email, password, full_name, birthday, created_at)
+
+    crud.create_read_books_collection(db_user)
+
 
 # Create 30 random titles
 books_in_db = []

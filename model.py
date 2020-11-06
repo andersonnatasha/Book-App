@@ -122,42 +122,68 @@ class BookCategory(db.Model):
 
 
 class ReadBook(db.Model):
-    """A copy of a book in a read books collection"""
+    """A read book"""
 
-    __tablename__ = 'books_in_read_books_collection'
+    __tablename__ = 'read_books'
 
-    books_in_read_books_collections_id = db.Column(db.Integer,
-                                         primary_key=True,
-                                         autoincrement=True
+    read_book = db.Column(db.Integer,
+                         primary_key=True,
+                         autoincrement=True
                                          )
-    read_books_collection_id = db.Column(db.Integer,
-                                        db.ForeignKey('read_books_collections.read_books_collection_id'))
-    book_copy_id = db.Column(db.Integer, db.ForeignKey('book_copies.book_copy_id'))
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey('users.user_id'),
+                        nullable=False
+                        )
+    book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
 
-    read_books_collection = db.relationship('ReadBooksCollection')
     book_copy = db.relationship('BookCopy')
+    user = db.relationship('User')
+
 
     def __repr__(self):
-        return f'<BookInLikedBooksCollection book_in_read_books_collection_id={self.books_in_read_books_collections_id} book_copy={self.book_copy_id}>'
+        return f'<ReadBook read_book={self.read_book_id} book_copy={self.book_id}>'
 
 
 class LikedBook(db.Model):
-    """A collection of liked books"""
+    """A liked book"""
 
-    __tablename__ = 'books_in_liked_books_collection'
+    __tablename__ = 'liked_books'
 
-    book_in_liked_books_collection_id = db.Column(db.Integer,
-                                                  primary_key=True,
-                                                  autoincrement=True)
-    liked_books_collection_id = db.Column(db.Integer,
-                                         db.ForeignKey('liked_books_collections.liked_books_collection_id'))
-    book_copy_id = db.Column(db.Integer, db.ForeignKey('book_copies.book_copy_id'))
+    liked_book_id = db.Column(db.Integer,
+                             primary_key=True,
+                             autoincrement=True)
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey('users.user_id'),
+                        nullable=False
+                        )
+    book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
 
-    liked_books_collection = db.relationship('LikedBooksCollection')
     book_copy = db.relationship('BookCopy')
+    user = db.relationship('User')
 
-def __repr__(self):
-        return f'<BookInLikedBooksCollection book_in_liked_book_collection_id={self.book_in_liked_book_collection_id} user_id={self.user_id}>'
+    def __repr__(self):
+        return f'<LikeBook liked_book_id={self.liked_book_id} user_id={self.user_id}>'
+
+
+class ToBeReadBook(db.Model):
+    """A book to be read"""
+
+    __tablename__ = 'to_be_read_books'
+
+    to_be_read_book_id = db.Column(db.Integer,
+                             primary_key=True,
+                             autoincrement=True)
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey('users.user_id'),
+                        nullable=False
+                        )
+    book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
+
+    book_copy = db.relationship('BookCopy')
+    user = db.relationship('User')
+
+    def __repr__(self):
+        return f'<ToBeReadBook to_be_read_book_id={self.to_be_read_book_id user_id={self.user_id}>'
 
 
 class Bookshelf(db.Model):

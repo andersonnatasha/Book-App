@@ -31,17 +31,6 @@ def create_book(title, liked=None):
     return book
 
 
-def create_book_copy(book):
-    """Create and return a copy of a particular book."""
-
-    book_copy = BookCopy(book=book)
-
-    db.session.add(book_copy)
-    db.session.commit()
-
-    return book_copy
-
-
 def create_author(fname, lname, book):
     """Create and return an author."""
 

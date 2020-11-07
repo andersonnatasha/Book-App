@@ -26,12 +26,18 @@ def sign_up():
     return render_template('sign_up.html')
 
 
+@app.route('/log-in')
+def login():
+    """user log in"""
+
+    return render_template('log_in.html')
+
+
 @app.route('/register', methods=['POST'])
-def register():
+def register_user():
     """Register a user"""
 
     email = request.form.get('email')
-    email_confirmed = request.form.get('confirm-email')
     password = request.form.get('password')
     password_confirmed = request.form.get('confirm-password')
     profile_name = request.form.get('profile-name')
@@ -49,20 +55,18 @@ def register():
 
     if user:
         flash('Account already exists')
-    elif email != email_confirmed:
-        flash('emails do not match')
+        redirect_location='/sign-up'
     elif password != password_confirmed:
         flash('passwords do not match')
+        redirect_location='/sign-up'
     else:
-        crud.create_user(email, password, profile_name, birthday, gender, time_created)
+        crud.create_user(email, password, profile_name,
+                        birthday, gender, time_created)
+        flash('account created!')
+        redirect_location='/log-in'
 
-    return redirect("/login-in")
+    return redirect(redirect_location)
 
-@app.route('/log-in')
-def login():
-    """user log in"""
-
-    return render_template('log_in.html')
 
 
 if __name__ == '__main__':

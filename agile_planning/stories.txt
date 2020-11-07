@@ -18,9 +18,13 @@ recall my thoughts or feelings or what I learned while reading without the press
 
 Story 5:
 
-As a user, I want tp search books via genre or author and find books similar to books that I like.
+As a user, I want it to be easy to find new books to read. I want to search books via genre or author and find books similar to
+books that I like.
 
 Story 6:
 
 As a user, I want to be able to use the service on my phone.
+
+
+
 

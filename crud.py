@@ -1,21 +1,27 @@
 """CRUD operations"""
 
 from model import db, User, Book, Author, Category, BookCategory, BookTagsStatus, Bookshelf, BookInBookshelf, connect_to_db
+from datetime import datetime
 
 
-def create_user(email, password, full_name, birthday, created_at, gender=None):
+def create_user(email, password, full_name, birthday, gender, created_time):
     """Create and return a new user."""
 
     user = User(email=email,
                 password=password,
                 full_name=full_name,
                 birthday=birthday,
-                created_at=created_at,
-                gender=gender)
+                gender=gender,
+                created_time=created_time)
     db.session.add(user)
     db.session.commit()
 
     return user
+
+def get_user_by_email(email):
+    """Return a user by email"""
+
+    return User.query.filter(User.email == email)
 
 
 def create_book(title):

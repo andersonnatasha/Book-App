@@ -25,9 +25,8 @@ class User(db.Model):
                          nullable=False
                           )
     birthday = db.Column(db.DateTime, nullable=False)
-    created_at = db.Column(db.DateTime, nullable=False)
+    created_time = db.Column(db.DateTime, nullable=False)
     gender = db.Column(db.String(17))
-
 
     def __repr__(self):
         return f'<User user_id={self.user_id} email={self.email}>'
@@ -50,7 +49,6 @@ class Book(db.Model):
 
     author = db.relationship('Author')
     book_category = db.relationship('BookCategory')
-
 
     def __repr__(self):
         return f'<Book book_id={self.book_id} title={self.title}>'
@@ -89,7 +87,6 @@ class Category(db.Model):
                             )
     category = db.Column(db.String(50), nullable=False, unique=True)
 
-
     def __repr__(self):
         return f'<Category category_id={self.category_id} category={self.category}>'
 
@@ -116,7 +113,7 @@ class BookCategory(db.Model):
     category =db.relationship('Category')
 
     def __repr__(self):
-        return f'<BookCategory book_category_id={self.book_category_id} book_id={self.book_id} category_id={self.category_id} >'
+        return f'<BookCategory book_category_id={self.book_category_id} book_id={self.book_id} category_id={self.category_id}>'
 
 
 class BookTagsStatus(db.Model):
@@ -145,6 +142,10 @@ class BookTagsStatus(db.Model):
     book = db.relationship('Book')
     user = db.relationship('User')
 
+    def __repr__(self):
+        return f'<BookTagsStatus book_id={self.book_id} user_id={self.user_id}>'
+
+
 
 class Bookshelf(db.Model):
     """A user's bookself"""
@@ -160,7 +161,7 @@ class Bookshelf(db.Model):
                         db.ForeignKey('users.user_id'),
                         nullable=False
                         )
-    #created_at = db.Column(db.DateTime, nullale=False)
+    #created_time = db.Column(db.DateTime, nullale=False)
 
     def __repr__(self):
         return f'<Bookshelf bookshelf_id={self.bookshelf_id} name={self.name}>'

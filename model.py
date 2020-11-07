@@ -21,7 +21,7 @@ class User(db.Model):
     password = db.Column(db.String(25),
                          nullable=False,
                          )
-    full_name = db.Column(db.String(50),
+    profile_name = db.Column(db.String(50),
                          nullable=False
                           )
     birthday = db.Column(db.DateTime, nullable=False)

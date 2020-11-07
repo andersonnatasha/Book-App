@@ -1,0 +1,28 @@
+Story 1:
+
+- Create registration page 
+- Create login page 
+* feature * upload profile image 
+
+Story 2:
+- Make page that lists tbr books
+- Populate with the name, author, date added to list 
+* feature * add a block for writing who recommended book 
+
+
+Story 3: 
+- Make page that read books 
+- Populate with the name, author, date added to list 
+* feature * include block for writing who recommended book 
+
+Story 4:
+- Make page that lists liked books 
+- Populate with the name, author, date added to list 
+* feature * include block for writing who recommended book 
+
+
+Story 5:
+Every read book and liked book should have a section where user's can write text - in either location same notes show
+
+Story 6:
+Bootstrap

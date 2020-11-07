@@ -18,7 +18,9 @@
   <input type="text" name="profile-name" required>
 
   <label>What's your date of birth?</label>
+
   <select name="birth-month" required>
+    <option value="-">-</option>
     <option value="january">January</option>
     <option value="february">February</option>
     <option value="march">March</option>
@@ -34,7 +36,15 @@
   </select>
 
   <label>Day</label>
-  <input type="text" name="birth-day" required>
+  <select name="birth-day" required>
+  <option value="-">-</option>
+  {% for i in range(31) %}
+    <option value="{{ i +1 }}">{{ i+1 }}</option>
+
+  {% endfor %}
+  </select>
+
+  <!-- <input type="text" name="birth-day" required> -->
 
   <label>Year</label>
   <input type="text" name="birth-year" required>

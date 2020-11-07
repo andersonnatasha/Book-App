@@ -4,12 +4,12 @@ from model import db, User, Book, Author, Category, BookCategory, BookTagsStatus
 from datetime import datetime
 
 
-def create_user(email, password, full_name, birthday, gender, time_created):
+def create_user(email, password, profile_name, birthday, gender, time_created):
     """Create and return a new user."""
 
     user = User(email=email,
                 password=password,
-                full_name=full_name,
+                profile_name=profile_name,
                 birthday=birthday,
                 gender=gender,
                 time_created=time_created)

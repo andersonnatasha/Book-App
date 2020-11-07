@@ -1,4 +1,3 @@
-
 Story 1:
 
 As a user, I want to create a profile that I will use to log in.
@@ -13,10 +12,14 @@ As a user, I want to keep track of which books I have read so I can feel like I 
 
 Story 4:
 
-As a user, I want to keep track of which books I like and jot down private notes/reflections about the book so I can look back and
-recall my thoughts or feelings or what I learned while reading without the pressure of it being well written for others.
+As a user, I want to keep track of which books I like.
 
 Story 5:
+As a user I want to jot down private notes/reflections about the book so I can look back and
+recall my thoughts or feelings or what I learned while reading without the
+pressure of it being well written for others.
+
+Story 6:
 
 As a user, I want it to be easy to find new books to read. I want to search books via genre or author and find books similar to
 books that I like.
@@ -30,8 +33,9 @@ Story | Points |
 ______|________|
 1     | 3      |
 2     | 8      |
-3     | 5      |
-4     | 13     |
-5     | 20     |
-6     | 40     |
+3     | 3      |
+4     | 3      |
+5     | 13     |
+6     | 20     |
+7     | 40     |
 ----------------

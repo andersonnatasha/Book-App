@@ -1,7 +1,7 @@
 """Script to seed database"""
 
-import os 
-import json 
+import os
+import json
 from datetime import datetime
 from random import choice
 from faker import Faker
@@ -20,14 +20,16 @@ model.db.create_all()
 fake = Faker()
 
 # Create 10 users with unique emails
+gender_options = ['Female', 'Male', 'Non-binary', 'Prefer not to say']
 for n in range(10):
     email = f'user{n+1}@test.com'
     password = f'testpassword{n+1}'
     full_name = fake.name()
     birthday = datetime.strptime(fake.date(), '%Y-%m-%d')
-    created_at = datetime.strptime(fake.date(), '%Y-%m-%d')
+    gender = choice(gender_options)
+    created_time = datetime.now() #strptime(fake.date(), '%Y-%m-%d')
 
-    db_user = crud.create_user(email, password, full_name, birthday, created_at)
+    db_user = crud.create_user(email, password, full_name, birthday, gender, created_time)
 
 
 # Create 30 titles
@@ -60,4 +62,5 @@ for n in range(len(books_in_db)):
     random_category = choice(categories_in_db)
 
     crud.create_book_category(book, random_category)
+
 

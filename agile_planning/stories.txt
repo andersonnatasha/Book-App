@@ -3,7 +3,7 @@ Story 1:
 
 As a user, I want to create a profile that I will use to log in.
 
-Story 2: 
+Story 2:
 
 As a user, I want to keep a list of books that I want to read and be able to store who recommended that book.
 
@@ -26,5 +26,12 @@ Story 6:
 As a user, I want to be able to use the service on my phone.
 
 
-
-
+Story | Points |
+______|________|
+1     | 3      |
+2     | 8      |
+3     | 5      |
+4     | 13     |
+5     | 20     |
+6     | 40     |
+----------------

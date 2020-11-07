@@ -1,0 +1,26 @@
+
+Story 1:
+
+As a user, I want to create a profile that I will use to log in.
+
+Story 2: 
+
+As a user, I want to keep a list of books that I want to read and be able to store who recommended that book.
+
+Story 3:
+
+As a user, I want to keep track of which books I have read so I can feel like I am making progress on reading the books I have.
+
+Story 4:
+
+As a user, I want to keep track of which books I like and jot down private notes/reflections about the book so I can look back and
+recall my thoughts or feelings or what I learned while reading without the pressure of it being well written for others.
+
+Story 5:
+
+As a user, I want tp search books via genre or author and find books similar to books that I like.
+
+Story 6:
+
+As a user, I want to be able to use the service on my phone.
+

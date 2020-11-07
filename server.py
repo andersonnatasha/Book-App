@@ -56,7 +56,7 @@ def register():
     else:
         crud.create_user(email, password, profile_name, birthday, gender, time_created)
 
-    return redirect("/login-in)
+    return redirect("/login-in")
 
 @app.route('/log-in')
 def login():

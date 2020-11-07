@@ -4,7 +4,7 @@ from model import db, User, Book, Author, Category, BookCategory, BookTagsStatus
 from datetime import datetime
 
 
-def create_user(email, password, full_name, birthday, gender, created_time):
+def create_user(email, password, full_name, birthday, gender, time_created):
     """Create and return a new user."""
 
     user = User(email=email,
@@ -12,7 +12,7 @@ def create_user(email, password, full_name, birthday, gender, created_time):
                 full_name=full_name,
                 birthday=birthday,
                 gender=gender,
-                created_time=created_time)
+                time_created=time_created)
     db.session.add(user)
     db.session.commit()
 
@@ -21,7 +21,7 @@ def create_user(email, password, full_name, birthday, gender, created_time):
 def get_user_by_email(email):
     """Return a user by email"""
 
-    return User.query.filter(User.email == email)
+    return User.query.filter(User.email == email).first()
 
 
 def create_book(title):

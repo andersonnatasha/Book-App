@@ -25,7 +25,7 @@ class User(db.Model):
                          nullable=False
                           )
     birthday = db.Column(db.DateTime, nullable=False)
-    created_time = db.Column(db.DateTime, nullable=False)
+    time_created = db.Column(db.DateTime, nullable=False)
     gender = db.Column(db.String(17))
 
     def __repr__(self):
@@ -161,7 +161,7 @@ class Bookshelf(db.Model):
                         db.ForeignKey('users.user_id'),
                         nullable=False
                         )
-    #created_time = db.Column(db.DateTime, nullale=False)
+    #time_created = db.Column(db.DateTime, nullale=False)
 
     def __repr__(self):
         return f'<Bookshelf bookshelf_id={self.bookshelf_id} name={self.name}>'

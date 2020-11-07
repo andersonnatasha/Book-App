@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Log in{% endblock %}
+
+{% block body %} 
+<form action="/log-in">
+  <label>Email address</label>
+  <input type="text" name="email">
+
+  <label>Password</label>
+  <input type="text" name="password">
+
+  <input type="submit">
+
+</form>
+
+<p>Don't an account?</p>
+<a href="/sign-up">SIGN UP FOR PLACEHOLDER-NAME</a>
+
+{% endblock %}

@@ -4,14 +4,15 @@
 
 {% block body %} 
 <form action="/register" method="POST">
+
   <label>Whats your email?</label>
   <input type="text" name="email" required>
 
   <label>Create a password</label>
-   <input type="password" name="password" minlength="10" required>
+  <input type="password" name="password" minlength="1" required>
 
   <label>Confirm your password</label>
-  <input type="password" name="confirm-password" minlength="10" required>
+  <input type="password" name="confirm-password" minlength="1" required>
 
   <label> What should we call you?</label>
   <input type="text" name="profile-name" required>
@@ -50,7 +51,7 @@
     <label>Non-binary</label>
 
     <input type="radio" name="gender" value="Non-binary">
-    <label>Prefer Not To Say</label>
+  <label>Prefer Not To Say</label>
 
   <input type="submit">
 

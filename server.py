@@ -54,15 +54,15 @@ def register_user():
     user = crud.get_user_by_email(email)
 
     if user:
-        flash('Account already exists')
+        flash('Account already exists.')
         redirect_location='/sign-up'
     elif password != password_confirmed:
-        flash('passwords do not match')
+        flash('Passwords do not match.')
         redirect_location='/sign-up'
     else:
         crud.create_user(email, password, profile_name,
                         birthday, gender, time_created)
-        flash('account created!')
+        flash('Account created! Please sign in.')
         redirect_location='/log-in'
 
     return redirect(redirect_location)

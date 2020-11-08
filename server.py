@@ -26,13 +26,6 @@ def sign_up():
     return render_template('sign_up.html')
 
 
-@app.route('/log-in')
-def login():
-    """user log in"""
-
-    return render_template('log_in.html')
-
-
 @app.route('/register', methods=['POST'])
 def register_user():
     """Register a user"""
@@ -66,6 +59,26 @@ def register_user():
         redirect_location='/log-in'
 
     return redirect(redirect_location)
+
+
+@app.route('/log-in')
+def login():
+    """user log in"""
+
+    email = request.args.get('email')
+    password = request.args.get('password')
+
+    user = crud.get_user_by_email(email)
+
+    if user == None or user.password != password:
+        flash('The email and password you entered did not match our records. Please double-check and try again.')
+    else:
+        session['user_id'] = user.user_id
+        redirect('/users/<user>')
+
+
+    return render_template('log_in.html')
+
 
 
 

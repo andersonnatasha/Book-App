@@ -18,6 +18,13 @@ def create_user(email, password, profile_name, birthday, gender, time_created):
 
     return user
 
+
+def get_user_by_id(id):
+    """Get user by user id"""
+
+    return User.query.get(id)
+
+
 def get_user_by_email(email):
     """Return a user by email"""
 

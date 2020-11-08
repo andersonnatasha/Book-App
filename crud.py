@@ -31,11 +31,10 @@ def get_user_by_email(email):
     return User.query.filter(User.email == email).first()
 
 
-def create_book(title):
+def create_book(title, description):
     """Create and return a new book."""
 
-    book = Book(title=title
-                )
+    book = Book(title=title, description=description)
 
     db.session.add(book)
     db.session.commit()

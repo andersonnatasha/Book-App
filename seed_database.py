@@ -36,8 +36,9 @@ for n in range(10):
 books_in_db = []
 for n in range(30):
     title = f'title{n+1}'
+    description = fake.paragraph(nb_sentences=5)
 
-    db_book = crud.create_book(title)
+    db_book = crud.create_book(title, description)
     books_in_db.append(db_book)
 
 # Create one author for each book

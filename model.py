@@ -46,6 +46,7 @@ class Book(db.Model):
                                  secondary="books_categories",
                                  backref='books'
                                 )
+    description = db.Column(db.Text)
 
     author = db.relationship('Author')
     book_category = db.relationship('BookCategory')

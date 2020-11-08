@@ -62,22 +62,32 @@ def register_user():
 
 
 @app.route('/log-in')
-def login():
-    """user log in"""
+def log_in():
+    """User log in"""
 
     email = request.args.get('email')
     password = request.args.get('password')
 
     user = crud.get_user_by_email(email)
 
+
     if user == None or user.password != password:
         flash('The email and password you entered did not match our records. Please double-check and try again.')
     else:
         session['user_id'] = user.user_id
-        redirect('/users/<user>')
-
+        return redirect('/user/<user_id>')
 
     return render_template('log_in.html')
+
+
+@app.route('/user/<user_id>')
+def show_user_details(user_id):
+    """Show user details"""
+
+    user_id = session['user_id']
+    user = crud.get_user_by_id(user_id)
+
+    return render_template('user_details.html', user=user)
 
 
 

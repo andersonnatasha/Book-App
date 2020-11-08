@@ -48,7 +48,7 @@ def register_user():
 
     time_created = datetime.now()
 
-    birthday = f'{birth_year}/{birth_month}/{birth_day}'
+    birthday = datetime.strptime(f'{birth_month}/{birth_day}/{birth_year}', ('%B/%d/%Y'))
 
 
     user = crud.get_user_by_email(email)

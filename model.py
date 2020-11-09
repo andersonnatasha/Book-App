@@ -119,37 +119,6 @@ class BookCategory(db.Model):
         return f'<BookCategory book_category_id={self.book_category_id} book_id={self.book_id} category_id={self.category_id}>'
 
 
-class BookTagsStatus(db.Model):
-    """Status of tags on a particular book in a user's Library"""
-
-    __tablename__ = 'book_tags_statuses'
-
-    book_id = db.Column(db.Integer,
-                         db.ForeignKey('books.book_id'),
-                         primary_key=True,
-                         )
-    user_id = db.Column(db.Integer,
-                        db.ForeignKey('users.user_id'),
-                        primary_key=True
-                        )
-
-    read = db.Column(db.Boolean)
-    read_date = db.Column(db.DateTime) # date read tag was added
-
-    liked = db.Column(db.Boolean)
-    liked_date = db.Column(db.DateTime) # date liked tag was added
-
-    to_be_read = db.Column(db.Boolean)
-    to_be_read_date = db.Column(db.DateTime) #date to be read tag was added
-
-    book = db.relationship('Book')
-    user = db.relationship('User')
-
-    def __repr__(self):
-        return f'<BookTagsStatus book_id={self.book_id} user_id={self.user_id}>'
-
-
-
 class Bookshelf(db.Model):
     """A user's bookself"""
 
@@ -185,7 +154,14 @@ class BookInLibrary(db.Model):
     bookshelf_id = db.Column(db.Integer,
                             db.ForeignKey('bookshelves.bookshelf_id'),
                             )
-
+    read = db.Column(db.Boolean)
+    read_date = db.Column(db.DateTime) # date read tag was added
+    liked = db.Column(db.Boolean)
+    liked_date = db.Column(db.DateTime) # date liked tag was added
+    to_be_read = db.Column(db.Boolean)
+    to_be_read_date = db.Column(db.DateTime) #date to be read tag was added
+    book_in_library = db.relationship('BookInLibrary')
+    user = db.relationship('User')
 
     book = db.relationship('Book')
     user = db.relationship('User')

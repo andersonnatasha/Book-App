@@ -7,12 +7,12 @@ from datetime import datetime
 def create_user(email, password, profile_name, birthday, gender, time_created):
     """Create and return a new user."""
 
-    user = User(email=email,
-                password=password,
-                profile_name=profile_name,
-                birthday=birthday,
-                gender=gender,
-                time_created=time_created)
+    user = User(email = email,
+                password = password,
+                profile_name = profile_name,
+                birthday = birthday,
+                gender = gender,
+                time_created = time_created)
     db.session.add(user)
     db.session.commit()
 
@@ -45,9 +45,9 @@ def create_book(title, description):
 def create_author(fname, lname, book):
     """Create and return an author."""
 
-    author = Author(fname=fname,
-                    lname=lname,
-                    book=book)
+    author = Author(fname = fname,
+                    lname = lname,
+                    book = book)
 
     db.session.add(author)
     db.session.commit()
@@ -67,7 +67,7 @@ def create_category(category):
 def create_book_category(book, category):
     """Create and return a category for a specific book."""
 
-    book_category = BookCategory(book=book, category=category)
+    book_category = BookCategory(book = book, category = category)
 
     db.session.add(book_category)
     db.session.commit()
@@ -75,26 +75,22 @@ def create_book_category(book, category):
     return book_category
 
 
-# def create_book_tags_status(book, user, read=None, liked=None, to_be_read=None):
-#     """Create and return a book to be read for a user"""
+def create_a_book_in_library(user, book, read, read_date, liked,
+                            liked_date, to_be_read, to_be_read_date):
 
-#     book_tags_status = BookTagsStatus(book=book, user=user, read=read,
-#                                      liked=liked, to_be_read=to_be_read)
+    book_in_library = BookInLibrary(user = user,
+                        book = book,
+                        read = read,
+                        read_date = read_date,
+                        liked = liked,
+                        liked_date = liked_date,
+                        to_be_read = to_be_read,
+                        to_be_read_date = to_be_read_date)
 
-#     db.session.add(book_tags_status)
-#     db.session.commit()
-
-    # return book_tags_status
-
-def create_read_book_in_library(user, book, read_date, read=True):
-    """Create book in bookshelf"""
-
-    read_book = BookInLibrary(user=user, book=book, read_date=read_date)#, read=read)
-
-    db.session.add(read_book)
+    db.session.add(book_in_library)
     db.session.commit()
 
-    return read_book
+    return book_in_library
 
 
 def create_bookshelf(name, user):
@@ -106,9 +102,6 @@ def create_bookshelf(name, user):
     db.session.commit()
 
     return bookshelf
-
-
-
 
 
 if __name__ == '__main__':

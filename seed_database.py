@@ -55,7 +55,6 @@ for n in range(len(books_in_db)):
 
 
 # Create 10 users with unique emails
-# Mark between 2-15 of randomly selected books as read by user
 gender_options = ['Female', 'Male', 'Non-binary', 'Prefer not to say']
 for n in range(10):
     email = f'user{n+1}@test.com'
@@ -63,22 +62,46 @@ for n in range(10):
     full_name = fake.name()
     birthday = datetime.strptime(fake.date(), '%Y-%m-%d')
     gender = choice(gender_options)
-    created_time = datetime.now() #strptime(fake.date(), '%Y-%m-%d')
+    created_time = datetime.now()  # strptime(fake.date(), '%Y-%m-%d')
 
-    user = crud.create_user(email, password, full_name, birthday, gender, created_time)
+    user = crud.create_user(email, password, full_name,
+                            birthday, gender, created_time)
 
-    random_books = []
-    for read_book in range(randint(2, 15)):
-        random_book = choice(books_in_db)
-        if random_book in random_books:
-            continue
+# Mark between 1-7 of randomly selected books as read by user
+# and assign boolean value for if book is liked.
+    liked_options = [True, False]
+    read_options = [True, False]
+    books_in_library = []
+
+    for book in range(randint(1, 7)):
+        books_in_db = books_in_db
+        book = choice(books_in_db)
+        read = choice(read_options)
+
+        if book not in books_in_library:
+            if read == True:
+                to_be_read = False
+                to_be_read_date = None
+                read_date = datetime.strptime(fake.date(), '%Y-%m-%d')
+                liked = choice(liked_options)
+                if liked == True:
+                    liked_date = datetime.strptime(fake.date(), '%Y-%m-%d')
+                else:
+                    liked_date = None
+            else:
+                to_be_read = True
+                to_be_read_date = datetime.strptime(fake.date(), '%Y-%m-%d')
+                read_date = None
+                read = False
+                read_date = None
+                liked = False
+                liked_date = None
+
+
+            books_in_db.append(book)
+
         else:
-            random_books.append(random_book)
+            continue
 
-        crud.create_read_book_in_library(user, random_book, datetime.now(), read=True)
-
-
-
-
-
-
+        crud.create_a_book_in_library(user, book, read, read_date, liked,
+                                        liked_date, to_be_read, to_be_read_date)

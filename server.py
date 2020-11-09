@@ -89,6 +89,11 @@ def show_user_details(user_id):
 
     return render_template('user_details.html', user=user)
 
+@app.route('/user/<user_id>')
+def show_to_be_books_for_a_user:
+    """Show the books on a users to be read list"""
+
+
 
 
 

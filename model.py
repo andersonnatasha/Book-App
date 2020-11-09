@@ -28,6 +28,8 @@ class User(db.Model):
     time_created = db.Column(db.DateTime, nullable=False)
     gender = db.Column(db.String(17))
 
+    bookinlibrary = db.Relationship('BookInLibrary')
+
     def __repr__(self):
         return f'<User user_id={self.user_id} email={self.email}>'
 
@@ -168,29 +170,28 @@ class Bookshelf(db.Model):
         return f'<Bookshelf bookshelf_id={self.bookshelf_id} name={self.name}>'
 
 
-class BookInBookshelf(db.Model):
+class BookInLibrary(db.Model):
     """A book in a particular book self"""
 
     __tablename__ = 'books_in_bookshelves'
 
-    book_in_book_shelf_id = db.Column(db.Integer,
+    book_in_library_id = db.Column(db.Integer,
                          db.ForeignKey('books.book_id'),
                          primary_key=True,
                          )
-    bookshelf_id = db.Column(db.Integer,
-                            db.ForeignKey('bookshelves.bookshelf_id'),
-                            primary_key=True)
     user_id = db.Column(db.Integer,
                         db.ForeignKey('users.user_id'),
-                        primary_key=True
                         )
+    bookshelf_id = db.Column(db.Integer,
+                            db.ForeignKey('bookshelves.bookshelf_id'),
+                            )
 
 
     book = db.relationship('Book')
     user = db.relationship('User')
 
     def __repr__(self):
-        return f'<BookInBookShelf book_in_bookself_id={self.book_in_book_shelf_id} bookshelf_id={self.bookshelf_id} user_id={self.user_id}>'
+        return f'BookInLibrary book_in_bookself_id={self.book_in_library_id} user_id={self.user_id}>'
 
 
 

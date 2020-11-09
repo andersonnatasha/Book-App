@@ -156,7 +156,7 @@ class BookInLibrary(db.Model):
     bookshelf_id = db.Column(db.Integer,
                             db.ForeignKey('bookshelves.bookshelf_id'),
                             )
-    notes = db.Column(db.text)
+    notes = db.Column(db.Text)
     read = db.Column(db.Boolean)
     read_date = db.Column(db.DateTime) # date read tag was added
     liked  = db.Column(db.Boolean)

@@ -78,7 +78,10 @@ for n in range(10):
         book = choice(books_in_db)
         read = choice(read_options)
 
-        if book not in books_in_library:
+        if book in books_in_library:
+            continue
+
+        else:
             if read == True:
                 to_be_read = False
                 to_be_read_date = None
@@ -97,11 +100,7 @@ for n in range(10):
                 liked = False
                 liked_date = None
 
-
             books_in_db.append(book)
-
-        else:
-            continue
 
         crud.create_a_book_in_library(user, book, read, read_date, liked,
                                         liked_date, to_be_read, to_be_read_date)

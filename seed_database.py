@@ -4,6 +4,7 @@ import os
 import json
 from datetime import datetime
 from random import choice
+from random import randint
 from faker import Faker
 
 
@@ -19,20 +20,8 @@ model.db.create_all()
 
 fake = Faker()
 
-# Create 10 users with unique emails
-gender_options = ['Female', 'Male', 'Non-binary', 'Prefer not to say']
-for n in range(10):
-    email = f'user{n+1}@test.com'
-    password = f'testpassword{n+1}'
-    full_name = fake.name()
-    birthday = datetime.strptime(fake.date(), '%Y-%m-%d')
-    gender = choice(gender_options)
-    created_time = datetime.now() #strptime(fake.date(), '%Y-%m-%d')
 
-    db_user = crud.create_user(email, password, full_name, birthday, gender, created_time)
-
-
-# Create 30 titles
+# Create 30 books
 books_in_db = []
 for n in range(30):
     title = f'title{n+1}'
@@ -63,5 +52,33 @@ for n in range(len(books_in_db)):
     random_category = choice(categories_in_db)
 
     crud.create_book_category(book, random_category)
+
+
+# Create 10 users with unique emails
+# Mark between 2-15 of randomly selected books as read by user
+gender_options = ['Female', 'Male', 'Non-binary', 'Prefer not to say']
+for n in range(10):
+    email = f'user{n+1}@test.com'
+    password = f'testpassword{n+1}'
+    full_name = fake.name()
+    birthday = datetime.strptime(fake.date(), '%Y-%m-%d')
+    gender = choice(gender_options)
+    created_time = datetime.now() #strptime(fake.date(), '%Y-%m-%d')
+
+    user = crud.create_user(email, password, full_name, birthday, gender, created_time)
+
+    random_books = []
+    for read_book in range(randint(2, 15)):
+        random_book = choice(books_in_db)
+        if random_book in random_books:
+            continue
+        else:
+            random_books.append(random_book)
+
+        crud.create_read_book_in_library(user, random_book, datetime.now(), read=True)
+
+
+
+
 
 

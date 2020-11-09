@@ -28,7 +28,7 @@ class User(db.Model):
     time_created = db.Column(db.DateTime, nullable=False)
     gender = db.Column(db.String(17))
 
-    bookinlibrary = db.Relationship('BookInLibrary')
+    books_in_library = db.relationship('BookInLibrary')
 
     def __repr__(self):
         return f'<User user_id={self.user_id} email={self.email}>'
@@ -142,11 +142,13 @@ class Bookshelf(db.Model):
 class BookInLibrary(db.Model):
     """A book in a particular book self"""
 
-    __tablename__ = 'books_in_bookshelves'
+    __tablename__ = 'books_in_library'
 
     book_in_library_id = db.Column(db.Integer,
+                          primary_key=True,
+                          autoincrement=True)
+    book_id = db.Column(db.Integer,
                          db.ForeignKey('books.book_id'),
-                         primary_key=True,
                          )
     user_id = db.Column(db.Integer,
                         db.ForeignKey('users.user_id'),
@@ -160,14 +162,12 @@ class BookInLibrary(db.Model):
     liked_date = db.Column(db.DateTime) # date liked tag was added
     to_be_read = db.Column(db.Boolean)
     to_be_read_date = db.Column(db.DateTime) #date to be read tag was added
-    book_in_library = db.relationship('BookInLibrary')
-    user = db.relationship('User')
 
     book = db.relationship('Book')
     user = db.relationship('User')
 
     def __repr__(self):
-        return f'BookInLibrary book_in_bookself_id={self.book_in_library_id} user_id={self.user_id}>'
+        return f'BookInLibrary book_in_library_id={self.book_in_library_id} user_id={self.user_id}>'
 
 
 

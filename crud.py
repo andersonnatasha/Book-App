@@ -1,6 +1,6 @@
 """CRUD operations"""
 
-from model import db, User, Book, Author, Category, BookCategory, BookTagsStatus, Bookshelf, BookInBookshelf, connect_to_db
+from model import db, User, Book, Author, Category, BookCategory, Bookshelf, BookInLibrary, connect_to_db
 from datetime import datetime
 
 
@@ -75,16 +75,26 @@ def create_book_category(book, category):
     return book_category
 
 
-def create_book_tags_status(book, user, read=None, liked=None, to_be_read=None):
-    """Create and return a book to be read for a user"""
+# def create_book_tags_status(book, user, read=None, liked=None, to_be_read=None):
+#     """Create and return a book to be read for a user"""
 
-    book_tags_status = BookTagsStatus(book=book, user=user, read=read,
-                                     liked=liked, to_be_read=to_be_read)
+#     book_tags_status = BookTagsStatus(book=book, user=user, read=read,
+#                                      liked=liked, to_be_read=to_be_read)
 
-    db.session.add(book_tags_status)
+#     db.session.add(book_tags_status)
+#     db.session.commit()
+
+    # return book_tags_status
+
+def create_read_book_in_library(user, book, read_date, read=True):
+    """Create book in bookshelf"""
+
+    read_book = BookInLibrary(user=user, book=book, read_date=read_date)#, read=read)
+
+    db.session.add(read_book)
     db.session.commit()
 
-    return book_tags_status
+    return read_book
 
 
 def create_bookshelf(name, user):
@@ -97,16 +107,6 @@ def create_bookshelf(name, user):
 
     return bookshelf
 
-
-def create_book_in_bookshelf(book, user):
-    """Create book in bookshelf"""
-
-    book_in_bookshelf = BookInBookshelf(book=book, user=user)
-
-    db.session.add(book_in_bookshelf)
-    db.session.commit()
-
-    return book_in_bookshelf
 
 
 

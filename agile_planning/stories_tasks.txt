@@ -20,9 +20,11 @@ Story 4:
 - Populate with the name, author, date added to list 
 * feature * include block for writing who recommended book 
 
-
 Story 5:
-Every read book and liked book should have a section where user's can write text - in either location same notes show
+- Add a journal/ text box to each book in library
 
 Story 6:
+Every read book and liked book should have a section where user's can write text - in either location same notes show
+
+Story 7:
 Bootstrap

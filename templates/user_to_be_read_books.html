@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ user.profile_name}} - To Be Read Books {% endblock %}
+
+{% block body %}
+
+<h2>Your To Be Read Books</h2>
+
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Author</th>
+    <th>Date Added</th>
+  </tr>
+  {% for to_be_read_book in to_be_read_books %}
+  <tr>
+       <td>{{ to_be_read_book.book.title }} </td>
+       {% for author_name in to_be_read_book.book.author %}
+       <td>{{ author_name.fname }} {{ author_name.lname }}</td>
+       {% endfor %}
+       <td>{{to_be_read_book.to_be_read_date}}</td>
+  </tr>
+  {% endfor %}
+
+</table>
+{% endblock %}

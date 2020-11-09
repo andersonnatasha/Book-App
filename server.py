@@ -89,9 +89,18 @@ def show_user_details(user_id):
 
     return render_template('user_details.html', user=user)
 
-# @app.route('/user/<user_id>')
-# def show_to_be_books_for_a_user:
-#     """Show the books on a users to be read list"""
+@app.route('/user/<user_id>/read-books')
+def show_read_books(user_id):
+    """Show the books the user has read"""
+
+
+    user_id = session['user_id']
+    user = crud.get_user_by_id(user_id)
+
+    read_books = crud.get_read_books_by_user_id(user_id)
+
+    return render_template('user_read_books.html', user=user, read_books=read_books)
+
 
 
 

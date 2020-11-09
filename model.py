@@ -144,14 +144,16 @@ class BookInLibrary(db.Model):
 
     __tablename__ = 'books_in_library'
 
-    book_in_library_id = db.Column(db.Integer,
-                          primary_key=True,
-                          autoincrement=True)
+    # book_in_library_id = db.Column(db.Integer,
+    #                       primary_key=True,
+    #                       autoincrement=True)
     book_id = db.Column(db.Integer,
                          db.ForeignKey('books.book_id'),
+                         primary_key=True
                          )
     user_id = db.Column(db.Integer,
                         db.ForeignKey('users.user_id'),
+                        primary_key=True
                         )
     bookshelf_id = db.Column(db.Integer,
                             db.ForeignKey('bookshelves.bookshelf_id'),
@@ -168,7 +170,7 @@ class BookInLibrary(db.Model):
     user = db.relationship('User')
 
     def __repr__(self):
-        return f'BookInLibrary book_in_library_id={self.book_in_library_id} user_id={self.user_id}>'
+        return f'BookInLibrary book_in_library_id={self.book_id} user_id={self.user_id}>'
 
 
 

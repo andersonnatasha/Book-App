@@ -92,6 +92,13 @@ def create_a_book_in_library(user, book, read, read_date, liked,
 
     return book_in_library
 
+def get_read_books_by_user_id(user_id):
+    """Get read boooks in a user's library by a user id"""
+
+    user = User.query.get(user_id)
+    read_books_in_library = BookInLibrary.query.filter(BookInLibrary.user_id == user.user_id and BookInLibrary.read == True).all()
+
+    return read_books_in_library
 
 def create_bookshelf(name, user):
     """"Create and return a user's bookshelf"""

@@ -4,7 +4,7 @@
 
 {% block body %}
 
-<h2>Your Liked Books</h2>
+<h2>Your Read Books</h2>
 
 <table>
   <tr>
@@ -12,13 +12,13 @@
     <th>Author</th>
     <th>Read Date</th>
   </tr>
-  {% for liked_book in liked_books %}
+  {% for read_book in read_books %}
   <tr>
-       <td>{{ liked_book.book.title }} </td>
-       {% for author_name in liked_book.book.author %}
+       <td>{{ read_book.book.title }} </td>
+       {% for author_name in read_book.book.author %}
        <td>{{ author_name.fname }} {{ author_name.lname }}</td>
        {% endfor %}
-       <td>{{liked_book.read_date}}</td>
+       <td>{{read_book.read_date}}</td>
   </tr>
   {% endfor %}
 

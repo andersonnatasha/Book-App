@@ -18,7 +18,6 @@ def create_user(email, password, profile_name, birthday, gender, time_created):
 
     return user
 
-
 def get_user_by_id(id):
     """Get user by user id"""
 
@@ -96,9 +95,17 @@ def get_read_books_by_user_id(user_id):
     """Get read boooks in a user's library by a user id"""
 
     user = User.query.get(user_id)
-    read_books_in_library = BookInLibrary.query.filter(BookInLibrary.user_id == user.user_id and BookInLibrary.read == True).all()
+    read_books_in_library = BookInLibrary.query.filter((BookInLibrary.user_id == user.user_id ) & (BookInLibrary.read == True)).all()
 
     return read_books_in_library
+
+def get_liked_books_by_user_id(user_id):
+    """Get liked boooks in a user's library by a user id"""
+
+    user = User.query.get(user_id)
+    liked_books_in_library = BookInLibrary.query.filter((BookInLibrary.user_id == user.user_id ) & (BookInLibrary.liked == True)).all()
+
+    return liked_books_in_library
 
 def create_bookshelf(name, user):
     """"Create and return a user's bookshelf"""

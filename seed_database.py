@@ -30,13 +30,14 @@ for n in range(30):
     db_book = crud.create_book(title, description)
     books_in_db.append(db_book)
 
-# Create one author for each book
+# Create either one or two author for each book
 for n in range(len(books_in_db)):
-    fname = fake.first_name()
-    lname = fake.last_name()
-    book = books_in_db[n]
+    for author in range(randint(1, 2)):
+        fname = fake.first_name()
+        lname = fake.last_name()
+        book = books_in_db[n]
 
-    crud.create_author(fname, lname, book)
+        crud.create_author(fname, lname, book)
 
 # Create 50 categories
 # and assign one BookCategory to a book/category
@@ -71,7 +72,7 @@ for n in range(10):
 # and assign boolean value for if book is liked.
 
     books_in_library = set()
-    for book in range(randint(1, 7)):
+    for book in range(randint(5, 30)):
         liked_options = [True, False]
         read_options = [True, False]
 

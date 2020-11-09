@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ user.profile_name}} {% endblock %}
+
+{% block body %}
+<h1>{{ user.profile_name }}</h1>
+
+<h2>Your Library</h2>
+<h3><a href="/user/{{ user.user_id }}/read-books">Read Books</a></h3>
+<h3><a href="/user/{{ user.user_id }}/liked-books">Liked Books</a></h3>
+<h3><a href="/user/{{ user.user_id }}/to-be-read-books">To Be Read Books</a></h3>
+
+{% endblock %}
+

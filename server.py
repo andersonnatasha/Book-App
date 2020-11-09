@@ -106,7 +106,6 @@ def show_read_books(user_id):
 def show_liked_books(user_id):
     """Show the books the user has liked"""
 
-
     user_id = session['user_id']
     user = crud.get_user_by_id(user_id)
 
@@ -116,6 +115,16 @@ def show_liked_books(user_id):
     return render_template('user_liked_books.html', user=user, liked_books=liked_books)
 
 
+@app.route('/user/<user_id>/to-be-read-books')
+def show_to_be_read_books(user_id):
+    """Show the books the user has marked to be read"""
+
+    user_id = session['user_id']
+    user = crud.get_user_by_id(user_id)
+
+    to_be_read_books = crud.get_to_be_read_books_by_user_id(user_id)
+
+    return render_template('user_to_be_read_books.html', user=user, to_be_read_books=to_be_read_books)
 
 
 

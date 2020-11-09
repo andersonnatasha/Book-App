@@ -107,6 +107,16 @@ def get_liked_books_by_user_id(user_id):
 
     return liked_books_in_library
 
+def get_to_be_read_books_by_user_id(user_id):
+    """Get liked boooks in a user's library by a user id"""
+
+    user = User.query.get(user_id)
+    to_be_read_books_in_library = BookInLibrary.query.filter((BookInLibrary.user_id == user.user_id ) & (BookInLibrary.to_be_read == True)).all()
+
+    return to_be_read_books_in_library
+
+
+
 def create_bookshelf(name, user):
     """"Create and return a user's bookshelf"""
 

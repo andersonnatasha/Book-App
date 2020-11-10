@@ -24,7 +24,7 @@ fake = Faker()
 # Create 30 books
 books_in_db = []
 for n in range(30):
-    title = f'title {n+1}'
+    title = f'Title {n+1}'
     description = fake.paragraph(nb_sentences=5)
 
     db_book = crud.create_book(title, description)
@@ -68,8 +68,7 @@ for n in range(10):
     user = crud.create_user(email, password, full_name,
                             birthday, gender, created_time)
 
-# Mark between 1-7 of randomly selected books as read by user
-# and assign boolean value for if book is liked.
+# Mark between 5-30 of randomly selected books as read by user
 
     books_in_library = set()
     for book in range(randint(5, 30)):

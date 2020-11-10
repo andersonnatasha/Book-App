@@ -1,5 +1,8 @@
 from flask import (Flask, render_template, request, flash, session,
                    redirect)
+
+import requests
+
 from model import connect_to_db
 import crud
 
@@ -9,7 +12,11 @@ import os
 from datetime import datetime
 
 app = Flask(__name__)
+app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
+
 app.secret_key = os.environ['FLASK_KEY']
+
+API_KEY = os.environ['GOOGLEBOOKS_KEY']
 
 
 @app.route('/')
@@ -125,6 +132,54 @@ def show_to_be_read_books(user_id):
     to_be_read_books = crud.get_to_be_read_books_by_user_id(user_id)
 
     return render_template('user_to_be_read_books.html', user=user, to_be_read_books=to_be_read_books)
+
+@app.route('/search-a-book')
+def search_a_book():
+    """Show results from user's book search"""
+
+    user_id = session['user_id']
+    keyword = request.args.get('search', '')
+
+    url = 'https://www.googleapis.com/books/v1/volumes'
+    payload = {'apikey': API_KEY, 'q': keyword, 'maxResults': 10}
+
+    res = requests.get(url, params=payload)
+
+    data = res.json()
+
+    search_results = []
+
+    for n in range(len(data['items'])):
+        print(f"---------{n}-------------")
+
+        base = data['items'][n]['volumeInfo']
+
+        title = base['title']
+        search = {'title':title}
+        search_results.append(search)
+
+        subtitle= base.get('subtitle', None)
+        if subtitle:
+            subtitle = base['subtitle']
+            search_results[n]['subtitle'] = subtitle
+        else:
+            pass
+
+        authors = base['authors']
+        search_results[n]['author'] = authors
+
+        img_links = base.get('imageLinks', None)
+        if img_links:
+            thumbnail = img_links['thumbnail']
+            search_results[n]['thumbnail'] = thumbnail
+        else:
+            pass
+
+        published_date = base['publishedDate']
+        search_results[n]['published_date'] = published_date
+
+    return render_template('search_results.html', search_results=search_results)
+
 
 
 

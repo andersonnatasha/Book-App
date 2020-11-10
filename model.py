@@ -66,11 +66,8 @@ class Author(db.Model):
                           primary_key=True,
                           autoincrement=True
                           )
-    fname = db.Column(db.String(25),
+    full_name = db.Column(db.String(70),
                       nullable=False)
-    lname = db.Column(db.String(40),
-                      nullable=False
-                      )
     book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
 
     book = db.relationship('Book')

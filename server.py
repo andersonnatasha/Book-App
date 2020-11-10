@@ -82,7 +82,9 @@ def log_in():
         flash('The email and password you entered did not match our records. Please double-check and try again.')
     else:
         session['user_id'] = user.user_id
-        return redirect('/user/<user_id>')
+        user_id = session['user_id']
+        session['profile_name'] = user.profile_name
+        return redirect('user/{user_id}')
 
     return render_template('log_in.html')
 
@@ -92,9 +94,9 @@ def show_user_details(user_id):
     """Show user details"""
 
     user_id = session['user_id']
-    user = crud.get_user_by_id(user_id)
+    profile_name = session['profile_name']
 
-    return render_template('user_details.html', user=user)
+    return render_template('user_details.html', user_id=user_id, profile_name=profile_name)
 
 @app.route('/user/<user_id>/read-books')
 def show_read_books(user_id):
@@ -127,6 +129,7 @@ def show_to_be_read_books(user_id):
     """Show the books the user has marked to be read"""
 
     user_id = session['user_id']
+
     user = crud.get_user_by_id(user_id)
 
     to_be_read_books = crud.get_to_be_read_books_by_user_id(user_id)
@@ -136,6 +139,7 @@ def show_to_be_read_books(user_id):
 @app.route('/search-a-book')
 def search_a_book():
     """Show results from user's book search"""
+
 
     user_id = session['user_id']
     keyword = request.args.get('search', '')
@@ -147,40 +151,81 @@ def search_a_book():
 
     data = res.json()
 
-    search_results = []
+    if keyword != '':
 
-    for n in range(len(data['items'])):
-        print(f"---------{n}-------------")
+        search_results = []
+        for n in range(len(data['items'])):
 
-        base = data['items'][n]['volumeInfo']
+            search_result = {}
 
-        title = base['title']
-        search = {'title':title}
-        search_results.append(search)
+            base = data['items'][n]['volumeInfo']
 
-        subtitle= base.get('subtitle', None)
-        if subtitle:
-            subtitle = base['subtitle']
-            search_results[n]['subtitle'] = subtitle
-        else:
-            pass
+            title = base['title']
+            search_result['title'] = title
 
-        authors = base['authors']
-        search_results[n]['author'] = authors
+            subtitle = base.get('subtitle', None)
+            if subtitle:
+                search_result['subtitle'] = subtitle
+            else:
+                pass
 
-        img_links = base.get('imageLinks', None)
-        if img_links:
-            thumbnail = img_links['thumbnail']
-            search_results[n]['thumbnail'] = thumbnail
-        else:
-            pass
 
-        published_date = base['publishedDate']
-        search_results[n]['published_date'] = published_date
+            authors = base.get('authors', None)
+            if authors:
+                search_result['author'] = authors
+            else:
+                pass
+
+            img_links = base.get('imageLinks', None)
+            if img_links:
+                thumbnail = img_links['thumbnail']
+                search_result['thumbnail'] = thumbnail
+
+            published_date = base['publishedDate']
+            search_result['published_date'] = published_date
+
+            search_results.append(search_result)
+
+    else:
+          return redirect('/user/<user_id>')
 
     return render_template('search_results.html', search_results=search_results)
 
+@app.route('/mark-as-read')
+def mark_book_as_read():
 
+
+    user_id = session['user_id']
+
+    #get the title/authors of read book
+    book_items = request.args.get('read')
+
+    print("======================================")
+    print("======================================")
+    print("======================================")
+    print("======================================")
+    print(book_items)
+
+
+    #see if the book is already in the database;
+    #if not, create the books
+    book = crud.get_book_by_title(title)
+    if book == None:
+        book = crud.create_book(title)
+
+
+    #see if book is already in user's read books collection;
+    #if so, flash a message. Otherwise, add book as read in user's library
+    book_in_collection = crud.get_read_book_by_title(title, user_id)
+    if book_in_collection:
+        flash('Book is already on your read list')
+    else:
+        book_id = book.book_id
+        read = True
+        read_date = datetime.now()
+        read_book = crud.create_read_book(user_id, book_id, read, read_date)
+
+    return redirect('/user/<user_id>/read-books')
 
 
 

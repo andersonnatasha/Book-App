@@ -33,11 +33,10 @@ for n in range(30):
 # Create either one or two author for each book
 for n in range(len(books_in_db)):
     for author in range(randint(1, 2)):
-        fname = fake.first_name()
-        lname = fake.last_name()
+        full_name = fake.name()
         book = books_in_db[n]
 
-        crud.create_author(fname, lname, book)
+        crud.create_author(full_name, book)
 
 # Create 50 categories
 # and assign one BookCategory to a book/category
@@ -70,36 +69,36 @@ for n in range(10):
 
 # Mark between 5-30 of randomly selected books as read by user
 
-    books_in_library = set()
-    for book in range(randint(5, 30)):
-        liked_options = [True, False]
-        read_options = [True, False]
+    # books_in_library = set()
+    # for book in range(randint(5, 30)):
+    #     liked_options = [True, False]
+    #     read_options = [True, False]
 
-        books_in_db = set(books_in_db)
-        books_not_in_library = books_in_db - books_in_library
-        list_books_not_in_library = list(books_not_in_library)
+    #     books_in_db = set(books_in_db)
+    #     books_not_in_library = books_in_db - books_in_library
+    #     list_books_not_in_library = list(books_not_in_library)
 
-        book = choice(list_books_not_in_library)
-        read = choice(read_options)
+    #     book = choice(list_books_not_in_library)
+    #     read = choice(read_options)
 
-        if read == True:
-            to_be_read = False
-            to_be_read_date = None
-            read_date = datetime.strptime(fake.date(), '%Y-%m-%d')
-            liked = choice(liked_options)
-            if liked == True:
-                liked_date = datetime.strptime(fake.date(), '%Y-%m-%d')
-            else:
-                liked_date = None
-        else:
-            to_be_read = True
-            to_be_read_date = datetime.strptime(fake.date(), '%Y-%m-%d')
-            read = False
-            read_date = None
-            liked = False
-            liked_date = None
+    #     if read == True:
+    #         to_be_read = False
+    #         to_be_read_date = None
+    #         read_date = datetime.strptime(fake.date(), '%Y-%m-%d')
+    #         liked = choice(liked_options)
+    #         if liked == True:
+    #             liked_date = datetime.strptime(fake.date(), '%Y-%m-%d')
+    #         else:
+    #             liked_date = None
+    #     else:
+    #         to_be_read = True
+    #         to_be_read_date = datetime.strptime(fake.date(), '%Y-%m-%d')
+    #         read = False
+    #         read_date = None
+    #         liked = False
+    #         liked_date = None
 
-        books_in_library.add(book)
+    #     books_in_library.add(book)
 
-        crud.create_a_book_in_library(user, book, read, read_date, liked,
-                                        liked_date, to_be_read, to_be_read_date)
+    #     crud.create_a_book_in_library(user, book, read, read_date, liked,
+    #                                     liked_date, to_be_read, to_be_read_date)

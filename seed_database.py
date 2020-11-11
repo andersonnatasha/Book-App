@@ -25,9 +25,11 @@ fake = Faker()
 books_in_db = []
 for n in range(30):
     title = f'Title {n+1}'
+    image_link = fake.sentence()
+    subtitle = f'Subtitle {n+1}'
     description = fake.paragraph(nb_sentences=5)
 
-    db_book = crud.create_book(title, description)
+    db_book = crud.create_book(title, subtitle, description, image_link)
     books_in_db.append(db_book)
 
 # Create either one or two author for each book
@@ -36,22 +38,25 @@ for n in range(len(books_in_db)):
         full_name = fake.name()
         book = books_in_db[n]
 
-        crud.create_author(full_name, book)
+        crud.create_author(full_name)
 
-# Create 50 categories
-# and assign one BookCategory to a book/category
+#Create 50 categories
+#and assign one BookCategory to a book/category
 categories_in_db = []
 for n in range(40):
-    category = f'category{n+1}'
+    category = f'category {n+1}'
 
     db_category = crud.create_category(category)
     categories_in_db.append(db_category)
 
-for n in range(len(books_in_db)):
-    book = books_in_db[n]
-    random_category = choice(categories_in_db)
 
-    crud.create_book_category(book, random_category)
+# for n in range(len(books_in_db)):
+#     book = books_in_db[n]
+#     random_category = choice(categories_in_db)
+
+#     crud.create_book_category(book, random_category)
+
+print(categories_in_db)
 
 
 # Create 10 users with unique emails
@@ -66,6 +71,13 @@ for n in range(10):
 
     user = crud.create_user(email, password, full_name,
                             birthday, gender, created_time)
+
+
+
+
+
+
+
 
 # Mark between 5-30 of randomly selected books as read by user
 

@@ -1,6 +1,6 @@
 """CRUD operations"""
 
-from model import db, User, Book, Author, Category, BookCategory, Bookshelf, BookInLibrary, connect_to_db
+from model import db, User, Book, Author, Category, BookCategory, Bookshelf, BookInLibrary, BookAuthor, connect_to_db
 from datetime import datetime
 
 
@@ -30,10 +30,10 @@ def get_user_by_email(email):
     return User.query.filter(User.email == email).first()
 
 
-def create_book(title):
+def create_book(title, subtitle, description, image_link):#, description):
     """Create and return a new book."""
 
-    book = Book(title=title)
+    book = Book(title = title, subtitle = subtitle, description = description, image_link = image_link)
 
     db.session.add(book)
     db.session.commit()
@@ -46,39 +46,61 @@ def get_book_by_title(title):
     return Book.query.filter(Book.title == title).first()
 
 
-def create_author(full_name, book):
+def create_author(full_name):
     """Create and return an author."""
 
-    author = Author(full_name = full_name,
-                    book = book)
+    author = Author(full_name = full_name)
 
     db.session.add(author)
     db.session.commit()
+
+    return author
+
+def create_book_author(book_id, author_id):
+    """Create and return an author for a specific book"""
+
+    book_author = BookAuthor(book_id = book_id, author_id = author_id)
+
+    db.session.add(book_author)
+    db.session.commit()
+
+    return book_author
+
+def get_author_by_full_name(author_full_name):
+    """Return author by by full_name"""
+
+    author = Author.query.filter(Author.full_name==author_full_name).first()
+
+    return author
 
 
 def create_category(category):
     """Create and return a category."""
 
-    category = Category(category=category)
+    category = Category(category = category)
 
     db.session.add(category)
     db.session.commit()
 
     return category
 
+def get_category_by_name(category):
+    """Return a category by its name"""
 
-def create_book_category(book, category):
+    category = Category.query.filter(Category.category == category).first()
+
+    return category
+
+
+def create_book_category(book_id, category_id):
     """Create and return a category for a specific book."""
 
-    book_category = BookCategory(book = book, category = category)
+    book_category = BookCategory(book_id = book_id, category_id = category_id)
 
     db.session.add(book_category)
     db.session.commit()
 
     return book_category
-
-# def create_authors(fname, lname):
-#     """Create authors for a particulr book"""
 
 
 def create_read_book(user_id, book_id, read, read_date):

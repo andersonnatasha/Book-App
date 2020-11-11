@@ -44,14 +44,17 @@ class Book(db.Model):
                         autoincrement=True
                         )
     title = db.Column(db.String(250), nullable=False)
+    subtitle = db.Column(db.String(200))
+    description = db.Column(db.Text)
     categories = db.relationship('Category',
                                  secondary="books_categories",
                                  backref='books'
                                 )
-    description = db.Column(db.Text)
+    image_link = db.Column(db.String(350))
 
-    author = db.relationship('Author')
-    book_category = db.relationship('BookCategory')
+    authors = db.relationship('Author',
+                              secondary="books_authors",
+                              backref='books')
 
     def __repr__(self):
         return f'<Book book_id={self.book_id} title={self.title}>'
@@ -68,12 +71,33 @@ class Author(db.Model):
                           )
     full_name = db.Column(db.String(70),
                       nullable=False)
-    book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
+    # book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
 
-    book = db.relationship('Book')
+    # book = db.relationship('Book')
 
     def __repr__(self):
-        return f'<Author author_id={self.author_id} lname={self.lname}>'
+        return f'<Author author_id={self.author_id} full_name={self.full_name}>'
+
+class BookAuthor(db.Model):
+
+    __tablename__ = 'books_authors'
+
+    # books_authors = db.Column(db.Integer,
+    #                       primary_key=True,
+    #                       autoincrement=True
+    #                       )
+    book_id = db.Column(db.Integer,
+                        db.ForeignKey('books.book_id'),
+                        primary_key=True,)
+    author_id = db.Column(db.Integer,
+                         db.ForeignKey('authors.author_id'),
+                         primary_key=True,)
+
+    book = db.relationship('Book')
+    author = db.relationship('Author')
+
+    def __repr__(self):
+        return f'<BookAuthor book_id={self.book_id} author_id={self.author_id}>'
 
 
 class Category(db.Model):
@@ -96,24 +120,23 @@ class BookCategory(db.Model):
 
     __tablename__ = 'books_categories'
 
-    book_category_id = db.Column(db.Integer,
-                                   primary_key=True,
-                                   autoincrement=True
-                                   )
+    # book_category_id = db.Column(db.Integer,
+    #                                autoincrement=True
+    #                                )
     book_id = db.Column(db.Integer,
                         db.ForeignKey('books.book_id'),
-                        nullable=False
+                        primary_key=True
                         )
     category_id = db.Column(db.Integer,
                             db.ForeignKey('categories.category_id'),
-                            nullable=False
+                            primary_key=True
                             )
 
     book = db.relationship('Book')
     category =db.relationship('Category')
 
     def __repr__(self):
-        return f'<BookCategory book_category_id={self.book_category_id} book_id={self.book_id} category_id={self.category_id}>'
+        return f'<BookCategory book_id={self.book_id} category_id={self.category_id}>'
 
 
 class Bookshelf(db.Model):

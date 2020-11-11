@@ -11,6 +11,8 @@ from jinja2 import StrictUndefined
 import os
 from datetime import datetime
 
+import json
+
 app = Flask(__name__)
 app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
 
@@ -169,7 +171,6 @@ def search_a_book():
             else:
                 pass
 
-
             authors = base.get('authors', None)
             if authors:
                 search_result['author'] = authors
@@ -180,16 +181,35 @@ def search_a_book():
             if img_links:
                 thumbnail = img_links['thumbnail']
                 search_result['thumbnail'] = thumbnail
+            else:
+                pass
 
-            published_date = base['publishedDate']
-            search_result['published_date'] = published_date
+            published_date = base.get('publishedDate', None)
+            if published_date:
+                search_result['published_date'] = published_date
+            else:
+                pass
+
+            description = base.get('description', None)
+            if description:
+                search_result['description'] = description
+            else:
+                pass
+
+            categories = base.get('categories', None)
+            if categories:
+                search_result['categories'] = categories
+            else:
+                pass
 
             search_results.append(search_result)
+
 
     else:
           return redirect('/user/<user_id>')
 
-    return render_template('search_results.html', search_results=search_results)
+    return render_template('search_results.html', search_results=search_results, data=data)
+
 
 @app.route('/mark-as-read')
 def mark_book_as_read():
@@ -198,20 +218,72 @@ def mark_book_as_read():
     user_id = session['user_id']
 
     #get the title/authors of read book
-    book_items = request.args.get('read')
+    title = request.args.get('title')
+    subtitle = request.args.get('subtitle')
+    authors = request.args.get('authors')
+    image_link = request.args.get('image_link')
+    categories = request.args.get('categories')
+    description = request.args.get('description')
 
-    print("======================================")
-    print("======================================")
-    print("======================================")
-    print("======================================")
-    print(book_items)
+    authors_as_list = []
+    categories_as_list = []
+    illegal_characters = ["[", "]", "'"]
+
+    for letter in authors:
+        if letter in illegal_characters:
+            continue
+        else:
+            authors_as_list.append(letter)
+            authors = "".join(authors_as_list)
+
+    authors = authors.split(",")
+
+    for letter in categories:
+        if letter in illegal_characters:
+            continue
+        else:
+            categories_as_list.append(letter)
+            categories = "".join(categories_as_list)
+
+    categories = categories.split(",")
 
 
-    #see if the book is already in the database;
-    #if not, create the books
+
+    print("=============================================================================")
+    print("=============================================================================")
+    print("=============================================================================")
+    print("=============================================================================")
+    print(categories)
+    print(type(categories))
+
+    print("=============================================================================")
+    print("=============================================================================")
+    print("=============================================================================")
+
+    #check if the book is already in the database;
+    #if not, check if author is in database;
+    #if author exists, create book and bookauthor
+    #if author doesnt exist, create author, book, and bookauthor
     book = crud.get_book_by_title(title)
     if book == None:
-        book = crud.create_book(title)
+        book = crud.create_book(title, subtitle, description, image_link)
+
+        for author in authors:
+            author_in_db = crud.get_author_by_full_name(author)
+            if author_in_db:
+                book_author = crud.create_book_author(book.book_id, author_in_db.author_id)
+            else:
+                author = crud.create_author(author)
+                book_author = crud.create_book_author(book.book_id, author.author_id)
+
+        for category in categories:
+            category_in_db = crud.get_category_by_name(category)
+            if category_in_db:
+                book_category = crud.create_book_category(book.book_id, category_in_db.category_id)
+            else:
+                category = crud.create_category(category)
+                book_category = crud.create_book_category(book.book_id, category.category_id)
+
 
 
     #see if book is already in user's read books collection;

@@ -56,6 +56,15 @@ def create_author(full_name):
 
     return author
 
+
+def get_author_by_full_name(author_full_name):
+    """Return author by by full_name"""
+
+    author = Author.query.filter(Author.full_name==author_full_name).first()
+
+    return author
+
+
 def create_book_author(book_id, author_id):
     """Create and return an author for a specific book"""
 
@@ -66,13 +75,15 @@ def create_book_author(book_id, author_id):
 
     return book_author
 
-def get_author_by_full_name(author_full_name):
-    """Return author by by full_name"""
+def get_book_author(book_id, author_id):
+    """Return a bookauthor."""
 
-    author = Author.query.filter(Author.full_name==author_full_name).first()
+    book_id = book_id
+    author_id = author_id
 
-    return author
+    book_author = BookAuthor.query.get((book_id, author_id))
 
+    return book_author
 
 def create_category(category):
     """Create and return a category."""
@@ -102,6 +113,15 @@ def create_book_category(book_id, category_id):
 
     return book_category
 
+def get_book_category(book_id, category_id):
+    """Return a bookauthor."""
+
+    book_id = book_id
+    category_id = category_id
+
+    book_category = BookCategory.query.get((book_id, category_id))
+
+    return book_category
 
 def create_read_book(user_id, book_id, read, read_date):
     """Create a read book in a user library"""

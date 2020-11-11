@@ -6,7 +6,7 @@ db = SQLAlchemy()
 
 
 class User(db.Model):
-    """A user"""
+    """A user."""
 
     __tablename__ = 'users'
 
@@ -35,7 +35,7 @@ class User(db.Model):
 
 
 class Book(db.Model):
-    """A book"""
+    """A book."""
 
     __tablename__ = 'books'
 
@@ -61,7 +61,7 @@ class Book(db.Model):
 
 
 class Author(db.Model):
-    """An author"""
+    """An author."""
 
     __tablename__ = 'authors'
 
@@ -82,10 +82,6 @@ class BookAuthor(db.Model):
 
     __tablename__ = 'books_authors'
 
-    # books_authors = db.Column(db.Integer,
-    #                       primary_key=True,
-    #                       autoincrement=True
-    #                       )
     book_id = db.Column(db.Integer,
                         db.ForeignKey('books.book_id'),
                         primary_key=True,)
@@ -101,7 +97,7 @@ class BookAuthor(db.Model):
 
 
 class Category(db.Model):
-    """A book category"""
+    """A book category."""
 
     __tablename__ = 'categories'
 
@@ -116,13 +112,10 @@ class Category(db.Model):
 
 
 class BookCategory(db.Model):
-    """Category of a specific book"""
+    """Category of a specific book."""
 
     __tablename__ = 'books_categories'
 
-    # book_category_id = db.Column(db.Integer,
-    #                                autoincrement=True
-    #                                )
     book_id = db.Column(db.Integer,
                         db.ForeignKey('books.book_id'),
                         primary_key=True
@@ -140,7 +133,7 @@ class BookCategory(db.Model):
 
 
 class Bookshelf(db.Model):
-    """A user's bookself"""
+    """A user's bookself."""
 
     __tablename__ = 'bookshelves'
 
@@ -160,7 +153,7 @@ class Bookshelf(db.Model):
 
 
 class BookInLibrary(db.Model):
-    """A book in a particular book self"""
+    """A book in a particular book self."""
 
     __tablename__ = 'books_in_library'
 

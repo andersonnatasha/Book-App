@@ -23,21 +23,21 @@ API_KEY = os.environ['GOOGLEBOOKS_KEY']
 
 @app.route('/')
 def homepage():
-    """View homepage"""
+    """View homepage."""
 
     return render_template('homepage.html')
 
 
 @app.route('/sign-up')
 def sign_up():
-    """View sign up page"""
+    """View sign up page."""
 
     return render_template('sign_up.html')
 
 
 @app.route('/register', methods=['POST'])
 def register_user():
-    """Register a user"""
+    """Register a user."""
 
     email = request.form.get('email')
     password = request.form.get('password')
@@ -72,7 +72,7 @@ def register_user():
 
 @app.route('/log-in')
 def log_in():
-    """User log in"""
+    """User log in."""
 
     email = request.args.get('email')
     password = request.args.get('password')
@@ -93,7 +93,7 @@ def log_in():
 
 @app.route('/user/<user_id>')
 def show_user_details(user_id):
-    """Show user details"""
+    """Show user details."""
 
     user_id = session['user_id']
     profile_name = session['profile_name']
@@ -102,7 +102,7 @@ def show_user_details(user_id):
 
 @app.route('/user/<user_id>/read-books')
 def show_read_books(user_id):
-    """Show the books the user has read"""
+    """Show the books the user has read."""
 
 
     user_id = session['user_id']
@@ -115,7 +115,7 @@ def show_read_books(user_id):
 
 @app.route('/user/<user_id>/liked-books')
 def show_liked_books(user_id):
-    """Show the books the user has liked"""
+    """Show the books the user has liked."""
 
     user_id = session['user_id']
     user = crud.get_user_by_id(user_id)
@@ -128,7 +128,7 @@ def show_liked_books(user_id):
 
 @app.route('/user/<user_id>/to-be-read-books')
 def show_to_be_read_books(user_id):
-    """Show the books the user has marked to be read"""
+    """Show the books the user has marked to be read."""
 
     user_id = session['user_id']
 
@@ -140,7 +140,7 @@ def show_to_be_read_books(user_id):
 
 @app.route('/search-a-book')
 def search_a_book():
-    """Show results from user's book search"""
+    """Show results from user's book search."""
 
 
     user_id = session['user_id']
@@ -213,11 +213,13 @@ def search_a_book():
 
 @app.route('/mark-as-read')
 def mark_book_as_read():
+    """Mark a book as read in a user's library."""
 
 
     user_id = session['user_id']
 
-    #get the title/authors of read book
+    # get the title/subtitle/authors/image link/categories/description
+    # from book user submitted as read
     title = request.args.get('title')
     subtitle = request.args.get('subtitle')
     authors = request.args.get('authors')
@@ -225,10 +227,10 @@ def mark_book_as_read():
     categories = request.args.get('categories')
     description = request.args.get('description')
 
-    authors_as_list = []
-    categories_as_list = []
+    #
     illegal_characters = ["[", "]", "'"]
 
+    authors_as_list = []
     for letter in authors:
         if letter in illegal_characters:
             continue
@@ -238,6 +240,7 @@ def mark_book_as_read():
 
     authors = authors.split(",")
 
+    categories_as_list = []
     for letter in categories:
         if letter in illegal_characters:
             continue
@@ -247,27 +250,16 @@ def mark_book_as_read():
 
     categories = categories.split(",")
 
-
-
-    print("=============================================================================")
-    print("=============================================================================")
-    print("=============================================================================")
-    print("=============================================================================")
-    print(categories)
-    print(type(categories))
-
-    print("=============================================================================")
-    print("=============================================================================")
-    print("=============================================================================")
-
-    #check if the book is already in the database;
-    #if not, check if author is in database;
-    #if author exists, create book and bookauthor
-    #if author doesnt exist, create author, book, and bookauthor
+    # check if the book is already in the database;
     book = crud.get_book_by_title(title)
+
+    # if not in db, create book
     if book == None:
         book = crud.create_book(title, subtitle, description, image_link)
 
+        # check if author is in database;
+        # if author exists, create bookauthor
+        # if author doesn't exist, create author, and bookauthor
         for author in authors:
             author_in_db = crud.get_author_by_full_name(author)
             if author_in_db:
@@ -276,6 +268,10 @@ def mark_book_as_read():
                 author = crud.create_author(author)
                 book_author = crud.create_book_author(book.book_id, author.author_id)
 
+
+        # check if category is in database;
+        # if category exists, create bookcategory
+        # if author doesn't exist, create category, and bookcategory
         for category in categories:
             category_in_db = crud.get_category_by_name(category)
             if category_in_db:
@@ -285,17 +281,18 @@ def mark_book_as_read():
                 book_category = crud.create_book_category(book.book_id, category.category_id)
 
 
-
-    #see if book is already in user's read books collection;
-    #if so, flash a message. Otherwise, add book as read in user's library
+    # see if book is already in user's read books collection
     book_in_collection = crud.get_read_book_by_title(title, user_id)
+    # if so, flash a message.
     if book_in_collection:
         flash('Book is already on your read list')
+    # Otherwise, add book as read in user's library and flash message
     else:
         book_id = book.book_id
         read = True
         read_date = datetime.now()
         read_book = crud.create_read_book(user_id, book_id, read, read_date)
+        flash('Book Added!')
 
     return redirect('/user/<user_id>/read-books')
 

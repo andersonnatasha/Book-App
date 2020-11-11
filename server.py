@@ -100,6 +100,7 @@ def show_user_details(user_id):
 
     return render_template('user_details.html', user_id=user_id, profile_name=profile_name)
 
+
 @app.route('/user/<user_id>/read-books')
 def show_read_books(user_id):
     """Show the books the user has read."""
@@ -110,8 +111,8 @@ def show_read_books(user_id):
 
     read_books = crud.get_read_books_by_user_id(user_id)
 
-
     return render_template('user_read_books.html', user=user, read_books=read_books)
+
 
 @app.route('/user/<user_id>/liked-books')
 def show_liked_books(user_id):
@@ -121,7 +122,6 @@ def show_liked_books(user_id):
     user = crud.get_user_by_id(user_id)
 
     liked_books = crud.get_liked_books_by_user_id(user_id)
-
 
     return render_template('user_liked_books.html', user=user, liked_books=liked_books)
 
@@ -138,10 +138,10 @@ def show_to_be_read_books(user_id):
 
     return render_template('user_to_be_read_books.html', user=user, to_be_read_books=to_be_read_books)
 
+
 @app.route('/search-a-book')
 def search_a_book():
     """Show results from user's book search."""
-
 
     user_id = session['user_id']
     keyword = request.args.get('search', '')
@@ -204,14 +204,14 @@ def search_a_book():
 
             search_results.append(search_result)
 
-
     else:
           return redirect('/user/<user_id>')
 
     return render_template('search_results.html', search_results=search_results, data=data)
 
+
 def remove_illegal_characters(string):
-    """remove illegal characters from from data"""
+    """Remove illegal characters from from data."""
 
     illegal_characters = ["[", "]", "'"]
 
@@ -243,7 +243,7 @@ def add_book_to_db(title, subtitle, description, image_link):
 def add_author_to_db(authors):
     """Add authors to db."""
 
-
+    # takes in authors as list
     # check if author is in database;
     # if author doent exists, create author
     authors_in_db = []
@@ -259,13 +259,14 @@ def add_author_to_db(authors):
     return authors_in_db
 
 
-def add_book_author_to_db(book, author_in_db):
+def add_book_author_to_db(book, authors_in_db):
     """Add bookauthor to db."""
 
+    # authors_in_db is a list
     # check if bookauthor is in database;
-    # if bookauthor doesnt exist, create bookauthor
+    # if bookauthor doesn't exist, create bookauthor
     book_authors_in_db = []
-    for author in author_in_db:
+    for author in authors_in_db:
         book_author_object = crud.get_book_author(book.book_id, author.author_id)
         if book_author_object == None:
             book_author_object = crud.create_book_author(book.book_id, author.author_id)
@@ -276,9 +277,11 @@ def add_book_author_to_db(book, author_in_db):
 
     return book_authors_in_db
 
+
 def add_category_to_db(categories):
     """Add category to db."""
 
+    # categories is a list
     # check if category is already in database;
     # if category doesn't exist, create category
     categories_in_db = []
@@ -293,9 +296,13 @@ def add_category_to_db(categories):
 
     return categories_in_db
 
+
 def add_book_category_to_db(book, categories_in_db):
     """Create new bookcategory in database."""
 
+    # categories_in_db is a list
+    # check if bookcategory is in database;
+    # if bookcategory doesn't exist, create bookcategory.
     book_categories_in_db = []
     for category in categories_in_db:
         book_category_object = crud.get_book_category(book.book_id, category.category_id)
@@ -314,7 +321,7 @@ def add_book_to_read_list(book, user_id):
     read_book_in_in_collection = crud.get_read_book_by_title(book.title, user_id)
     # if so, flash a message.
     if read_book_in_in_collection:
-        flash('Book is already on your read list')
+        flash('This book is already on your read list.')
     # Otherwise, add book as read in user's library and flash message
     else:
         book_id = book.book_id
@@ -351,75 +358,7 @@ def mark_book_as_read():
     book_category = add_book_category_to_db(book, categories_in_db)
     read_book_in_collection = add_book_to_read_list(book, user_id)
 
-
-    # illegal_characters = ["[", "]", "'"]
-
-    # authors_as_list = []
-    # for letter in authors:
-    #     if letter in illegal_characters:
-    #         continue
-    #     else:
-    #         authors_as_list.append(letter)
-    #         authors = "".join(authors_as_list)
-
-    # authors = authors.split(",")
-
-    # categories_as_list = []
-    # for letter in categories:
-    #     if letter in illegal_characters:
-    #         continue
-    #     else:
-    #         categories_as_list.append(letter)
-    #         categories = "".join(categories_as_list)
-
-    # categories = categories.split(",")
-
-    # # check if the book is already in the database;
-    # book = crud.get_book_by_title(title)
-
-    # # if not in db, create book
-    # if book == None:
-    #     book = crud.create_book(title, subtitle, description, image_link)
-
-        # # check if author is in database;
-        # # if author exists, create bookauthor
-        # # if author doesn't exist, create author, and bookauthor
-        # for author in authors:
-        #     author_in_db = crud.get_author_by_full_name(author)
-        #     if author_in_db:
-        #         book_author = crud.create_book_author(book.book_id, author_in_db.author_id)
-        #     else:
-        #         author = crud.create_author(author)
-        #         book_author = crud.create_book_author(book.book_id, author.author_id)
-
-
-    #     # check if category is in database;
-    #     # if category exists, create bookcategory
-    #     # if author doesn't exist, create category, and bookcategory
-    #     for category in categories:
-    #         category_in_db = crud.get_category_by_name(category)
-    #         if category_in_db:
-    #             book_category = crud.create_book_category(book.book_id, category_in_db.category_id)
-    #         else:
-    #             category = crud.create_category(category)
-    #             book_category = crud.create_book_category(book.book_id, category.category_id)
-
-
-    # # see if book is already in user's read books collection
-    # book_in_collection = crud.get_read_book_by_title(title, user_id)
-    # # if so, flash a message.
-    # if book_in_collection:
-    #     flash('Book is already on your read list')
-    # # Otherwise, add book as read in user's library and flash message
-    # else:
-    #     book_id = book.book_id
-    #     read = True
-    #     read_date = datetime.now()
-    #     read_book = crud.create_read_book(user_id, book_id, read, read_date)
-    #     flash('Book Added!')
-
     return redirect('/user/<user_id>/read-books')
-
 
 
 if __name__ == '__main__':

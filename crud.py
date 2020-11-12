@@ -123,22 +123,6 @@ def get_book_category(book_id, category_id):
 
     return book_category
 
-# def create_a_book_in_library(user_id, book_id, read, read_date, liked,
-#                             liked_date, to_be_read, to_be_read_date):
-
-#     book_in_library = BookInLibrary(user = user,
-#                         book = book,
-#                         read = read,
-#                         read_date = read_date,
-#                         liked = liked,
-#                         liked_date = liked_date,
-#                         to_be_read = to_be_read,
-#                         to_be_read_date = to_be_read_date)
-
-#     db.session.add(book_in_library)
-#     db.session.commit()
-
-#     return book_in_library
 
 def create_a_book_in_library(book, user_id):
 
@@ -193,12 +177,38 @@ def get_book_in_library(book, user_id):
 
 
 
-def mark_book_in_library_as_read(book_in_library, user_id):
+def update_book_tags(book_in_library, user_id, tag_update, liked_status):
+ #TODO: Only delete certain columns. because if you delete it to
+ #TODO: Mark as liked, then it will also remove when you read the book
 
-    book_in_library.read = True
-    book_in_library.read_date = datetime.now()
 
+    db.session.delete(book_in_library)
+
+    book_in_library.read = tag_update
+    book_in_library.liked = liked_status
+
+    if book_in_library.read == True:
+        book_in_library.to_be_read = False
+        book_in_library.to_be_read_date = None
+        if book_in_library.liked_date == None:
+            book_in_library.read_date = datetime.now()
+        else:
+            book_in_library.read_date = book_in_library.read_date
+        if book_in_library.liked == liked_status:
+            book_in_library.liked_date = datetime.now()
+        else:
+            book_in_library.liked_date = None
+    else:
+        book_in_library.to_be_read = True
+        book_in_library.to_be_read_date = datetime.now()
+        book_in_library.read = False
+        book_in_library.read_date = None
+        book_in_library.liked = False
+        book_in_library.liked_date = None
+
+    db.session.(book_in_library)
     db.session.commit()
+
 
 def get_read_books_by_user_id(user_id):
     """Get read books in a user's library by a user id"""

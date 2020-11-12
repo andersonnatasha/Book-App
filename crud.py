@@ -123,21 +123,7 @@ def get_book_category(book_id, category_id):
 
     return book_category
 
-def create_read_book(user_id, book_id, read, read_date):
-    """Create a read book in a user library"""
-
-    read_book = BookInLibrary(user_id = user_id,
-                              book_id = book_id,
-                              read = read,
-                              read_date = read_date)
-
-    db.session.add(read_book)
-    db.session.commit()
-
-    return read_book
-
-
-# def create_a_book_in_library(user, book, read, read_date, liked,
+# def create_a_book_in_library(user_id, book_id, read, read_date, liked,
 #                             liked_date, to_be_read, to_be_read_date):
 
 #     book_in_library = BookInLibrary(user = user,
@@ -154,6 +140,65 @@ def create_read_book(user_id, book_id, read, read_date):
 
 #     return book_in_library
 
+def create_a_book_in_library(book, user_id):
+
+    book_in_library = BookInLibrary(book = book, user_id = user_id)
+
+    db.session.add(book_in_library)
+    db.session.commit()
+
+    return book_in_library
+
+def get_book_in_library(book, user_id):
+    """ Gets a book in a library by title user id"""
+
+    title = book.title
+    book_id = book.book_id
+    queried_book = BookInLibrary.query.get((book_id, user_id))
+
+    if queried_book != None:
+        book_in_library = BookInLibrary.query.filter((queried_book.book.title == title) & (queried_book.user_id == user_id)).first()
+    else:
+        book_in_library = None
+
+    return book_in_library
+
+
+# def create_read_book(user_id, book_id, read, read_date):
+#     """Create a read book in a user library"""
+
+#     read_book = BookInLibrary(user_id = user_id,
+#                               book_id = book_id,
+#                               read = read,
+#                               read_date = read_date)
+
+
+#     db.session.add(read_book)
+#     db.session.commit()
+
+#     return read_book
+
+# def create_liked_book(user_id, book_id, liked, liked_date):
+#     """Create a liked book in a user library"""
+
+#     liked_book = BookInLibrary(user_id = user_id,
+#                               book_id = book_id,
+#                               liked = liked,
+#                               liked_date = liked_date)
+
+#     db.session.add(liked_book)
+#     db.session.commit()
+
+#     return liked_book
+
+
+
+def mark_book_in_library_as_read(book_in_library, user_id):
+
+    book_in_library.read = True
+    book_in_library.read_date = datetime.now()
+
+    db.session.commit()
 
 def get_read_books_by_user_id(user_id):
     """Get read books in a user's library by a user id"""
@@ -172,7 +217,7 @@ def get_liked_books_by_user_id(user_id):
     return liked_books_in_library
 
 def get_to_be_read_books_by_user_id(user_id):
-    """Return liked books in a user's library by a user id"""
+    """Return to be read books in a user's library by a user id"""
 
     user = User.query.get(user_id)
     to_be_read_books_in_library = BookInLibrary.query.filter((BookInLibrary.user_id == user.user_id ) & (BookInLibrary.to_be_read == True)).all()
@@ -180,12 +225,28 @@ def get_to_be_read_books_by_user_id(user_id):
     return to_be_read_books_in_library
 
 def get_read_book_by_title(title, user_id):
-    """Return a read book by title"""
+    """Return a read book by title and user_id"""
 
-    book = Book.query.filter(Book.title==title).first()
+    book = Book.query.filter((Book.title == title) & (BookInLibrary.read == True)).first()
     book_id = book.book_id
 
     return BookInLibrary.query.get((book_id, user_id))
+
+def get_liked_book_by_title(title, user_id):
+    """Return a liked book by it's title and user"""
+
+    book = Book.query.filter((Book.title == title) & (BookInLibrary.liked == True)).first()
+    # book_id = book.book_id
+
+    return ((book))
+
+
+def get_to_be_read_book_by_title(title, user_id):
+    """Return a to be read book by it's title and user"""
+
+    book = Book.query.filter((Book.title==title) & (BookInLibrary.to_be_read == True)).first()
+
+    return BookInLibrary.query.get((book.book_id, user_id))
 
 
 def create_bookshelf(name, user):

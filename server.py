@@ -239,6 +239,17 @@ def add_book_to_db(title, subtitle, description, image_link):
 
     return book
 
+def add_book_to_library(book, user_id):
+    """Add book to user library"""
+
+    #check if book is already in user library;
+    # if not in user library, create bookinlibrary
+
+    book_in_library = crud.get_book_in_library(book, user_id)
+    if book_in_library == None:
+        book_in_library = crud.create_a_book_in_library(book, user_id)
+
+    return book_in_library
 
 def add_author_to_db(authors):
     """Add authors to db."""
@@ -314,28 +325,120 @@ def add_book_category_to_db(book, categories_in_db):
     return book_categories_in_db
 
 
-def add_book_to_read_list(book, user_id):
+def add_book_to_read_list(book_in_library, user_id):
     """Add book to user read list."""
 
-    # see if book is already in user's read books collection
-    read_book_in_in_collection = crud.get_read_book_by_title(book.title, user_id)
-    # if so, flash a message.
-    if read_book_in_in_collection:
+    # # see if book is in library
+    # read_book_in_collection = crud.get_book_in_library(book, user_id)
+    #if so check to see if already read and if read then flash message
+    # if read_book_in_collection:
+    if book_in_library.read == True:
         flash('This book is already on your read list.')
-    # Otherwise, add book as read in user's library and flash message
     else:
-        book_id = book.book_id
-        read = True
-        read_date = datetime.now()
-        read_book_in_in_collection = crud.create_read_book(user_id, book_id, read, read_date)
+        crud.mark_book_in_library_as_read(book_in_library, user_id)
         flash('Book Added!')
 
-    return read_book_in_in_collection
+
+    print("=====================================")
+    print("=====================================")
+    print("=====================================")
+    print("=====================================")
+    print(book_in_library)
+    print(book_in_library.read)
+    print(type(book_in_library))
+    print("=====================================")
+    print("=====================================")
+    # # see if book is already in user's read books collection
+    # read_book_in_in_collection = crud.get_read_book_by_title(book.title, user_id)
+    # # if so, flash a message.
+    # if read_book_in_in_collection:
+    #     flash('This book is already on your read list.')
+    # # Otherwise, add book as read in user's library and flash message
+    # else:
+    #     book_id = book.book_id
+    #     read = True
+    #     read_date = datetime.now()
+    #     read_book_in_in_collection = crud.create_read_book(user_id, book_id, read, read_date)
+    #     flash('Book Added!')
+
+def add_book_to_liked_list(book, user_id):
+    """Add a bok to a user liked list"""
+
+    # See if book is in user's read books collection
+    # if not, do not like
+    read_book_in_in_collection = crud.get_read_book_by_title(book.title, user_id)
+    if read_book_in_in_collection == None:
+        flash('''Looks like you haven't read this book yet.''')
+        liked_book_in_collection = None
+    else:
+    # See if book is already in user's liked books collection
+        liked_book_in_collection = crud.get_liked_book_by_title(book.title, user_id)
+        if liked_book_in_collection:
+            flash('You have already liked this book.')
+        else:
+            book_id = book.book_id
+            liked = True
+            liked_date = datetime.now()
+            liked_book_in_collection = crud.create_liked_book(user_id, book_id, liked, liked_date)
+            flash('Book liked!')
+
+# def add_book_to_read_list(book, user_id):
+#     """Add book to user read list."""
+
+#     # see if book is already in user's read books collection
+#     read_book_in_in_collection = crud.get_read_book_by_title(book.title, user_id)
+#     # if so, flash a message.
+#     if read_book_in_in_collection:
+#         flash('This book is already on your read list.')
+#     # Otherwise, add book as read in user's library and flash message
+#     else:
+#         book_id = book.book_id
+#         read = True
+#         liked = False
+#         liked_date = None
+#         to_be_read = False
+#         to_be_read_date = None
+#         read_date = datetime.now()
+#         read_book_in_in_collection = crud.create_a_book_in_library(user_id, book_id, read, read_date,
+#                                                           liked, liked_date, to_be_read,
+#                                                           to_be_read_date)
+#         flash('Book Added!')
+
+
 
 
 @app.route('/mark-as-read')
 def mark_book_as_read():
-    """Mark a book as read in a user's library."""
+    """Mark a book as read in a user library."""
+
+    user_id = session['user_id']
+
+    # get the title/subtitle/authors/image link/categories/description
+    # from book user submitted as read
+    title = request.args.get('title')
+    subtitle = request.args.get('subtitle')
+    authors = request.args.get('authors')
+    image_link = request.args.get('image_link')
+    categories = request.args.get('categories')
+    description = request.args.get('description')
+
+    sanitized_authors_list = remove_illegal_characters(authors)
+    sanitized_categories_list = remove_illegal_characters(categories)
+
+    book = add_book_to_db(title, subtitle, description, image_link)
+    book_in_library = add_book_to_library(book, user_id)
+    authors_in_db = add_author_to_db(sanitized_authors_list)
+    book_author = add_book_author_to_db(book, authors_in_db)
+    categories_in_db = add_category_to_db(sanitized_categories_list)
+    book_category = add_book_category_to_db(book, categories_in_db)
+    read_book_in_collection = add_book_to_read_list(book_in_library, user_id)
+
+    return redirect('/user/<user_id>/read-books')
+
+@app.route('/mark-as-liked')
+def mark_book_as_liked():
+    """Mark a book as liked in a user library"""
+
 
     user_id = session['user_id']
 
@@ -356,9 +459,9 @@ def mark_book_as_read():
     book_author = add_book_author_to_db(book, authors_in_db)
     categories_in_db = add_category_to_db(sanitized_categories_list)
     book_category = add_book_category_to_db(book, categories_in_db)
-    read_book_in_collection = add_book_to_read_list(book, user_id)
+    liked_book_in_collection = add_book_to_liked_list(book, user_id)
 
-    return redirect('/user/<user_id>/read-books')
+    return redirect('/user/<user_id>/liked-books')
 
 
 if __name__ == '__main__':

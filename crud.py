@@ -206,7 +206,7 @@ def update_book_tags(book_in_library, user_id, tag_update, liked_status):
         book_in_library.liked = False
         book_in_library.liked_date = None
 
-    db.session.(book_in_library)
+    db.session.add(book_in_library)
     db.session.commit()
 
 

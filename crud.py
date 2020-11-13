@@ -175,39 +175,109 @@ def get_book_in_library(book, user_id):
 
 #     return liked_book
 
-
-
-def update_book_tags(book_in_library, user_id, tag_update, liked_status):
+def update_book_tags(book_in_library, user_id, read_status_update, liked_status):
  #TODO: Only delete certain columns. because if you delete it to
  #TODO: Mark as liked, then it will also remove when you read the book
 
+    # The first time a book has been marked as read/tbr/liked
+    if (book_in_library.read == None) and (book_in_library.to_be_read == None):
+        if read_status_update == True:
+            book_in_library.read = True
+            book_in_library.read_date = datetime.now() #showing up as None
+            book_in_library.to_be_read = False
+            book_in_library.to_be_read_date = None
+            if liked_status == True:
+                book_in_library.liked = True
+                book_in_library.liked_date = datetime.now()
+            else:
+                book_in_library.liked = False
+                book_in_library.liked_date = None
+        else:
+            book_in_library.to_be_read = True
+            book_in_library.to_be_read_date = datetime.now()
+            book_in_library.read = False
+            book_in_library.read_date = None
+            book_in_library.liked = False
+            book_in_library.liked_date = None
 
-    db.session.delete(book_in_library)
+        db.session.add(book_in_library)
 
-    book_in_library.read = tag_update
-    book_in_library.liked = liked_status
+    #Not the first time a book has been marked
+    elif (book_in_library.liked == True) and (read_status_update == True) and (liked_status == False):
+        book_in_library.liked = False
+        book_in_library.liked_date = None
+        db.session.add(book_in_library)
 
-    if book_in_library.read == True:
+    elif (book_in_library.read == False) and (read_status_update == True) and (liked_status == False):
+        db.session.delete(book_in_library)
+        book_in_library.read = True
+        book_in_library.read_date = datetime.now()
+        book_in_library.liked = False
+        book_in_library.liked_date = None
         book_in_library.to_be_read = False
         book_in_library.to_be_read_date = None
-        if book_in_library.liked_date == None:
-            book_in_library.read_date = datetime.now()
-        else:
-            book_in_library.read_date = book_in_library.read_date
-        if book_in_library.liked == liked_status:
-            book_in_library.liked_date = datetime.now()
-        else:
-            book_in_library.liked_date = None
-    else:
-        book_in_library.to_be_read = True
-        book_in_library.to_be_read_date = datetime.now()
+        db.session.add(book_in_library)
+
+    elif (book_in_library.read == False) and (read_status_update == True) and (liked_status == True):
+        db.session.delete(book_in_library)
+        book_in_library.read = True
+        book_in_library.read_date = datetime.now()
+        book_in_library.liked = True
+        book_in_library.liked_date = datetime.now()
+        book_in_library.to_be_read = False
+        book_in_library.to_be_read_date = None
+        db.session.add(book_in_library)
+
+    elif (book_in_library.read == False) and (read_status_update == True):
+        db.session.delete(book_in_library)
+        book_in_library.read = True
+        book_in_library.read_date = datetime.now()
+        book_in_library.liked = False
+        book_in_library.liked_date = datetime.now()
+        book_in_library.to_be_read = False
+        book_in_library.to_be_read_date = None
+        db.session.add(book_in_library)
+
+    elif (book_in_library.read == True) and (read_status_update == False):
+        db.session.delete(book_in_library)
         book_in_library.read = False
         book_in_library.read_date = None
         book_in_library.liked = False
         book_in_library.liked_date = None
+        book_in_library.to_be_read = True
+        book_in_library.to_be_read_date = datetime.now()
+        db.session.add(book_in_library)
 
-    db.session.add(book_in_library)
     db.session.commit()
+
+
+
+
+
+
+    # if (book_in_library.read == None) and (book_in_library.to_be_read == None):
+    #     if read_status_update == True:
+    #         book_in_library.read = True
+    #         book_in_library.read_date = datetime.now() #showing up as None
+    #         print("In if statement under read_DATE")
+    #         book_in_library.to_be_read = False
+    #         book_in_library.to_be_read_date = None
+    #         if liked_status == True:
+    #             print("In if statement LIKED STATUS IS TRUE")
+    #             book_in_library.liked = True
+    #             book_in_library.liked_date = datetime.now()
+    #         else:
+    #             print("In if statement LIKED STATUS IS FAAALLLLSSEEEE")
+    #     else:
+    #         book_in_library.to_be_read = True
+    #         book_in_library.to_be_read_date = datetime.now()
+    #         book_in_library.read = False
+    #         book_in_library.read_date = None
+    #         book_in_library.liked = False
+    #         book_in_library.liked_date = None
+
+    # db.session.add(book_in_library)
+    # db.session.commit()
 
 
 def get_read_books_by_user_id(user_id):

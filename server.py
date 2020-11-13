@@ -347,16 +347,20 @@ def add_book_to_read_list(book_in_library, user_id):
     if book_in_library.read == True:
         flash('This book is already on your read list.')
     else:
-        book_in_library.read = True
-        book_in_library.liked = False
-        crud.update_book_tags(book_in_library, user_id, book_in_library.read, book_in_library.liked)
+        # book_in_library.read = True
+        # book_in_library.liked = False
+        crud.update_book_tags(book_in_library, user_id, True, False)
         flash('Book Added!')
 
     print("===============================")
     print("===============================")
     print("===============================")
-    print(f'to be read:{book_in_library.to_be_read}')
+    print(f'to be read: {book_in_library.to_be_read}')
+    print(f'to be read time: {book_in_library.to_be_read_date}')
     print(f'read: {book_in_library.read}')
+    print(f'read time: {book_in_library.read_date}')
+    print(f'liked: {book_in_library.liked}')
+    print(f'liekd time: {book_in_library.liked_date}')
     print("===============================")
     print("===============================")
     print("===============================")
@@ -370,21 +374,24 @@ def add_book_to_liked_list(book_in_library, user_id):
     if book_in_library.liked == True:
         flash('''You've already liked this book.''')
     else:
-        book_in_library.read = True
-        book_in_library.liked = True
-        crud.update_book_tags(book_in_library, user_id, book_in_library.read, book_in_library.liked)
+        # book_in_library.read = True
+        # book_in_library.liked = True
+        crud.update_book_tags(book_in_library, user_id, True, True)
         flash('Book Added!')
 
     print("===============================")
     print("===============================")
     print("===============================")
-    print(f'to be read:{book_in_library.to_be_read}')
+    print(f'to be read: {book_in_library.to_be_read}')
+    print(f'to be read time: {book_in_library.to_be_read_date}')
     print(f'read: {book_in_library.read}')
+    print(f'read time: {book_in_library.read_date}')
+    print(f'liked: {book_in_library.liked}')
+    print(f'liekd time: {book_in_library.liked_date}')
     print("===============================")
     print("===============================")
     print("===============================")
     print("===============================")
-
 
 def add_book_to_to_be_read_list(book_in_library, user_id):
     """Add a book to a user liked list."""
@@ -392,21 +399,24 @@ def add_book_to_to_be_read_list(book_in_library, user_id):
     if book_in_library.to_be_read == True:
         flash('''You've already added this book to your tbr list.''')
     else:
-        book_in_library.read = False
-        book_in_library.liked = False
-        crud.update_book_tags(book_in_library, user_id, book_in_library.read, book_in_library.liked)
+        # book_in_library.read = False
+        # book_in_library.liked = False
+        crud.update_book_tags(book_in_library, user_id, False, False)
         flash('Book Added!')
 
     print("===============================")
     print("===============================")
     print("===============================")
-    print(f'to be read:{book_in_library.to_be_read}')
+    print(f'to be read: {book_in_library.to_be_read}')
+    print(f'to be read time: {book_in_library.to_be_read_date}')
     print(f'read: {book_in_library.read}')
+    print(f'read time: {book_in_library.read_date}')
+    print(f'liked: {book_in_library.liked}')
+    print(f'liekd time: {book_in_library.liked_date}')
     print("===============================")
     print("===============================")
     print("===============================")
     print("===============================")
-
 
 
 @app.route('/mark-as-read')

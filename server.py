@@ -85,10 +85,163 @@ def log_in():
     else:
         session['user_id'] = user.user_id
         user_id = session['user_id']
+
         session['profile_name'] = user.profile_name
-        return redirect('user/{user_id}')
+        user = crud.get_user_by_id(user_id)
+
+        login_frequency = crud.get_user_login_frequency(user)
+        if login_frequency == None:
+            crud.log_login_occurrence(user)
+            return redirect('/interests')
+        else:
+            crud.log_login_occurrence(user)
+            return redirect('user/{user_id}')
 
     return render_template('log_in.html')
+
+
+    # email = request.args.get('email')
+    # password = request.args.get('password')
+
+    # user = crud.get_user_by_email(email)
+
+
+    # if user == None or user.password != password:
+    #     flash('The email and password you entered did not match our records. Please double-check and try again.')
+    # else:
+    #     session['user_id'] = user.user_id
+    #     user_id = session['user_id']
+    #     session['profile_name'] = user.profile_name
+    #     return redirect('user/{user_id}')
+
+    # return render_template('log_in.html')
+
+
+
+#    @app.route('/determine-user-login-landing')
+# def determin_login_landing():
+#     email = request.args.get('email')
+#     password = request.args.get('password')
+
+#     user = crud.get_user_by_email(email)
+
+
+    # if user == None or user.password != password:
+    #     flash('The email and password you entered did not match our records. Please double-check and try again.')
+    # else:
+    #     session['user_id'] = user.user_id
+    #     user_id = session['user_id']
+
+    #     session['profile_name'] = user.profile_name
+    #     user = crud.get_user_by_id(user_id)
+
+    #     login_frequency = crud.get_user_login_frequency(user)
+    #     if login_frequency == None:
+    #         crud.log_login_occurrence(user)
+    #         return redirect('user.interests')
+    #     else:
+    #         crud.log_login_occurrence(user)
+    #         return redirect('user/{user_id}')
+
+@app.route('/interests')
+def get_user_interests():
+
+    return render_template('get_user_interests.html')
+
+@app.route('/user-interests')
+def show_reccomended_books():
+
+# get check box values. then do a ge request on check box values
+#
+    user_id = session['user_id']
+
+
+    keywords = [request.args.get('interests')]
+
+    print("===================================")
+    print("===================================")
+    print("===================================")
+    print("===================================")
+    print(keywords)
+    print(type(keywords))
+    print("===================================")
+    print("===================================")
+    print("===================================")
+
+    for keyword in keywords:
+        url = 'https://www.googleapis.com/books/v1/volumes'
+        keyword = f'subject:{keyword}'
+        payload = {'apikey': API_KEY, 'q': keywords, 'maxResults': 3}
+
+        res = requests.get(url, params=payload)
+
+
+        print("===================================")
+        print("===================================")
+        print("===================================")
+        print(res.url)
+        print("===================================")
+        print("===================================")
+        print("===================================")
+
+        data = res.json()
+
+        if keyword != '':
+
+            search_results = []
+            for n in range(len(data['items'])):
+
+                search_result = {}
+
+                base = data['items'][n]['volumeInfo']
+
+                title = base['title']
+                search_result['title'] = title
+
+                subtitle = base.get('subtitle', None)
+                if subtitle:
+                    search_result['subtitle'] = subtitle
+                else:
+                    pass
+
+                authors = base.get('authors', None)
+                if authors:
+                    search_result['author'] = authors
+                else:
+                    pass
+
+                img_links = base.get('imageLinks', None)
+                if img_links:
+                    thumbnail = img_links['thumbnail']
+                    search_result['thumbnail'] = thumbnail
+                else:
+                    pass
+
+                published_date = base.get('publishedDate', None)
+                if published_date:
+                    search_result['published_date'] = published_date
+                else:
+                    pass
+
+                description = base.get('description', None)
+                if description:
+                    search_result['description'] = description
+                else:
+                    pass
+
+                categories = base.get('categories', None)
+                if categories:
+                    search_result['categories'] = categories
+                else:
+                    pass
+
+                search_results.append(search_result)
+
+        else:
+            return redirect('/user/<user_id>')
+
+
+    return render_template('first_time_login.html', search_results=search_results, data=data, payload=payload, keyword=keyword)
 
 
 @app.route('/user/<user_id>')
@@ -207,11 +360,11 @@ def search_a_book():
     else:
           return redirect('/user/<user_id>')
 
-    return render_template('search_results.html', search_results=search_results, data=data)
+    return render_template('search_results.html', search_results=search_results)
 
 
-def remove_illegal_characters(string):
-    """Remove illegal characters from from data."""
+def remove_illegal_characters_to_make_list(string):
+    """Remove illegal characters from from strings to convert to a list."""
 
     illegal_characters = ["[", "]", "'"]
 
@@ -434,14 +587,14 @@ def mark_book_as_read():
     categories = request.args.get('categories')
     description = request.args.get('description')
 
-    sanitized_authors_list = remove_illegal_characters(authors)
-    sanitized_categories_list = remove_illegal_characters(categories)
+    authors_list = remove_illegal_characters_to_make_list(authors)
+    categories_list = remove_illegal_characters_to_make_list(categories)
 
     book = add_book_to_db(title, subtitle, description, image_link)
     book_in_library = add_book_to_library(book, user_id)
-    authors_in_db = add_author_to_db(sanitized_authors_list)
+    authors_in_db = add_author_to_db(authors_list)
     book_author = add_book_author_to_db(book, authors_in_db)
-    categories_in_db = add_category_to_db(sanitized_categories_list)
+    categories_in_db = add_category_to_db(categories_list)
     book_category = add_book_category_to_db(book, categories_in_db)
     read_book_in_collection = add_book_to_read_list(book_in_library, user_id)
 
@@ -463,14 +616,14 @@ def mark_book_as_liked():
     categories = request.args.get('categories')
     description = request.args.get('description')
 
-    sanitized_authors_list = remove_illegal_characters(authors)
-    sanitized_categories_list = remove_illegal_characters(categories)
+    authors_list = remove_illegal_characters_to_make_list(authors)
+    categories_list = remove_illegal_characters_to_make_list(categories)
 
     book = add_book_to_db(title, subtitle, description, image_link)
     book_in_library = add_book_to_library(book, user_id)
-    authors_in_db = add_author_to_db(sanitized_authors_list)
+    authors_in_db = add_author_to_db(authors_list)
     book_author = add_book_author_to_db(book, authors_in_db)
-    categories_in_db = add_category_to_db(sanitized_categories_list)
+    categories_in_db = add_category_to_db(categories_list)
     book_category = add_book_category_to_db(book, categories_in_db)
     liked_book_in_collection = add_book_to_liked_list(book_in_library, user_id)
 
@@ -493,14 +646,14 @@ def mark_book_as_to_be_read():
     categories = request.args.get('categories')
     description = request.args.get('description')
 
-    sanitized_authors_list = remove_illegal_characters(authors)
-    sanitized_categories_list = remove_illegal_characters(categories)
+    authors_list = remove_illegal_characters_to_make_list(authors)
+    categories_list = remove_illegal_characters_to_make_list(categories)
 
     book = add_book_to_db(title, subtitle, description, image_link)
     book_in_library = add_book_to_library(book, user_id)
-    authors_in_db = add_author_to_db(sanitized_authors_list)
+    authors_in_db = add_author_to_db(authors_list)
     book_author = add_book_author_to_db(book, authors_in_db)
-    categories_in_db = add_category_to_db(sanitized_categories_list)
+    categories_in_db = add_category_to_db(categories_list)
     book_category = add_book_category_to_db(book, categories_in_db)
     to_be_read_book_in_collection = add_book_to_to_be_read_list(book_in_library, user_id)
 

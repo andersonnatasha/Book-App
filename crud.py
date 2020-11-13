@@ -26,7 +26,7 @@ def get_user_by_id(user_id):
 def get_user_by_email(user_email):
     """Return a user by email"""
 
-    return User.query.filter(User.email == email).first()
+    return User.query.filter(User.email == user_email).first()
 
 
 def get_user_login_frequency(user):
@@ -38,16 +38,13 @@ def get_user_login_frequency(user):
 def log_login_occurrence(user):
     """Add one to user login_frequency."""
 
-    login_frequency = user.login_frequency
-    if login_frequency == None:
-        updated_login_frequency = 0
+    if user.login_frequency == None:
+        user.login_frequency = 0
     else:
-        updated_login_frequency =+ 1
+        user.login_frequency =+ 1
 
-    db.session.add(updated_login_frequency)
+    db.session.add(user)
     db.session.commit()
-
-    return login_frequency
 
 
 def create_book(title, subtitle, description, image_link):#, description):

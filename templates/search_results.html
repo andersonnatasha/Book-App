@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %} {% endblock %}
+
+{% block body %}
+
+{% for book in search_results %}
+
+    <img src="{{book.thumbnail}}">
+    <br>{{ book.title }}
+    {% if book.subtitle %}
+     {{book.subtitle}}
+    {% endif %}
+    {% for author in book.author %} <br>
+    {{author}}
+    {% endfor %} <br>
+    {{ book.description }} <br>
+    Published: {{ book.published_date }} <br>
+    <form action='/mark-as-read'>
+        <input name="title" type="hidden" value="{{book.title}}">
+        <input name="subtitle" type="hidden" value="{{book.subtitle}}">
+        <input name="authors" type="hidden" value="{{book.author}}">
+        <input name="description" type='hidden' value="{{book.description}}">
+        <input name="categories" type='hidden' value="{{book.categories}}">
+        <input name="image_link" type="hidden" value="{{book.thumbnail}}">
+        <input value="Read" type="submit">
+    </form>
+    <form action='/mark-as-liked'>
+        <input name="title" type="hidden" value="{{book.title}}">
+        <input name="subtitle" type="hidden" value="{{book.subtitle}}">
+        <input name="authors" type="hidden" value="{{book.author}}">
+        <input name="description" type='hidden' value="{{book.description}}">
+        <input name="categories" type='hidden' value="{{book.categories}}">
+        <input name="image_link" type="hidden" value="{{book.thumbnail}}">
+        <input value="Liked" type="submit">
+    </form>
+    <form action='/mark-as-to-be-read'>
+        <input name="title" type="hidden" value="{{book.title}}">
+        <input name="subtitle" type="hidden" value="{{book.subtitle}}">
+        <input name="authors" type="hidden" value="{{book.author}}">
+        <input name="description" type='hidden' value="{{book.description}}">
+        <input name="categories" type='hidden' value="{{book.categories}}">
+        <input name="image_link" type="hidden" value="{{book.thumbnail}}">
+        <input value="TBR" type="submit">
+    </form>
+    <br>
+    <br>
+
+
+
+{% endfor %}
+
+{% endblock %}

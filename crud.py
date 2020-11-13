@@ -18,16 +18,23 @@ def create_user(email, password, profile_name, birthday, gender, time_created):
 
     return user
 
-def get_user_by_id(id):
+def get_user_by_id(user_id):
     """Return user by user id"""
 
-    return User.query.get(id)
+    user = User.query.get(user_id)
+
+    return user.login_frequency
 
 
-def get_user_by_email(email):
+def get_user_by_email(user_email):
     """Return a user by email"""
 
     return User.query.filter(User.email == email).first()
+
+def get_user_login_frequency(user_id):
+    """Return number of times user has logged in."""
+
+    return User.query.filter
 
 
 def create_book(title, subtitle, description, image_link):#, description):

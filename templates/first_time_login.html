@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %} INSERT - Reading Preferences {% endblock %}
+
+{% block body %}
+
+<form action='/search-a-book'>
+    <label>Search a book by title or author</label>
+    <input type="text" name=search>
+
+    <input type="submit">
+</form>
+
+<h2>Your Library</h2>
+<h3><a href="/user/{{ user_id }}/read-books">Read Books</a></h3>
+<h3><a href="/user/{{ user_id }}/liked-books">Liked Books</a></h3>
+<h3><a href="/user/{{ user_id }}/to-be-read-books">To Be Read Books</a></h3>
+
+<h2>Recommended books</h2>
+
+{% for book in search_results %}
+ <img src="{{book.thumbnail}}">
+    <br>{{ book.title }}
+    {% if book.subtitle %}
+     {{book.subtitle}}
+    {% endif %}
+    {% for author in book.author %} <br>
+    {{author}}
+    {% endfor %} <br>
+    {{ book.description }} <br>
+    Published: {{ book.published_date }} <br>
+    <form action='/mark-as-read'>
+        <input name="title" type="hidden" value="{{book.title}}">
+        <input name="subtitle" type="hidden" value="{{book.subtitle}}">
+        <input name="authors" type="hidden" value="{{book.author}}">
+        <input name="description" type='hidden' value="{{book.description}}">
+        <input name="categories" type='hidden' value="{{book.categories}}">
+        <input name="image_link" type="hidden" value="{{book.thumbnail}}">
+        <input type ="radio" name="tag" value="read">
+        <label>Read</label>
+    </form>
+    <form action='/mark-as-liked'>
+        <input name="title" type="hidden" value="{{book.title}}">
+        <input name="subtitle" type="hidden" value="{{book.subtitle}}">
+        <input name="authors" type="hidden" value="{{book.author}}">
+        <input name="description" type='hidden' value="{{book.description}}">
+        <input name="categories" type='hidden' value="{{book.categories}}">
+        <input name="image_link" type="hidden" value="{{book.thumbnail}}">
+        <input type ="radio" name="tag" value="liked">
+        <label>Like</label>
+    </form>
+    <form action='/mark-as-to-be-read'>
+        <input name="title" type="hidden" value="{{book.title}}">
+        <input name="subtitle" type="hidden" value="{{book.subtitle}}">
+        <input name="authors" type="hidden" value="{{book.author}}">
+        <input name="description" type='hidden' value="{{book.description}}">
+        <input name="categories" type='hidden' value="{{book.categories}}">
+        <input name="image_link" type="hidden" value="{{book.thumbnail}}">
+        <input type ="radio" name="tag" value="tbr">
+        <label>TRB</label>
+    </form>
+    <br>
+    <br>
+
+
+{% endfor %}
+
+{{data}}
+
+{% endblock %}
+

@@ -21,7 +21,11 @@ def create_user(email, password, profile_name, birthday, gender, time_created):
 def get_user_by_id(user_id):
     """Return user by user id"""
 
-    user = User.query.get(user_id)
+    return User.query.get(user_id)
+
+def get_user_login_frequency(user_id):
+
+    user = get_user_by_id(user_id)
 
     return user.login_frequency
 

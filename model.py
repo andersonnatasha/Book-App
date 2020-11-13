@@ -27,6 +27,7 @@ class User(db.Model):
     birthday = db.Column(db.Date, nullable=False)
     time_created = db.Column(db.DateTime, nullable=False)
     gender = db.Column(db.String(17))
+    login_frequency = db.Column(db.Integer)
 
     books_in_library = db.relationship('BookInLibrary')
 

@@ -100,53 +100,13 @@ def log_in():
     return render_template('log_in.html')
 
 
-    # email = request.args.get('email')
-    # password = request.args.get('password')
-
-    # user = crud.get_user_by_email(email)
-
-
-    # if user == None or user.password != password:
-    #     flash('The email and password you entered did not match our records. Please double-check and try again.')
-    # else:
-    #     session['user_id'] = user.user_id
-    #     user_id = session['user_id']
-    #     session['profile_name'] = user.profile_name
-    #     return redirect('user/{user_id}')
-
-    # return render_template('log_in.html')
-
-
-
-#    @app.route('/determine-user-login-landing')
-# def determin_login_landing():
-#     email = request.args.get('email')
-#     password = request.args.get('password')
-
-#     user = crud.get_user_by_email(email)
-
-
-    # if user == None or user.password != password:
-    #     flash('The email and password you entered did not match our records. Please double-check and try again.')
-    # else:
-    #     session['user_id'] = user.user_id
-    #     user_id = session['user_id']
-
-    #     session['profile_name'] = user.profile_name
-    #     user = crud.get_user_by_id(user_id)
-
-    #     login_frequency = crud.get_user_login_frequency(user)
-    #     if login_frequency == None:
-    #         crud.log_login_occurrence(user)
-    #         return redirect('user.interests')
-    #     else:
-    #         crud.log_login_occurrence(user)
-    #         return redirect('user/{user_id}')
-
 @app.route('/interests')
 def get_user_interests():
 
     return render_template('get_user_interests.html')
+
+# def make_googlebooks_api_call(keyword):
+
 
 @app.route('/user-interests')
 def show_reccomended_books():
@@ -167,6 +127,7 @@ def show_reccomended_books():
     print("===================================")
     print("===================================")
     print("===================================")
+
 
     for keyword in keywords:
         url = 'https://www.googleapis.com/books/v1/volumes'
@@ -241,7 +202,7 @@ def show_reccomended_books():
             return redirect('/user/<user_id>')
 
 
-    return render_template('first_time_login.html', search_results=search_results, data=data, payload=payload, keyword=keyword)
+    return render_template('first_time_login.html', search_results=search_results, data=data)
 
 
 @app.route('/user/<user_id>')
@@ -502,23 +463,8 @@ def add_book_to_read_list(book_in_library, user_id):
     else:
         # book_in_library.read = True
         # book_in_library.liked = False
-        crud.update_book_tags(book_in_library, user_id, True, False)
+        crud.add_book_tags(book_in_library, user_id, True, False)
         flash('Book Added!')
-
-    print("===============================")
-    print("===============================")
-    print("===============================")
-    print(f'to be read: {book_in_library.to_be_read}')
-    print(f'to be read time: {book_in_library.to_be_read_date}')
-    print(f'read: {book_in_library.read}')
-    print(f'read time: {book_in_library.read_date}')
-    print(f'liked: {book_in_library.liked}')
-    print(f'liekd time: {book_in_library.liked_date}')
-    print("===============================")
-    print("===============================")
-    print("===============================")
-    print("===============================")
-
 
 
 def add_book_to_liked_list(book_in_library, user_id):
@@ -529,22 +475,9 @@ def add_book_to_liked_list(book_in_library, user_id):
     else:
         # book_in_library.read = True
         # book_in_library.liked = True
-        crud.update_book_tags(book_in_library, user_id, True, True)
+        crud.add_book_tags(book_in_library, user_id, True, True)
         flash('Book Added!')
 
-    print("===============================")
-    print("===============================")
-    print("===============================")
-    print(f'to be read: {book_in_library.to_be_read}')
-    print(f'to be read time: {book_in_library.to_be_read_date}')
-    print(f'read: {book_in_library.read}')
-    print(f'read time: {book_in_library.read_date}')
-    print(f'liked: {book_in_library.liked}')
-    print(f'liekd time: {book_in_library.liked_date}')
-    print("===============================")
-    print("===============================")
-    print("===============================")
-    print("===============================")
 
 def add_book_to_to_be_read_list(book_in_library, user_id):
     """Add a book to a user liked list."""
@@ -554,22 +487,8 @@ def add_book_to_to_be_read_list(book_in_library, user_id):
     else:
         # book_in_library.read = False
         # book_in_library.liked = False
-        crud.update_book_tags(book_in_library, user_id, False, False)
+        crud.add_book_tags(book_in_library, user_id, False, False)
         flash('Book Added!')
-
-    print("===============================")
-    print("===============================")
-    print("===============================")
-    print(f'to be read: {book_in_library.to_be_read}')
-    print(f'to be read time: {book_in_library.to_be_read_date}')
-    print(f'read: {book_in_library.read}')
-    print(f'read time: {book_in_library.read_date}')
-    print(f'liked: {book_in_library.liked}')
-    print(f'liekd time: {book_in_library.liked_date}')
-    print("===============================")
-    print("===============================")
-    print("===============================")
-    print("===============================")
 
 
 @app.route('/mark-as-read')

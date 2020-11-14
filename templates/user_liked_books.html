@@ -16,8 +16,8 @@
   {% for liked_book in liked_books %}
   <tr>
        <td>{{ liked_book.book.title }} </td>
-       {% for author_name in liked_book.book.author %}
-       <td>{{ author_name.fname }} {{ author_name.lname }}</td>
+       {% for author_name in liked_book.book.authors %}
+       <td>{{ author_name.full_name }}</td>
        {% endfor %}
        <td>{{liked_book.read_date}}</td>
   </tr>

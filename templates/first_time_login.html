@@ -16,8 +16,7 @@
 <h3><a href="/user/{{ user_id }}/to-be-read-books">To Be Read Books</a></h3>
 
 <h2>Recommended books</h2>
-
-{% for book in search_results %}
+{%for book in search_results%}
  <img src="{{book.thumbnail}}">
     <br>{{ book.title }}
     {% if book.subtitle %}

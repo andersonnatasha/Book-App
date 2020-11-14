@@ -192,7 +192,7 @@ def get_book_in_library(book, user_id):
 
 #     return liked_book
 
-def update_book_tags(book_in_library, user_id, read_status_update, liked_status):
+def add_book_tags(book_in_library, user_id, read_status_update, liked_status):
  #TODO: Only delete certain columns. because if you delete it to
  #TODO: Mark as liked, then it will also remove when you read the book
 

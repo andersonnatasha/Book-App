@@ -15,11 +15,15 @@
   </tr>
   {% for read_book in read_books %}
   <tr>
-       <td>{{ read_book.book.title }} </td>
-       {% for author_name in read_book.book.author %}
-       <td>{{ author_name.fname }} {{ author_name.lname }}</td>
+       <td>{{ read_book.book.title }}
+         <form action="remove-as-read">
+           <input type="submit" value="Remove">
+           </form>
+       </td>
+       {% for author_name in read_book.book.authors %}
+       <td>{{ author_name.full_name }}</td>
        {% endfor %}
-       <td>{{read_book.read_date}}</td>
+       <td>{{ read_book.read_date }}</td>
   </tr>
   {% endfor %}
 

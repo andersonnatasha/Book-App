@@ -28,8 +28,9 @@ for n in range(30):
     image_link = fake.sentence()
     subtitle = f'Subtitle {n+1}'
     description = fake.paragraph(nb_sentences=5)
+    isbn_13 = '1234567891234'
 
-    db_book = crud.create_book(title, subtitle, description, image_link)
+    db_book = crud.create_book(title, subtitle, description, image_link, isbn_13)
     books_in_db.append(db_book)
 
 # Create either one or two author for each book

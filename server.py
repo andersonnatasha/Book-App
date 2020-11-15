@@ -108,7 +108,7 @@ def get_user_interests():
 # def make_googlebooks_api_call(keyword):
 
 
-@app.route('/user-interests')
+@app.route('/user-interests', methods=['POST'])
 def show_reccomended_books():
 
 # get check box values. then do a ge request on check box values
@@ -116,7 +116,7 @@ def show_reccomended_books():
     user_id = session['user_id']
 
 
-    keywords = [request.args.get('interests')]
+    keywords = request.form.getlist('interests')
 
     print("===================================")
     print("===================================")
@@ -132,7 +132,7 @@ def show_reccomended_books():
     for keyword in keywords:
         url = 'https://www.googleapis.com/books/v1/volumes'
         keyword = f'subject:{keyword}'
-        payload = {'apikey': API_KEY, 'q': keywords, 'maxResults': 3}
+        payload = {'q': keyword, 'maxResults': 3, 'apikey': API_KEY}
 
         res = requests.get(url, params=payload)
 
@@ -193,6 +193,13 @@ def show_reccomended_books():
                 categories = base.get('categories', None)
                 if categories:
                     search_result['categories'] = categories
+                else:
+                    pass
+
+                industry_identifiers = base.get('industryIdentifiers', None)
+                if industry_identifiers:
+                    isbn_13 = industry_identifiers[1]['identifier']
+                    search_result['isbn_13'] = isbn_13
                 else:
                     pass
 
@@ -276,52 +283,56 @@ def search_a_book():
 
             base = data['items'][n]['volumeInfo']
 
-            title = base['title']
-            search_result['title'] = title
+            # industry_identifiers = base.get('industryIdentifiers', None) and
+            if base.get('industryIdentifiers', None) and ((base['industryIdentifiers'][-1]['type'] == 'ISBN_13') or (base['industryIdentifiers'][0]['type'] == 'ISBN_13'))  :
+                search_result['isbn_13'] = base['industryIdentifiers'][1]['identifier']
 
-            subtitle = base.get('subtitle', None)
-            if subtitle:
-                search_result['subtitle'] = subtitle
-            else:
-                pass
+                title = base['title']
+                search_result['title'] = title
 
-            authors = base.get('authors', None)
-            if authors:
-                search_result['author'] = authors
-            else:
-                pass
+                subtitle = base.get('subtitle', None)
+                if subtitle:
+                    search_result['subtitle'] = subtitle
+                else:
+                    pass
 
-            img_links = base.get('imageLinks', None)
-            if img_links:
-                thumbnail = img_links['thumbnail']
-                search_result['thumbnail'] = thumbnail
-            else:
-                pass
+                authors = base.get('authors', None)
+                if authors:
+                    search_result['author'] = authors
+                else:
+                    pass
 
-            published_date = base.get('publishedDate', None)
-            if published_date:
-                search_result['published_date'] = published_date
-            else:
-                pass
+                img_links = base.get('imageLinks', None)
+                if img_links:
+                    thumbnail = img_links['thumbnail']
+                    search_result['thumbnail'] = thumbnail
+                else:
+                    pass
 
-            description = base.get('description', None)
-            if description:
-                search_result['description'] = description
-            else:
-                pass
+                published_date = base.get('publishedDate', None)
+                if published_date:
+                    search_result['published_date'] = published_date
+                else:
+                    pass
 
-            categories = base.get('categories', None)
-            if categories:
-                search_result['categories'] = categories
-            else:
-                pass
+                description = base.get('description', None)
+                if description:
+                    search_result['description'] = description
+                else:
+                    pass
+
+                categories = base.get('categories', None)
+                if categories:
+                    search_result['categories'] = categories
+                else:
+                    pass
 
             search_results.append(search_result)
 
     else:
           return redirect('/user/<user_id>')
 
-    return render_template('search_results.html', search_results=search_results)
+    return render_template('search_results.html', search_results=search_results, data=data)
 
 
 def remove_illegal_characters_to_make_list(string):
@@ -345,13 +356,27 @@ def remove_illegal_characters_to_make_list(string):
     return valid_list
 
 
-def add_book_to_db(title, subtitle, description, image_link):
+def add_book_to_db(title, subtitle, description, image_link, isbn_13):
     """Add book to db."""
 
     # Check if the book is already in the database; If not in db, create book.
-    book = crud.get_book_by_title(title)
+    book = crud.get_book_by_isbn_13(isbn_13)
+    print("=========================================")
+    print("=========================================")
+    print("=========================================")
+    print(f"book was here didnt need to create: {book}")
+    print("=========================================")
+    print("=========================================")
+    print("=========================================")
     if book == None:
-        book = crud.create_book(title, subtitle, description, image_link)
+        book = crud.create_book(title, subtitle, description, image_link, isbn_13)
+        print("=========================================")
+        print("=========================================")
+        print("=========================================")
+        print(f"book create: {book}")
+        print("=========================================")
+        print("=========================================")
+        print("=========================================")
     else:
         pass
 
@@ -364,8 +389,24 @@ def add_book_to_library(book, user_id):
     # If not in user library, create bookinlibrary.
 
     book_in_library = crud.get_book_in_library(book, user_id)
+    print("=========================================")
+    print("=========================================")
+    print("=========================================")
+    print(book)
+    print(f"book was in library didnt need to create: {book_in_library}")
+    print("=========================================")
+    print("=========================================")
+    print("=========================================")
     if book_in_library == None:
         book_in_library = crud.create_a_book_in_library(book, user_id)
+        print("=========================================")
+        print("=========================================")
+        print("=========================================")
+        print(f"created a book in library: {book_in_library}")
+        print("=========================================")
+        print("=========================================")
+        print("=========================================")
+
 
     return book_in_library
 
@@ -374,7 +415,7 @@ def add_author_to_db(authors):
 
     # Takes in authors as list
     # Check if author is in database;
-    # If author doent exists, create author
+    # If author doesn't exists, create author
     if authors != None:
         authors_in_db = []
         for author in authors:
@@ -458,13 +499,29 @@ def add_book_to_read_list(book_in_library, user_id):
 
     # Check if book is already on marked as a liked book for user
     # if so, flash message. If not mark as liked
+
+    print("=========================================")
+    print("=========================================")
+    print("=========================================")
+    print(book_in_library)
+    print("=========================================")
+    print("=========================================")
+    print("=========================================")
     if book_in_library.read == True:
         flash('This book is already on your read list.')
     else:
-        # book_in_library.read = True
-        # book_in_library.liked = False
+        read_status_update = True
+        liked_status = False
         crud.add_book_tags(book_in_library, user_id, True, False)
         flash('Book Added!')
+
+
+
+# def remove_book_from_read_list(book_in_library, user_id)
+#     """Remove book from user's read list."""
+
+#     # delete it from the db? or set it to False?
+#     #
 
 
 def add_book_to_liked_list(book_in_library, user_id):
@@ -473,20 +530,26 @@ def add_book_to_liked_list(book_in_library, user_id):
     if book_in_library.liked == True:
         flash('''You've already liked this book.''')
     else:
-        # book_in_library.read = True
-        # book_in_library.liked = True
+        read_status_update = True
+        liked_status = True
         crud.add_book_tags(book_in_library, user_id, True, True)
         flash('Book Added!')
-
 
 def add_book_to_to_be_read_list(book_in_library, user_id):
     """Add a book to a user liked list."""
 
+    print("=========================================")
+    print("=========================================")
+    print("=========================================")
+    print(book_in_library)
+    print("=========================================")
+    print("=========================================")
+    print("=========================================")
     if book_in_library.to_be_read == True:
         flash('''You've already added this book to your tbr list.''')
     else:
-        # book_in_library.read = False
-        # book_in_library.liked = False
+        read_status_update = False
+        liked_status = False
         crud.add_book_tags(book_in_library, user_id, False, False)
         flash('Book Added!')
 
@@ -505,11 +568,19 @@ def mark_book_as_read():
     image_link = request.args.get('image_link')
     categories = request.args.get('categories')
     description = request.args.get('description')
+    isbn_13 = request.args.get('isbn_13')
+    print("===========================================================")
+    print("===========================================================")
+    print("===========================================================")
+    print(f"ISBN{isbn_13}")
+    print("===========================================================")
+    print("===========================================================")
+    print("===========================================================")
 
     authors_list = remove_illegal_characters_to_make_list(authors)
     categories_list = remove_illegal_characters_to_make_list(categories)
 
-    book = add_book_to_db(title, subtitle, description, image_link)
+    book = add_book_to_db(title, subtitle, description, image_link, isbn_13)
     book_in_library = add_book_to_library(book, user_id)
     authors_in_db = add_author_to_db(authors_list)
     book_author = add_book_author_to_db(book, authors_in_db)
@@ -534,11 +605,13 @@ def mark_book_as_liked():
     image_link = request.args.get('image_link')
     categories = request.args.get('categories')
     description = request.args.get('description')
+    isbn_13 = request.args.get('isbn_13')
+
 
     authors_list = remove_illegal_characters_to_make_list(authors)
     categories_list = remove_illegal_characters_to_make_list(categories)
 
-    book = add_book_to_db(title, subtitle, description, image_link)
+    book = add_book_to_db(title, subtitle, description, image_link, isbn_13)
     book_in_library = add_book_to_library(book, user_id)
     authors_in_db = add_author_to_db(authors_list)
     book_author = add_book_author_to_db(book, authors_in_db)
@@ -564,11 +637,19 @@ def mark_book_as_to_be_read():
     image_link = request.args.get('image_link')
     categories = request.args.get('categories')
     description = request.args.get('description')
+    isbn_13 = request.args.get('isbn_13')
+    print("===========================================================")
+    print("===========================================================")
+    print("===========================================================")
+    print(f"ISBN{isbn_13}")
+    print("===========================================================")
+    print("===========================================================")
+    print("===========================================================")
 
     authors_list = remove_illegal_characters_to_make_list(authors)
     categories_list = remove_illegal_characters_to_make_list(categories)
 
-    book = add_book_to_db(title, subtitle, description, image_link)
+    book = add_book_to_db(title, subtitle, description, image_link, isbn_13)
     book_in_library = add_book_to_library(book, user_id)
     authors_in_db = add_author_to_db(authors_list)
     book_author = add_book_author_to_db(book, authors_in_db)

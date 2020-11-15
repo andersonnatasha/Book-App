@@ -47,20 +47,24 @@ def log_login_occurrence(user):
     db.session.commit()
 
 
-def create_book(title, subtitle, description, image_link):#, description):
+def create_book(title, subtitle, description, image_link, isbn_13):
     """Create and return a new book."""
 
-    book = Book(title = title, subtitle = subtitle, description = description, image_link = image_link)
+    book = Book(title = title,
+                subtitle = subtitle,
+                description = description,
+                image_link = image_link,
+                isbn_13=isbn_13)
 
     db.session.add(book)
     db.session.commit()
 
     return book
 
-def get_book_by_title(title):
+def get_book_by_isbn_13(isbn_13):
     """Return a book by title"""
 
-    return Book.query.filter(Book.title == title).first()
+    return Book.query.filter(Book.isbn_13==isbn_13).first()
 
 
 def create_author(full_name):
@@ -77,9 +81,7 @@ def create_author(full_name):
 def get_author_by_full_name(author_full_name):
     """Return author by by full_name"""
 
-    author = Author.query.filter(Author.full_name==author_full_name).first()
-
-    return author
+    return Author.query.filter(Author.full_name==author_full_name).first()
 
 
 def create_book_author(book_id, author_id):
@@ -153,18 +155,13 @@ def create_a_book_in_library(book, user_id):
 def get_book_in_library(book, user_id):
     """ Gets a book in a library by title user id"""
 
-    title = book.title
+    isbn_13 = book.isbn_13
     book_id = book.book_id
-    queried_book = BookInLibrary.query.get((book_id, user_id))
-
-    if queried_book != None:
-        book_in_library = BookInLibrary.query.filter((queried_book.book.title == title) & (queried_book.user_id == user_id)).first()
-    else:
-        book_in_library = None
+    book_in_library = BookInLibrary.query.get((book_id, user_id))
 
     return book_in_library
 
-
+# def remove_book_tags()
 # def create_read_book(user_id, book_id, read, read_date):
 #     """Create a read book in a user library"""
 
@@ -192,9 +189,10 @@ def get_book_in_library(book, user_id):
 
 #     return liked_book
 
+
+
 def add_book_tags(book_in_library, user_id, read_status_update, liked_status):
- #TODO: Only delete certain columns. because if you delete it to
- #TODO: Mark as liked, then it will also remove when you read the book
+
 
     # The first time a book has been marked as read/tbr/liked
     if (book_in_library.read == None) and (book_in_library.to_be_read == None):
@@ -202,41 +200,52 @@ def add_book_tags(book_in_library, user_id, read_status_update, liked_status):
             book_in_library.read = True
             book_in_library.read_date = datetime.now() #showing up as None
             book_in_library.to_be_read = False
-            book_in_library.to_be_read_date = None
             if liked_status == True:
                 book_in_library.liked = True
                 book_in_library.liked_date = datetime.now()
             else:
                 book_in_library.liked = False
-                book_in_library.liked_date = None
         else:
             book_in_library.to_be_read = True
             book_in_library.to_be_read_date = datetime.now()
             book_in_library.read = False
-            book_in_library.read_date = None
             book_in_library.liked = False
-            book_in_library.liked_date = None
 
         db.session.add(book_in_library)
+        db.session.commit()
+        print("========================")
+        print("========================")
+        print("========================")
+        print("========================")
+        print("========================")
+        print(book_in_library.book.title)
+        print(f'read :{book_in_library.read}')
+        print(f'TBR :{book_in_library.to_be_read}')
+        print("if (book_in_library.read == None) and (book_in_library.to_be_read == None) ")
+        print("========================")
+        print("========================")
 
-    #Not the first time a book has been marked
-    elif (book_in_library.liked == True) and (read_status_update == True) and (liked_status == False):
-        book_in_library.liked = False
-        book_in_library.liked_date = None
-        db.session.add(book_in_library)
 
+    # Book already in library: Book is TRB and changing to add to read list
     elif (book_in_library.read == False) and (read_status_update == True) and (liked_status == False):
-        db.session.delete(book_in_library)
         book_in_library.read = True
         book_in_library.read_date = datetime.now()
         book_in_library.liked = False
-        book_in_library.liked_date = None
         book_in_library.to_be_read = False
         book_in_library.to_be_read_date = None
         db.session.add(book_in_library)
+        db.session.commit()
+        print("========================")
+        print("========================")
+        print("========================")
+        print("========================")
+        print(book_in_library)
+        print("elif (book_in_library.read == False) and (read_status_update == True) and (liked_status == False)")
+        print("========================")
+        print("========================")
 
-    elif (book_in_library.read == False) and (read_status_update == True) and (liked_status == True):
-        db.session.delete(book_in_library)
+    # Book already in library: Book is on TBR list and moving to read/liked list
+    elif (book_in_library.read == False) and (liked_status == True):
         book_in_library.read = True
         book_in_library.read_date = datetime.now()
         book_in_library.liked = True
@@ -244,19 +253,34 @@ def add_book_tags(book_in_library, user_id, read_status_update, liked_status):
         book_in_library.to_be_read = False
         book_in_library.to_be_read_date = None
         db.session.add(book_in_library)
+        db.session.commit()
+        print("========================")
+        print("========================")
+        print("========================")
+        print("========================")
+        print(book_in_library.book.title)
+        print("elif (book_in_library.read == False) and (read_status_update == True) and (liked_status == True):")
 
+
+    # Book alreay in library: book is on TRB list and moving to read list, but not liked list
     elif (book_in_library.read == False) and (read_status_update == True):
-        db.session.delete(book_in_library)
         book_in_library.read = True
         book_in_library.read_date = datetime.now()
         book_in_library.liked = False
-        book_in_library.liked_date = datetime.now()
+        book_in_library.liked_date = None
         book_in_library.to_be_read = False
         book_in_library.to_be_read_date = None
         db.session.add(book_in_library)
+        db.session.commit()
+        print("========================")
+        print("========================")
+        print("========================")
+        print("========================")
+        print(book_in_library.book.title)
+        print("elif (book_in_library.read == False) and (read_status_update == True):")
 
+    # Book in library: Book is read, possibly liked, and moving to tbr list
     elif (book_in_library.read == True) and (read_status_update == False):
-        db.session.delete(book_in_library)
         book_in_library.read = False
         book_in_library.read_date = None
         book_in_library.liked = False
@@ -264,8 +288,39 @@ def add_book_tags(book_in_library, user_id, read_status_update, liked_status):
         book_in_library.to_be_read = True
         book_in_library.to_be_read_date = datetime.now()
         db.session.add(book_in_library)
+        db.session.commit()
+        print("========================")
+        print("========================")
+        print("========================")
+        print("========================")
+        print("elif (book_in_library.read == True) and (read_status_update == False):")
 
-    db.session.commit()
+    # Book in library: book is read, but unliked, being added to liked list
+    elif (book_in_library.read == True) and (liked_status == True):
+        book_in_library.liked = True
+        book_in_library.liked_date = datetime.now()
+        db.session.add(book_in_library)
+        db.session.commit()
+        print("========================")
+        print("========================")
+        print("========================")
+        print("========================")
+        print("elif (book_in_library.read == True) and (read_status_update == False):")
+
+
+    #     print("===============================")
+    #     print("===============================")
+    #     print("===============================")
+    #     print(book_in_library.book.title)
+    #     print(f'to be read:{book_in_library.to_be_read}')
+    #     print(f'to be read time: {book_in_library.to_be_read_date}')
+    #     print(f'read: {book_in_library.read}')
+    #     print(f'read time: {book_in_library.read_date}')
+    #     print(f'liked: {book_in_library.liked}')
+    #     print(f'liekd time: {book_in_library.liked_date}')
+    #     print("===============================")
+    #     print("===============================")
+    #     print("===============================")
 
 
 
@@ -321,27 +376,27 @@ def get_to_be_read_books_by_user_id(user_id):
 
     return to_be_read_books_in_library
 
-def get_read_book_by_title(title, user_id):
+def get_read_book_by_isbn_13(isbn_13, user_id):
     """Return a read book by title and user_id"""
 
-    book = Book.query.filter((Book.title == title) & (BookInLibrary.read == True)).first()
+    book = Book.query.filter((Book.isbn_13 == title) & (BookInLibrary.read == True)).first()
     book_id = book.book_id
 
     return BookInLibrary.query.get((book_id, user_id))
 
-def get_liked_book_by_title(title, user_id):
+def get_liked_book_by_isbn_13(isbn_13, user_id):
     """Return a liked book by it's title and user"""
 
-    book = Book.query.filter((Book.title == title) & (BookInLibrary.liked == True)).first()
+    book = Book.query.filter((Book.isbn_13 == isbn_13) & (BookInLibrary.liked == True)).first()
     # book_id = book.book_id
 
     return ((book))
 
 
-def get_to_be_read_book_by_title(title, user_id):
+def get_to_be_read_book_by_isbn_13(isbn_13, user_id):
     """Return a to be read book by it's title and user"""
 
-    book = Book.query.filter((Book.title==title) & (BookInLibrary.to_be_read == True)).first()
+    book = Book.query.filter((Book.title==isbn_13) & (BookInLibrary.to_be_read == True)).first()
 
     return BookInLibrary.query.get((book.book_id, user_id))
 

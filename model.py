@@ -51,6 +51,7 @@ class Book(db.Model):
                                  secondary="books_categories",
                                  backref='books'
                                 )
+    isbn_13 = db.Column(db.String(13))
     image_link = db.Column(db.String(350))
 
     authors = db.relationship('Author',

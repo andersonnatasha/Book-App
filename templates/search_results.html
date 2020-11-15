@@ -16,31 +16,35 @@
     {% endfor %} <br>
     {{ book.description }} <br>
     Published: {{ book.published_date }} <br>
+    ISBN: {{ book.isbn_13 }}
     <form action='/mark-as-read'>
-        <input name="title" type="hidden" value="{{book.title}}">
-        <input name="subtitle" type="hidden" value="{{book.subtitle}}">
-        <input name="authors" type="hidden" value="{{book.author}}">
-        <input name="description" type='hidden' value="{{book.description}}">
-        <input name="categories" type='hidden' value="{{book.categories}}">
-        <input name="image_link" type="hidden" value="{{book.thumbnail}}">
+        <input name="title" type="hidden" value="{{ book.title }}">
+        <input name="subtitle" type="hidden" value="{{ book.subtitle }}">
+        <input name="authors" type="hidden" value="{{ book.author }}">
+        <input name="description" type='hidden' value="{{ book.description }}">
+        <input name="categories" type='hidden' value="{{ book.categories }}">
+        <input name="image_link" type="hidden" value="{{ book.thumbnail }}">
+        <input name="isbn_13" type="hidden" value="{{ book.isbn_13 }}">
         <input value="Read" type="submit">
     </form>
     <form action='/mark-as-liked'>
-        <input name="title" type="hidden" value="{{book.title}}">
-        <input name="subtitle" type="hidden" value="{{book.subtitle}}">
-        <input name="authors" type="hidden" value="{{book.author}}">
-        <input name="description" type='hidden' value="{{book.description}}">
-        <input name="categories" type='hidden' value="{{book.categories}}">
-        <input name="image_link" type="hidden" value="{{book.thumbnail}}">
+        <input name="title" type="hidden" value="{{ book.title }}">
+        <input name="subtitle" type="hidden" value="{{ book.subtitle }}">
+        <input name="authors" type="hidden" value="{{ book.author }}">
+        <input name="description" type='hidden' value="{{ book.description }}">
+        <input name="categories" type='hidden' value="{{ book.categories }}">
+        <input name="image_link" type="hidden" value="{{ book.thumbnail }}">
+        <input name="isbn_13" type="hidden" value="{{ book.isbn_13 }}">
         <input value="Liked" type="submit">
     </form>
     <form action='/mark-as-to-be-read'>
-        <input name="title" type="hidden" value="{{book.title}}">
-        <input name="subtitle" type="hidden" value="{{book.subtitle}}">
-        <input name="authors" type="hidden" value="{{book.author}}">
-        <input name="description" type='hidden' value="{{book.description}}">
-        <input name="categories" type='hidden' value="{{book.categories}}">
-        <input name="image_link" type="hidden" value="{{book.thumbnail}}">
+        <input name="title" type="hidden" value="{{ book.title }}">
+        <input name="subtitle" type="hidden" value="{{ book.subtitle }}">
+        <input name="authors" type="hidden" value="{{ book.author }}">
+        <input name="description" type='hidden' value="{{ book.description }}">
+        <input name="categories" type='hidden' value="{{ book.categories }}">
+        <input name="image_link" type="hidden" value="{{ book.thumbnail }}">
+        <input name="isbn_13" type="hidden" value="{{ book.isbn_13 }}">
         <input value="TBR" type="submit">
     </form>
     <br>
@@ -49,5 +53,6 @@
 
 
 {% endfor %}
+{{ data }}
 
 {% endblock %}

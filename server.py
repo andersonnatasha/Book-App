@@ -31,11 +31,13 @@ def homepage():
     return render_template('homepage.html')
 
 
-# @app.route('/sign-up')
-# def sign_up():
-#     """View sign up page."""
 
-#     return render_template('sign_up.html')
+@app.route('/sign-up')
+def sign_up():
+    """Register a user"""
+
+
+    return render_template('sign_up.html')
 
 
 @app.route('/register', methods=['POST'])
@@ -68,7 +70,7 @@ def register_user():
         crud.create_user(email, password, profile_name,
                         birthday, gender, time_created)
         flash('Account created! Please sign in.')
-        redirect_location='/log-in'
+        redirect_location = '/log-in'
 
     return redirect(redirect_location)
 
@@ -77,14 +79,19 @@ def register_user():
 def log_in():
     """User log in."""
 
+    return render_template('log_in.html')
+
+@app.route('/log-in-credentials')
+def validate_login_credentials():
+
     email = request.args.get('email')
     password = request.args.get('password')
 
     user = crud.get_user_by_email(email)
 
-
     if user == None or user.password != password:
         flash('The email and password you entered did not match our records. Please double-check and try again.')
+        redirect_location = '/log-in'
     else:
         session['user_id'] = user.user_id
         user_id = session['user_id']
@@ -95,12 +102,12 @@ def log_in():
         login_frequency = crud.get_user_login_frequency(user)
         if login_frequency == None:
             crud.log_login_occurrence(user)
-            return redirect('/interests')
+            redirect_location = '/interests'
         else:
             crud.log_login_occurrence(user)
-            return redirect('user/{user_id}')
+            redirect_location = 'user/{user_id}'
 
-    return render_template('log_in.html')
+    return redirect(redirect_location)
 
 
 @app.route('/interests')

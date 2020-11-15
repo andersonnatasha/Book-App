@@ -287,10 +287,10 @@ def search_a_book():
             # industry_identifiers = base.get('industryIdentifiers', None) and
             if base.get('industryIdentifiers', None) and (base['industryIdentifiers'][-1]['type'] == 'ISBN_13'):
                 search_result['isbn_13'] = base['industryIdentifiers'][-1]['identifier']
-            elif base.get('industryIdentifiers', None) and (base['industryIdentifiers'][0]['type'] == 'ISBN_13')
-                search_result['isbn_13'] = base['industryIdentifiers'][-1]['identifier']
+            elif base.get('industryIdentifiers', None) and (base['industryIdentifiers'][0]['type'] == 'ISBN_13'):
+                search_result['isbn_13'] = base['industryIdentifiers'][0]['identifier']
 
-            if search_result['isbn_13'] != None
+            if search_result['isbn_13'] != None:
                 title = base['title']
                 search_result['title'] = title
 

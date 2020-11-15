@@ -27,14 +27,15 @@ API_KEY = os.environ['GOOGLEBOOKS_KEY']
 def homepage():
     """View homepage."""
 
+
     return render_template('homepage.html')
 
 
-@app.route('/sign-up')
-def sign_up():
-    """View sign up page."""
+# @app.route('/sign-up')
+# def sign_up():
+#     """View sign up page."""
 
-    return render_template('sign_up.html')
+#     return render_template('sign_up.html')
 
 
 @app.route('/register', methods=['POST'])

@@ -13,6 +13,8 @@ from datetime import datetime
 
 import json
 
+from random import randint
+
 app = Flask(__name__)
 app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
 
@@ -108,7 +110,7 @@ def get_user_interests():
 # def make_googlebooks_api_call(keyword):
 
 
-@app.route('/user-interests', methods=['POST'])
+@app.route('/user-interests')
 def show_reccomended_books():
 
 # get check box values. then do a ge request on check box values
@@ -116,7 +118,7 @@ def show_reccomended_books():
     user_id = session['user_id']
 
 
-    keywords = request.form.getlist('interests')
+    keywords = request.args.getlist('interests')
 
     print("===================================")
     print("===================================")
@@ -128,11 +130,11 @@ def show_reccomended_books():
     print("===================================")
     print("===================================")
 
-
+    search_results = []
     for keyword in keywords:
         url = 'https://www.googleapis.com/books/v1/volumes'
-        keyword = f'subject:{keyword}'
-        payload = {'q': keyword, 'maxResults': 3, 'apikey': API_KEY}
+        keyword = f'subject: {keyword}'
+        payload = {'q': keyword, 'maxResults': 5, 'startIndex': randint(0,70), 'apikey': API_KEY}
 
         res = requests.get(url, params=payload)
 
@@ -147,15 +149,20 @@ def show_reccomended_books():
 
         data = res.json()
 
-        if keyword != '':
+        for n in range(len(data['items'])):
 
-            search_results = []
-            for n in range(len(data['items'])):
+            search_result = {}
 
-                search_result = {}
+            base = data['items'][n]['volumeInfo']
+            search_result['isbn_13'] = None
 
-                base = data['items'][n]['volumeInfo']
+            if base.get('industryIdentifiers', None) and (base['industryIdentifiers'][-1]['type'] == 'ISBN_13'):
+                search_result['isbn_13'] = base['industryIdentifiers'][-1]['identifier']
 
+            elif base.get('industryIdentifiers', None) and (base['industryIdentifiers'][0]['type'] == 'ISBN_13'):
+                search_result['isbn_13'] = base['industryIdentifiers'][0]['identifier']
+
+            if search_result['isbn_13'] != None:
                 title = base['title']
                 search_result['title'] = title
 
@@ -196,17 +203,11 @@ def show_reccomended_books():
                 else:
                     pass
 
-                industry_identifiers = base.get('industryIdentifiers', None)
-                if industry_identifiers:
-                    isbn_13 = industry_identifiers[1]['identifier']
-                    search_result['isbn_13'] = isbn_13
-                else:
-                    pass
-
                 search_results.append(search_result)
 
-        else:
-            return redirect('/user/<user_id>')
+
+        # else:
+        #     return redirect('/user/<user_id>')
 
 
     return render_template('first_time_login.html', search_results=search_results, data=data)
@@ -268,7 +269,7 @@ def search_a_book():
     keyword = request.args.get('search', '')
 
     url = 'https://www.googleapis.com/books/v1/volumes'
-    payload = {'apikey': API_KEY, 'q': keyword, 'maxResults': 10}
+    payload = {'q': keyword, 'maxResults': 10, 'apikey': API_KEY}
 
     res = requests.get(url, params=payload)
 

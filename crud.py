@@ -161,20 +161,35 @@ def get_book_in_library(book, user_id):
 
     return book_in_library
 
-# def remove_book_tags()
-# def create_read_book(user_id, book_id, read, read_date):
-#     """Create a read book in a user library"""
+def delete_book_from_library(book_in_library):
+    """Delete read book from user library."""
 
-#     read_book = BookInLibrary(user_id = user_id,
-#                               book_id = book_id,
-#                               read = read,
-#                               read_date = read_date)
+    db.session.delete(book_in_library)
+    db.session.commit()
+
+    # if removing a read book
 
 
-#     db.session.add(read_book)
-#     db.session.commit()
+    # if removing a liked book
 
-#     return read_book
+    # if removing a tbr book
+
+
+
+
+def create_read_book(user_id, book_id, read, read_date):
+    """Create a read book in a user library"""
+
+    read_book = BookInLibrary(user_id = user_id,
+                              book_id = book_id,
+                              read = read,
+                              read_date = read_date)
+
+
+    db.session.add(read_book)
+    db.session.commit()
+
+    return read_book
 
 # def create_liked_book(user_id, book_id, liked, liked_date):
 #     """Create a liked book in a user library"""
@@ -191,7 +206,7 @@ def get_book_in_library(book, user_id):
 
 
 
-def add_book_tags(book_in_library, user_id, read_status_update, liked_status):
+def update_book_tags(book_in_library, read_status_update, liked_status):
 
 
     # The first time a book has been marked as read/tbr/liked
@@ -294,6 +309,15 @@ def add_book_tags(book_in_library, user_id, read_status_update, liked_status):
         print("========================")
         print("========================")
         print("elif (book_in_library.read == True) and (read_status_update == False):")
+
+
+    # Book in library: book is liked, and liked tag is being removed
+    elif (book_in_library.liked == True) and (liked_status == False):
+        book_in_library.liked = False
+        book_in_library.liked_date = None
+        db.session.add(book_in_library)
+        db.session.commit()
+
 
     # Book in library: book is read, but unliked, being added to liked list
     elif (book_in_library.read == True) and (liked_status == True):

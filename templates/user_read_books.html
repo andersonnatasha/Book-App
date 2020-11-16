@@ -9,16 +9,20 @@
 
 <table>
   <tr>
+    <th></th>
     <th>Title</th>
     <th>Author</th>
     <th>Read Date</th>
   </tr>
   {% for read_book in read_books %}
   <tr>
+    <td>
+      <form action="/handle-remove-read-book" method="POST">
+        <input name="isbn_13" type="hidden" value="{{ read_book.book.isbn_13 }}">
+        <input type="submit" value="Remove">
+        </form>
+    </td>
        <td>{{ read_book.book.title }}
-         <form action="remove-as-read">
-           <input type="submit" value="Remove">
-           </form>
        </td>
        {% for author_name in read_book.book.authors %}
        <td>{{ author_name.full_name }}</td>

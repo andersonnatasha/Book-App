@@ -40,8 +40,8 @@ def sign_up():
     return render_template('sign_up.html')
 
 
-@app.route('/register', methods=['POST'])
-def register_user():
+@app.route('/handle-sign-up', methods=['POST'])
+def handle_sign_up():
     """Register a user."""
 
     email = request.form.get('email')
@@ -62,17 +62,17 @@ def register_user():
 
     if user:
         flash('Account already exists.')
-        redirect_location='/sign-up'
+        return redirect('/sign-up')
     elif password != password_confirmed:
         flash('Passwords do not match.')
-        redirect_location='/sign-up'
+        return redirect('/sign-up')
     else:
         crud.create_user(email, password, profile_name,
                         birthday, gender, time_created)
         flash('Account created! Please sign in.')
-        redirect_location = '/log-in'
+        return redirect('/log-in')
 
-    return redirect(redirect_location)
+
 
 
 @app.route('/log-in')
@@ -507,7 +507,7 @@ def add_book_category_to_db(book, categories_in_db):
     return book_categories_in_db
 
 
-def add_book_to_read_list(book_in_library, user_id):
+def add_book_to_read_list(book_in_library):
     """Add book to user read list."""
 
     # Check if book is already on marked as a liked book for user
@@ -525,19 +525,11 @@ def add_book_to_read_list(book_in_library, user_id):
     else:
         read_status_update = True
         liked_status = False
-        crud.add_book_tags(book_in_library, user_id, True, False)
+        crud.update_book_tags(book_in_library, True, False)
         flash('Book Added!')
 
 
-
-# def remove_book_from_read_list(book_in_library, user_id)
-#     """Remove book from user's read list."""
-
-#     # delete it from the db? or set it to False?
-#     #
-
-
-def add_book_to_liked_list(book_in_library, user_id):
+def add_book_to_liked_list(book_in_library):
     """Add a bok to a user liked list."""
 
     if book_in_library.liked == True:
@@ -545,10 +537,10 @@ def add_book_to_liked_list(book_in_library, user_id):
     else:
         read_status_update = True
         liked_status = True
-        crud.add_book_tags(book_in_library, user_id, True, True)
+        crud.update_book_tags(book_in_library, read_status_update, liked_status)
         flash('Book Added!')
 
-def add_book_to_to_be_read_list(book_in_library, user_id):
+def add_book_to_to_be_read_list(book_in_library):
     """Add a book to a user liked list."""
 
     print("=========================================")
@@ -563,9 +555,29 @@ def add_book_to_to_be_read_list(book_in_library, user_id):
     else:
         read_status_update = False
         liked_status = False
-        crud.add_book_tags(book_in_library, user_id, False, False)
+        crud.update_book_tags(book_in_library, read_status_update, liked_status)
         flash('Book Added!')
 
+def delete_book_from_read_list(isbn_13, user_id):
+    """Remove book from user's read list."""
+
+    book = crud.get_book_by_isbn_13(isbn_13)
+    book_in_library = crud.get_book_in_library(book, user_id)
+    crud.delete_book_from_library(book_in_library)
+
+def remove_liked_tag(book_in_library):
+
+    read_status_update = True
+    liked_status = False
+    crud.update_book_tags(book_in_library, read_status_update, liked_status)
+
+
+def delete_book_from_to_be_read_list(isbn_13, user_id):
+    """Remove book from user's read list."""
+
+    book = crud.get_book_by_isbn_13(isbn_13)
+    book_in_library = crud.get_book_in_library(book, user_id)
+    crud.delete_book_from_library(book_in_library)
 
 @app.route('/mark-as-read')
 def mark_book_as_read():
@@ -599,9 +611,10 @@ def mark_book_as_read():
     book_author = add_book_author_to_db(book, authors_in_db)
     categories_in_db = add_category_to_db(categories_list)
     book_category = add_book_category_to_db(book, categories_in_db)
-    read_book_in_collection = add_book_to_read_list(book_in_library, user_id)
+    read_book_in_collection = add_book_to_read_list(book_in_library)
 
     return redirect('/user/<user_id>/read-books')
+
 
 @app.route('/mark-as-liked')
 def mark_book_as_liked():
@@ -630,7 +643,7 @@ def mark_book_as_liked():
     book_author = add_book_author_to_db(book, authors_in_db)
     categories_in_db = add_category_to_db(categories_list)
     book_category = add_book_category_to_db(book, categories_in_db)
-    liked_book_in_collection = add_book_to_liked_list(book_in_library, user_id)
+    liked_book_in_collection = add_book_to_liked_list(book_in_library)
 
     return redirect('/user/<user_id>/liked-books')
 
@@ -668,7 +681,45 @@ def mark_book_as_to_be_read():
     book_author = add_book_author_to_db(book, authors_in_db)
     categories_in_db = add_category_to_db(categories_list)
     book_category = add_book_category_to_db(book, categories_in_db)
-    to_be_read_book_in_collection = add_book_to_to_be_read_list(book_in_library, user_id)
+    to_be_read_book_in_collection = add_book_to_to_be_read_list(book_in_library)
+
+    return redirect('/user/<user_id>/to-be-read-books')
+
+
+@app.route('/handle-remove-read-book' , methods=['POST'])
+def remove_from_read_list():
+    """Delete book from user read list"""
+
+    user_id = session['user_id']
+    isbn_13 = request.form.get('isbn_13')
+
+    delete_book_from_read_list(isbn_13, user_id)
+
+    return redirect('/user/<user_id>/read-books')
+
+
+@app.route('/handle-remove-liked-book', methods=['POST'])
+def remove_from_liked_list():
+    """Delete from user liked list"""
+
+    user_id = session['user_id']
+    isbn_13 = request.form.get('isbn_13')
+
+
+    book = crud.get_book_by_isbn_13(isbn_13)
+    book_in_library = crud.get_book_in_library(book, user_id)
+    remove_liked_tag(book_in_library)
+
+    return redirect('/user/<user_id>/liked-books')
+
+@app.route('/handle-remove-to-be-read-book' , methods=['POST'])
+def remove_from_to_be_read_list():
+    """Delete book from user read list"""
+
+    user_id = session['user_id']
+    isbn_13 = request.form.get('isbn_13')
+
+    delete_book_from_to_be_read_list(isbn_13, user_id)
 
     return redirect('/user/<user_id>/to-be-read-books')
 

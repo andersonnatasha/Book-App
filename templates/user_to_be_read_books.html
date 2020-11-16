@@ -15,6 +15,12 @@
   </tr>
   {% for to_be_read_book in to_be_read_books %}
   <tr>
+    <td>
+      <form action="/handle-remove-to-be-read-book" method="POST">
+        <input name="isbn_13" type="hidden" value="{{ to_be_read_book.book.isbn_13 }}">
+        <input type="submit" value="Remove">
+        </form>
+    </td>
        <td>{{ to_be_read_book.book.title }} </td>
        {% for author_name in to_be_read_book.book.authors %}
        <td>{{ author_name.full_name }}</td>

@@ -7,21 +7,30 @@
 <h2>Your Liked Books</h2>
 <a href="/user/<user_id>">Search for more books</a>
 
-<table>
-  <tr>
-    <th>Title</th>
-    <th>Author</th>
-    <th>Read Date</th>
-  </tr>
-  {% for liked_book in liked_books %}
-  <tr>
-       <td>{{ liked_book.book.title }} </td>
-       {% for author_name in liked_book.book.authors %}
-       <td>{{ author_name.full_name }}</td>
-       {% endfor %}
-       <td>{{liked_book.read_date}}</td>
-  </tr>
-  {% endfor %}
+  <table>
+    <tr>
+      <th></th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Read Date</th>
+    </tr>
+    {% for liked_book in liked_books %}
+    <tr>
 
-</table>
-{% endblock %}
+      <td>
+        <form action="/handle-remove-liked-book" method="POST">
+          <input name="isbn_13" type="hidden" value="{{ liked_book.book.isbn_13 }}">
+          <input type="submit" value="Remove">
+          </form>
+      </td>
+         <td>{{ liked_book.book.title }}
+         </td>
+         {% for author_name in liked_book.book.authors %}
+         <td>{{ author_name.full_name }}</td>
+         {% endfor %}
+         <td>{{ liked_book.liked_date }}</td>
+    </tr>
+    {% endfor %}
+
+  </table>
+  {% endblock %}

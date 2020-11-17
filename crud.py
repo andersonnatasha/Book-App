@@ -183,42 +183,22 @@ def create_read_book(user_id, book_id, read, read_date):
     return read_book
 
 
-def update_book_tags(book_in_library, read_status_update, liked_status):
+def mark_book_as_read(book_in_library, read_status_update, liked_status):
+    """Update book tags to indicate book is categorized as read."""
 
-
-    # The first time a book has been marked as read/tbr/liked
+    # The first time a book has been marked as read/
     if (book_in_library.read == None) and (book_in_library.to_be_read == None):
-        if read_status_update == True:
-            book_in_library.read = True
-            book_in_library.read_date = datetime.now() #showing up as None
-            book_in_library.to_be_read = False
-            if liked_status == True:
-                book_in_library.liked = True
-                book_in_library.liked_date = datetime.now()
-            else:
-                book_in_library.liked = False
-        else:
-            book_in_library.to_be_read = True
-            book_in_library.to_be_read_date = datetime.now()
-            book_in_library.read = False
-            book_in_library.liked = False
+        book_in_library.read = True
+        book_in_library.read_date = datetime.now()
+        book_in_library.liked = True
+        book_in_library.liked_date = datetime.now()
+        book_in_library.to_be_read = False
+        book_in_library.to_be_read_date = None
 
         db.session.add(book_in_library)
         db.session.commit()
-        print("========================")
-        print("========================")
-        print("========================")
-        print("========================")
-        print("========================")
-        print(book_in_library.book.title)
-        print(f'read :{book_in_library.read}')
-        print(f'TBR :{book_in_library.to_be_read}')
-        print("if (book_in_library.read == None) and (book_in_library.to_be_read == None) ")
-        print("========================")
-        print("========================")
 
-
-    # Book already in library: Book is TRB and changing to add to read list
+    # Book already in library: Book is on TBR list and moving to read/liked list
     elif (book_in_library.read == False) and (read_status_update == True) and (liked_status == False):
         book_in_library.read = True
         book_in_library.read_date = datetime.now()
@@ -235,24 +215,6 @@ def update_book_tags(book_in_library, read_status_update, liked_status):
         print("elif (book_in_library.read == False) and (read_status_update == True) and (liked_status == False)")
         print("========================")
         print("========================")
-
-    # Book already in library: Book is on TBR list and moving to read/liked list
-    elif (book_in_library.read == False) and (liked_status == True):
-        book_in_library.read = True
-        book_in_library.read_date = datetime.now()
-        book_in_library.liked = True
-        book_in_library.liked_date = datetime.now()
-        book_in_library.to_be_read = False
-        book_in_library.to_be_read_date = None
-        db.session.add(book_in_library)
-        db.session.commit()
-        print("========================")
-        print("========================")
-        print("========================")
-        print("========================")
-        print(book_in_library.book.title)
-        print("elif (book_in_library.read == False) and (read_status_update == True) and (liked_status == True):")
-
 
     # Book already in library: book is on TRB list and moving to read list, but not liked list
     elif (book_in_library.read == False) and (read_status_update == True):
@@ -271,6 +233,69 @@ def update_book_tags(book_in_library, read_status_update, liked_status):
         print(book_in_library.book.title)
         print("elif (book_in_library.read == False) and (read_status_update == True):")
 
+
+def mark_book_as_liked(book_in_library, read_status_update, liked_status):
+    """Update book tags to indicate book is categorized as liked."""
+
+    # The first time a book has been marked as liked
+    if (book_in_library.read == None) and (book_in_library.to_be_read == None):
+        book_in_library.liked = True
+        book_in_library.liked_date = datetime.now()
+        book_in_library.read = True
+        book_in_library.read_date = datetime.now()
+        book_in_library.to_be_read = False
+        book_in_library.to_be_read_date = None
+
+        db.session.add(book_in_library)
+        db.session.commit()
+
+    # Book already in library: Book is on TBR list and moving to read/liked list
+    elif (book_in_library.read == False) and (liked_status == True):
+        book_in_library.read = True
+        book_in_library.read_date = datetime.now()
+        book_in_library.liked = True
+        book_in_library.liked_date = datetime.now()
+        book_in_library.to_be_read = False
+        book_in_library.to_be_read_date = None
+        db.session.add(book_in_library)
+        db.session.commit()
+        print("========================")
+        print("========================")
+        print("========================")
+        print("========================")
+        print(book_in_library.book.title)
+        print("elif (book_in_library.read == False) and (read_status_update == True) and (liked_status == True):")
+
+    # Book in library: book is read, but not liked, being added to liked list
+    elif (book_in_library.read == True) and (liked_status == True):
+        book_in_library.liked = True
+        book_in_library.liked_date = datetime.now()
+        db.session.add(book_in_library)
+        db.session.commit()
+        print("========================")
+        print("========================")
+        print("========================")
+        print("========================")
+        print("elif (book_in_library.read == True) and (read_status_update == False):")
+
+
+
+def mark_book_as_to_be_read(book_in_library, read_status_update, liked_status):
+    """Update book tags to indicate book is categorized as to be read"""
+
+    # The first time a book has been marked as tbr
+    if (book_in_library.read == None) and (book_in_library.to_be_read == None):
+        book_in_library.to_be_read = True
+        book_in_library.to_be_read_date = datetime.now()
+        book_in_library.read = False
+        book_in_library.read_date = None
+        book_in_library.liked = True
+        book_in_library.liked_date = datetime.now()
+
+
+        db.session.add(book_in_library)
+        db.session.commit()
+
     # Book in library: Book is read, possibly liked, and moving to tbr list
     elif (book_in_library.read == True) and (read_status_update == False):
         book_in_library.read = False
@@ -287,26 +312,14 @@ def update_book_tags(book_in_library, read_status_update, liked_status):
         print("========================")
         print("elif (book_in_library.read == True) and (read_status_update == False):")
 
+def remove_liked_tag(book_in_library, read_status_update, liked_status):
+    """Change a liked tag from True to False."""
 
     # Book in library: book is liked, and liked tag is being removed
-    elif (book_in_library.liked == True) and (liked_status == False):
-        book_in_library.liked = False
-        book_in_library.liked_date = None
-        db.session.add(book_in_library)
-        db.session.commit()
-
-
-    # Book in library: book is read, but not liked, being added to liked list
-    elif (book_in_library.read == True) and (liked_status == True):
-        book_in_library.liked = True
-        book_in_library.liked_date = datetime.now()
-        db.session.add(book_in_library)
-        db.session.commit()
-        print("========================")
-        print("========================")
-        print("========================")
-        print("========================")
-        print("elif (book_in_library.read == True) and (read_status_update == False):")
+    book_in_library.liked = False
+    book_in_library.liked_date = None
+    db.session.add(book_in_library)
+    db.session.commit()
 
 
 def get_read_books_by_user_id(user_id):

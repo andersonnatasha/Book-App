@@ -351,7 +351,7 @@ def add_book_to_read_list(book_in_library):
     else:
         read_status_update = True
         liked_status = False
-        crud.update_book_tags(book_in_library, read_status_update, liked_status)
+        crud.mark_book_as_read(book_in_library, read_status_update, liked_status)
         flash('Book Added!')
 
 
@@ -363,7 +363,7 @@ def add_book_to_liked_list(book_in_library):
     else:
         read_status_update = True
         liked_status = True
-        crud.update_book_tags(book_in_library, read_status_update, liked_status)
+        crud.mark_book_as_liked(book_in_library, read_status_update, liked_status)
         flash('Book Added!')
 
 def add_book_to_to_be_read_list(book_in_library):
@@ -374,7 +374,7 @@ def add_book_to_to_be_read_list(book_in_library):
     else:
         read_status_update = False
         liked_status = False
-        crud.update_book_tags(book_in_library, read_status_update, liked_status)
+        crud.mark_book_as_to_be_read(book_in_library, read_status_update, liked_status)
         flash('Book Added!')
 
 
@@ -391,7 +391,7 @@ def remove_liked_tag(book_in_library):
 
     read_status_update = True
     liked_status = False
-    crud.update_book_tags(book_in_library, read_status_update, liked_status)
+    crud.remove_liked_tag(book_in_library, read_status_update, liked_status)
 
 
 def delete_book_from_to_be_read_list(isbn_13, user_id):
@@ -537,6 +537,7 @@ def create_bookshelf():
 
     user_id = session['user_id']
     user = crud.get_user_by_id(user_id)
+
     bookshelf_name = request.form.get('bookshelf_name')
 
     bookshelf = crud.create_bookshelf(bookshelf_name, user_id)

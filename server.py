@@ -159,7 +159,7 @@ def handle_user_interests():
 def show_recommended_books():
     """show recommended books."""
 
-    search_results = goolge_books_api.show_recommended_books()
+    search_results = google_books_api.show_recommended_books()
 
     return render_template('recommended_for_you.html', search_results=search_results)
 
@@ -205,7 +205,7 @@ def show_to_be_read_books():
 def search_a_book():
     """Show results from user's book search."""
 
-    search_results = goolge_books_api.search_a_book()
+    search_results = google_books_api.search_a_book()
 
     return render_template('search_results.html', search_results=search_results)
 

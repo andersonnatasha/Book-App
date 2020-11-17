@@ -19,12 +19,12 @@ def create_user(email, password, profile_name, birthday, gender, time_created):
     return user
 
 def get_user_by_id(user_id):
-    """Return user by user id"""
+    """Return user by user id."""
 
     return User.query.get(user_id)
 
 def get_user_by_email(user_email):
-    """Return a user by email"""
+    """Return a user by email."""
 
     return User.query.filter(User.email == user_email).first()
 
@@ -62,7 +62,7 @@ def create_book(title, subtitle, description, image_link, isbn_13):
     return book
 
 def get_book_by_isbn_13(isbn_13):
-    """Return a book by title"""
+    """Return a book by title."""
 
     return Book.query.filter(Book.isbn_13==isbn_13).first()
 
@@ -79,13 +79,13 @@ def create_author(full_name):
 
 
 def get_author_by_full_name(author_full_name):
-    """Return author by by full_name"""
+    """Return author by by full_name."""
 
     return Author.query.filter(Author.full_name==author_full_name).first()
 
 
 def create_book_author(book_id, author_id):
-    """Create and return an author for a specific book"""
+    """Create and return an author for a specific book."""
 
     book_author = BookAuthor(book_id = book_id, author_id = author_id)
 
@@ -115,7 +115,7 @@ def create_category(category):
     return category
 
 def get_category_by_name(category):
-    """Return a category by its name"""
+    """Return a category by its name."""
 
     category = Category.query.filter(Category.category == category).first()
 
@@ -144,6 +144,7 @@ def get_book_category(book_id, category_id):
 
 
 def create_a_book_in_library(book, user_id):
+    """Create and return a book in a user library."""
 
     book_in_library = BookInLibrary(book = book, user_id = user_id)
 
@@ -153,9 +154,8 @@ def create_a_book_in_library(book, user_id):
     return book_in_library
 
 def get_book_in_library(book, user_id):
-    """ Gets a book in a library by title user id"""
+    """ Gets a book in a library by title user id."""
 
-    isbn_13 = book.isbn_13
     book_id = book.book_id
     book_in_library = BookInLibrary.query.get((book_id, user_id))
 
@@ -167,18 +167,9 @@ def delete_book_from_library(book_in_library):
     db.session.delete(book_in_library)
     db.session.commit()
 
-    # if removing a read book
-
-
-    # if removing a liked book
-
-    # if removing a tbr book
-
-
-
 
 def create_read_book(user_id, book_id, read, read_date):
-    """Create a read book in a user library"""
+    """Create a read book in a user library."""
 
     read_book = BookInLibrary(user_id = user_id,
                               book_id = book_id,
@@ -190,20 +181,6 @@ def create_read_book(user_id, book_id, read, read_date):
     db.session.commit()
 
     return read_book
-
-# def create_liked_book(user_id, book_id, liked, liked_date):
-#     """Create a liked book in a user library"""
-
-#     liked_book = BookInLibrary(user_id = user_id,
-#                               book_id = book_id,
-#                               liked = liked,
-#                               liked_date = liked_date)
-
-#     db.session.add(liked_book)
-#     db.session.commit()
-
-#     return liked_book
-
 
 
 def update_book_tags(book_in_library, read_status_update, liked_status):
@@ -277,7 +254,7 @@ def update_book_tags(book_in_library, read_status_update, liked_status):
         print("elif (book_in_library.read == False) and (read_status_update == True) and (liked_status == True):")
 
 
-    # Book alreay in library: book is on TRB list and moving to read list, but not liked list
+    # Book already in library: book is on TRB list and moving to read list, but not liked list
     elif (book_in_library.read == False) and (read_status_update == True):
         book_in_library.read = True
         book_in_library.read_date = datetime.now()
@@ -319,7 +296,7 @@ def update_book_tags(book_in_library, read_status_update, liked_status):
         db.session.commit()
 
 
-    # Book in library: book is read, but unliked, being added to liked list
+    # Book in library: book is read, but not liked, being added to liked list
     elif (book_in_library.read == True) and (liked_status == True):
         book_in_library.liked = True
         book_in_library.liked_date = datetime.now()
@@ -333,7 +310,7 @@ def update_book_tags(book_in_library, read_status_update, liked_status):
 
 
 def get_read_books_by_user_id(user_id):
-    """Get read books in a user's library by a user id"""
+    """Get read books in a user's library by a user id."""
 
     user = User.query.get(user_id)
     read_books_in_library = BookInLibrary.query.filter((BookInLibrary.user_id == user.user_id ) & (BookInLibrary.read == True)).all()
@@ -341,7 +318,7 @@ def get_read_books_by_user_id(user_id):
     return read_books_in_library
 
 def get_liked_books_by_user_id(user_id):
-    """Get liked books in a user's library by a user id"""
+    """Get liked books in a user's library by a user id."""
 
     user = User.query.get(user_id)
     liked_books_in_library = BookInLibrary.query.filter((BookInLibrary.user_id == user.user_id ) & (BookInLibrary.liked == True)).all()
@@ -349,7 +326,7 @@ def get_liked_books_by_user_id(user_id):
     return liked_books_in_library
 
 def get_to_be_read_books_by_user_id(user_id):
-    """Return to be read books in a user's library by a user id"""
+    """Return to be read books in a user's library by a user id."""
 
     user = User.query.get(user_id)
     to_be_read_books_in_library = BookInLibrary.query.filter((BookInLibrary.user_id == user.user_id ) & (BookInLibrary.to_be_read == True)).all()
@@ -357,15 +334,15 @@ def get_to_be_read_books_by_user_id(user_id):
     return to_be_read_books_in_library
 
 def get_read_book_by_isbn_13(isbn_13, user_id):
-    """Return a read book by title and user_id"""
+    """Return a read book by title and user_id."""
 
-    book = Book.query.filter((Book.isbn_13 == title) & (BookInLibrary.read == True)).first()
+    book = Book.query.filter((Book.isbn_13 == isbn_13) & (BookInLibrary.read == True)).first()
     book_id = book.book_id
 
     return BookInLibrary.query.get((book_id, user_id))
 
 def get_liked_book_by_isbn_13(isbn_13, user_id):
-    """Return a liked book by it's title and user"""
+    """Return a liked book by it's title and user."""
 
     book = Book.query.filter((Book.isbn_13 == isbn_13) & (BookInLibrary.liked == True)).first()
     # book_id = book.book_id
@@ -392,6 +369,7 @@ def create_bookshelf(name, user_id):
 
     return bookshelf
 
+
 def get_user_bookshelves(user_id):
     """Get all bookshelves for a particular user."""
 
@@ -408,8 +386,9 @@ def create_interest(interest):
 
     return interest
 
+
 def get_interest_by_name(interest):
-    """Return a interest by its name"""
+    """Return a interest by its name."""
 
     interest = Interest.query.filter(Interest.interest == interest).first()
 
@@ -426,8 +405,9 @@ def create_user_interest(user_id, interest_id):
 
     return user_interest
 
+
 def get_user_interest(user_id, interest_id):
-    """Return a userinterest by a user id"""
+    """Return a userinterest by a user id."""
 
     user_id = user_id
     interest_id = interest_id
@@ -436,13 +416,13 @@ def get_user_interest(user_id, interest_id):
 
     return user_interest
 
+
 def get_all_interests_for_user(user_id):
-    """Return a userinterest by a user id"""
+    """Return a userinterest by a user id."""
 
     user = User.query.get(user_id)
 
     return user.interests
-
 
 
 if __name__ == '__main__':

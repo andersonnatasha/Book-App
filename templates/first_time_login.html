@@ -2,12 +2,10 @@
 {% block title %} INSERT - Reading Preferences {% endblock %}
 
 {% block body %}
-
 <form action='/search-a-book'>
-    <label>Search a book by title or author</label>
-    <input type="text" name=search>
-
-    <input type="submit">
+  <label>Search a book by title or author</label>
+  <input type="text" name=search>
+  <input type="submit">
 </form>
 
 <h2>Your Library</h2>
@@ -18,13 +16,10 @@
 
 <h2>Bookshelves</h2>
 <h3>{{bookshelf}}</h3>
-
-
-
 <form action="/create-bookshelf" method="POST">
-    <label>Name: </label>
-    <input type="text" name="bookshelf_name">
-    <input type="submit">
+  <label>Name: </label>
+  <input type="text" name="bookshelf_name">
+  <input type="submit">
 </form>
 
 <h2>Recommended books</h2>
@@ -43,41 +38,36 @@
 Published: {{ book.published_date }} <br>
 ISBN: {{ book.isbn_13 }}
 <form action='/mark-as-read'>
-    <input name="title" type="hidden" value="{{ book.title }}">
-    <input name="subtitle" type="hidden" value="{{ book.subtitle }}">
-    <input name="authors" type="hidden" value="{{ book.author }}">
-    <input name="description" type='hidden' value="{{ book.description }}">
-    <input name="categories" type='hidden' value="{{ book.categories }}">
-    <input name="image_link" type="hidden" value="{{ book.thumbnail }}">
-    <input name="isbn_13" type="hidden" value="{{ book.isbn_13 }}">
-    <input value="Read" type="submit">
+  <input name="title" type="hidden" value="{{ book.title }}">
+  <input name="subtitle" type="hidden" value="{{ book.subtitle }}">
+  <input name="authors" type="hidden" value="{{ book.author }}">
+  <input name="description" type='hidden' value="{{ book.description }}">
+  <input name="categories" type='hidden' value="{{ book.categories }}">
+  <input name="image_link" type="hidden" value="{{ book.thumbnail }}">
+  <input name="isbn_13" type="hidden" value="{{ book.isbn_13 }}">
+  <input value="Read" type="submit">
 </form>
 <form action='/mark-as-liked'>
-    <input name="title" type="hidden" value="{{ book.title }}">
-    <input name="subtitle" type="hidden" value="{{ book.subtitle }}">
-    <input name="authors" type="hidden" value="{{ book.author }}">
-    <input name="description" type='hidden' value="{{ book.description }}">
-    <input name="categories" type='hidden' value="{{ book.categories }}">
-    <input name="image_link" type="hidden" value="{{ book.thumbnail }}">
-    <input name="isbn_13" type="hidden" value="{{ book.isbn_13 }}">
-    <input value="Liked" type="submit">
+  <input name="title" type="hidden" value="{{ book.title }}">
+  <input name="subtitle" type="hidden" value="{{ book.subtitle }}">
+  <input name="authors" type="hidden" value="{{ book.author }}">
+  <input name="description" type='hidden' value="{{ book.description }}">
+  <input name="categories" type='hidden' value="{{ book.categories }}">
+  <input name="image_link" type="hidden" value="{{ book.thumbnail }}">
+  <input name="isbn_13" type="hidden" value="{{ book.isbn_13 }}">
+  <input value="Liked" type="submit">
 </form>
 <form action='/mark-as-to-be-read'>
-    <input name="title" type="hidden" value="{{ book.title }}">
-    <input name="subtitle" type="hidden" value="{{ book.subtitle }}">
-    <input name="authors" type="hidden" value="{{ book.author }}">
-    <input name="description" type='hidden' value="{{ book.description }}">
-    <input name="categories" type='hidden' value="{{ book.categories }}">
-    <input name="image_link" type="hidden" value="{{ book.thumbnail }}">
-    <input name="isbn_13" type="hidden" value="{{ book.isbn_13 }}">
-    <input value="TBR" type="submit">
+  <input name="title" type="hidden" value="{{ book.title }}">
+  <input name="subtitle" type="hidden" value="{{ book.subtitle }}">
+  <input name="authors" type="hidden" value="{{ book.author }}">
+  <input name="description" type='hidden' value="{{ book.description }}">
+  <input name="categories" type='hidden' value="{{ book.categories }}">
+  <input name="image_link" type="hidden" value="{{ book.thumbnail }}">
+  <input name="isbn_13" type="hidden" value="{{ book.isbn_13 }}">
+  <input value="TBR" type="submit">
 </form>
-<br>
-<br>
-
 
 {% endfor %}
-
-
 {% endblock %}
 

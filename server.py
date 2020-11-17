@@ -33,7 +33,7 @@ def homepage():
 
 @app.route('/sign-up')
 def sign_up():
-    """Register a user"""
+    """Register a user."""
 
 
     return render_template('sign_up.html')
@@ -56,7 +56,6 @@ def handle_sign_up():
 
     birthday = datetime.strptime(f'{birth_month}/{birth_day}/{birth_year}', ('%B/%d/%Y'))
 
-
     user = crud.get_user_by_email(email)
 
     if user:
@@ -72,13 +71,12 @@ def handle_sign_up():
         return redirect('/log-in')
 
 
-
-
 @app.route('/log-in')
 def log_in():
     """User log in."""
 
     return render_template('log_in.html')
+
 
 @app.route('/log-in-credentials')
 def validate_login_credentials():
@@ -106,7 +104,6 @@ def validate_login_credentials():
         else:
             crud.log_login_occurrence(user)
             return redirect('/')
-
 
 
 @app.route('/interests')
@@ -143,7 +140,6 @@ def add_user_interest_to_db(user_id, interest):
     return user_interest
 
 
-
 @app.route('/handle-user-interests', methods=['POST'])
 def handle_user_interests():
     """Handle user interests from form to add to db."""
@@ -152,24 +148,12 @@ def handle_user_interests():
 
     keywords = request.form.getlist('interests')
 
-    print("==================================")
-    print("==================================")
-    print("==================================")
-    print(keywords)
-    print("==================================")
-
     for keyword in keywords:
         interest = add_interest_to_db(keyword)
-        print("==================================")
-        print("==================================")
-        print("==================================")
-        print(interest)
-        print("==================================")
         user_interest = add_user_interest_to_db(user_id, interest)
 
-
-
     return redirect('/')
+
 
 @app.route('/recommended-books')
 def show_recommended_books():
@@ -177,13 +161,6 @@ def show_recommended_books():
 
     user_id = session['user_id']
     keywords = crud.get_all_interests_for_user(user_id)
-    print("===================================")
-    print("===================================")
-    print("===================================")
-    print(keywords)
-    print("===================================")
-    print("===================================")
-    print("===================================")
 
     search_results = []
     for keyword in keywords:
@@ -199,6 +176,14 @@ def show_recommended_books():
         for n in range(len(data['items'])):
 
             search_result = {}
+
+            #TODO
+            # stuff_i_want = ['subtitle', 'authors', 'etc']
+            # for key in stuff_i_want:
+            #     if key in base:
+            #         search_result[key] = base[key]
+
+            # can still do isbn by hand
 
             base = data['items'][n]['volumeInfo']
             search_result['isbn_13'] = None
@@ -255,119 +240,9 @@ def show_recommended_books():
     return render_template('recommended_for_you.html', search_results=search_results)
 
 
-
-# @app.route('/user-interests')
-# def show_recomended_books():
-
-
-#     user_id = session['user_id']
-
-
-#     keywords = request.form.getlist('interests')
-
-#     print("===================================")
-#     print("===================================")
-#     print("===================================")
-#     print("===================================")
-#     print(keywords)
-#     print(type(keywords))
-#     print("===================================")
-#     print("===================================")
-#     print("===================================")
-
-#     search_results = []
-#     for keyword in keywords:
-#         url = 'https://www.googleapis.com/books/v1/volumes'
-#         keyword = f'subject: {keyword}'
-#         payload = {'q': keyword, 'maxResults': 5, 'startIndex': randint(0,70), 'apikey': API_KEY}
-
-#         res = requests.get(url, params=payload)
-
-
-#         print("===================================")
-#         print("===================================")
-#         print("===================================")
-#         print(res.url)
-#         print("===================================")
-#         print("===================================")
-#         print("===================================")
-
-#         data = res.json()
-
-#         for n in range(len(data['items'])):
-
-#             search_result = {}
-
-#             base = data['items'][n]['volumeInfo']
-#             search_result['isbn_13'] = None
-
-#             if base.get('industryIdentifiers', None) and (base['industryIdentifiers'][-1]['type'] == 'ISBN_13'):
-#                 search_result['isbn_13'] = base['industryIdentifiers'][-1]['identifier']
-
-#             elif base.get('industryIdentifiers', None) and (base['industryIdentifiers'][0]['type'] == 'ISBN_13'):
-#                 search_result['isbn_13'] = base['industryIdentifiers'][0]['identifier']
-
-#             if search_result['isbn_13'] != None:
-#                 title = base['title']
-#                 search_result['title'] = title
-
-#                 subtitle = base.get('subtitle', None)
-#                 if subtitle:
-#                     search_result['subtitle'] = subtitle
-#                 else:
-#                     pass
-
-#                 authors = base.get('authors', None)
-#                 if authors:
-#                     search_result['author'] = authors
-#                 else:
-#                     pass
-
-#                 img_links = base.get('imageLinks', None)
-#                 if img_links:
-#                     thumbnail = img_links['thumbnail']
-#                     search_result['thumbnail'] = thumbnail
-#                 else:
-#                     pass
-
-#                 published_date = base.get('publishedDate', None)
-#                 if published_date:
-#                     search_result['published_date'] = published_date
-#                 else:
-#                     pass
-
-#                 description = base.get('description', None)
-#                 if description:
-#                     search_result['description'] = description
-#                 else:
-#                     pass
-
-#                 categories = base.get('categories', None)
-#                 if categories:
-#                     search_result['categories'] = categories
-#                 else:
-#                     pass
-
-#                 search_results.append(search_result)
-
-
-#     return render_template('first_time_login.html', search_results=search_results, data=data)
-
-
-# @app.route('/user/<user_id>')
-# def show_user_details(user_id):
-#     """Show user details."""
-
-#     user_id = session['user_id']
-#     profile_name = session['profile_name']
-
-#     return render_template('user_details.html', user_id=user_id, profile_name=profile_name)
-
-
 @app.route('/read-books')
 def show_read_books():
     """Show the books the user has read."""
-
 
     user_id = session['user_id']
     user = crud.get_user_by_id(user_id)
@@ -406,7 +281,6 @@ def show_to_be_read_books():
 def search_a_book():
     """Show results from user's book search."""
 
-    user_id = session['user_id']
     keyword = request.args.get('search', '')
 
     url = 'https://www.googleapis.com/books/v1/volumes'
@@ -426,9 +300,9 @@ def search_a_book():
             base = data['items'][n]['volumeInfo']
             search_result['isbn_13'] = None
 
-            # industry_identifiers = base.get('industryIdentifiers', None) and
             if base.get('industryIdentifiers', None) and (base['industryIdentifiers'][-1]['type'] == 'ISBN_13'):
                 search_result['isbn_13'] = base['industryIdentifiers'][-1]['identifier']
+
             elif base.get('industryIdentifiers', None) and (base['industryIdentifiers'][0]['type'] == 'ISBN_13'):
                 search_result['isbn_13'] = base['industryIdentifiers'][0]['identifier']
 
@@ -533,28 +407,12 @@ def add_book_to_library(book, user_id):
 
     # Check if book is already in user library;
     # If not in user library, create bookinlibrary.
-
     book_in_library = crud.get_book_in_library(book, user_id)
-    print("=========================================")
-    print("=========================================")
-    print("=========================================")
-    print(book)
-    print(f"book was in library didnt need to create: {book_in_library}")
-    print("=========================================")
-    print("=========================================")
-    print("=========================================")
     if book_in_library == None:
         book_in_library = crud.create_a_book_in_library(book, user_id)
-        print("=========================================")
-        print("=========================================")
-        print("=========================================")
-        print(f"created a book in library: {book_in_library}")
-        print("=========================================")
-        print("=========================================")
-        print("=========================================")
-
 
     return book_in_library
+
 
 def add_author_to_db(authors):
     """Add authors to db."""
@@ -646,19 +504,13 @@ def add_book_to_read_list(book_in_library):
     # Check if book is already on marked as a liked book for user
     # if so, flash message. If not mark as liked
 
-    print("=========================================")
-    print("=========================================")
-    print("=========================================")
-    print(book_in_library)
-    print("=========================================")
-    print("=========================================")
-    print("=========================================")
+
     if book_in_library.read == True:
         flash('This book is already on your read list.')
     else:
         read_status_update = True
         liked_status = False
-        crud.update_book_tags(book_in_library, True, False)
+        crud.update_book_tags(book_in_library, read_status_update, liked_status)
         flash('Book Added!')
 
 
@@ -676,13 +528,6 @@ def add_book_to_liked_list(book_in_library):
 def add_book_to_to_be_read_list(book_in_library):
     """Add a book to a user liked list."""
 
-    print("=========================================")
-    print("=========================================")
-    print("=========================================")
-    print(book_in_library)
-    print("=========================================")
-    print("=========================================")
-    print("=========================================")
     if book_in_library.to_be_read == True:
         flash('''You've already added this book to your tbr list.''')
     else:
@@ -691,6 +536,7 @@ def add_book_to_to_be_read_list(book_in_library):
         crud.update_book_tags(book_in_library, read_status_update, liked_status)
         flash('Book Added!')
 
+
 def delete_book_from_read_list(isbn_13, user_id):
     """Remove book from user's read list."""
 
@@ -698,7 +544,9 @@ def delete_book_from_read_list(isbn_13, user_id):
     book_in_library = crud.get_book_in_library(book, user_id)
     crud.delete_book_from_library(book_in_library)
 
+
 def remove_liked_tag(book_in_library):
+    """Remove book as liked."""
 
     read_status_update = True
     liked_status = False
@@ -711,6 +559,7 @@ def delete_book_from_to_be_read_list(isbn_13, user_id):
     book = crud.get_book_by_isbn_13(isbn_13)
     book_in_library = crud.get_book_in_library(book, user_id)
     crud.delete_book_from_library(book_in_library)
+
 
 @app.route('/mark-as-read')
 def mark_book_as_read():
@@ -727,13 +576,6 @@ def mark_book_as_read():
     categories = request.args.get('categories')
     description = request.args.get('description')
     isbn_13 = request.args.get('isbn_13')
-    print("===========================================================")
-    print("===========================================================")
-    print("===========================================================")
-    print(f"ISBN{isbn_13}")
-    print("===========================================================")
-    print("===========================================================")
-    print("===========================================================")
 
     authors_list = remove_illegal_characters_to_make_list(authors)
     categories_list = remove_illegal_characters_to_make_list(categories)
@@ -766,7 +608,6 @@ def mark_book_as_liked():
     description = request.args.get('description')
     isbn_13 = request.args.get('isbn_13')
 
-
     authors_list = remove_illegal_characters_to_make_list(authors)
     categories_list = remove_illegal_characters_to_make_list(categories)
 
@@ -785,7 +626,6 @@ def mark_book_as_liked():
 def mark_book_as_to_be_read():
     """Mark a book as liked in a user library."""
 
-
     user_id = session['user_id']
 
     # get the title/subtitle/authors/image link/categories/description
@@ -797,13 +637,6 @@ def mark_book_as_to_be_read():
     categories = request.args.get('categories')
     description = request.args.get('description')
     isbn_13 = request.args.get('isbn_13')
-    print("===========================================================")
-    print("===========================================================")
-    print("===========================================================")
-    print(f"ISBN{isbn_13}")
-    print("===========================================================")
-    print("===========================================================")
-    print("===========================================================")
 
     authors_list = remove_illegal_characters_to_make_list(authors)
     categories_list = remove_illegal_characters_to_make_list(categories)
@@ -821,7 +654,7 @@ def mark_book_as_to_be_read():
 
 @app.route('/handle-remove-read-book' , methods=['POST'])
 def remove_from_read_list():
-    """Delete book from user read list"""
+    """Delete book from user read list."""
 
     user_id = session['user_id']
     isbn_13 = request.form.get('isbn_13')
@@ -833,11 +666,10 @@ def remove_from_read_list():
 
 @app.route('/handle-remove-liked-book', methods=['POST'])
 def remove_from_liked_list():
-    """Delete from user liked list"""
+    """Delete from user liked lis.t"""
 
     user_id = session['user_id']
     isbn_13 = request.form.get('isbn_13')
-
 
     book = crud.get_book_by_isbn_13(isbn_13)
     book_in_library = crud.get_book_in_library(book, user_id)
@@ -845,9 +677,10 @@ def remove_from_liked_list():
 
     return redirect('/liked-books')
 
+
 @app.route('/handle-remove-to-be-read-book' , methods=['POST'])
 def remove_from_to_be_read_list():
-    """Delete book from user read list"""
+    """Delete book from user read list."""
 
     user_id = session['user_id']
     isbn_13 = request.form.get('isbn_13')
@@ -856,8 +689,10 @@ def remove_from_to_be_read_list():
 
     return redirect('/to-be-read-books')
 
+
 @app.route('/create-bookshelf', methods=['POST'])
 def create_bookshelf():
+    """Create a bookshelf."""
 
     user_id = session['user_id']
     user = crud.get_user_by_id(user_id)
@@ -868,8 +703,6 @@ def create_bookshelf():
     bookshelves = crud.get_user_bookshelves(user_id)
 
     return redirect('/')
-
-
 
 
 if __name__ == '__main__':

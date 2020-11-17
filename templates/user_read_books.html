@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
-{% block title %} {{ user.profile_name}} - Read Books {% endblock %}
+{% block title %} {{ session['profile_name'] }} - Read Books {% endblock %}
 
 {% block body %}
 
 <h2>Your Read Books</h2>
-<a href="/user/<user_id>">Search for more books</a>
+<a href="/">Search for more books</a>
 
 <table>
   <tr>

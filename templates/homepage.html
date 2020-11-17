@@ -16,9 +16,27 @@
 </form>
 
 <h2>Your Library</h2>
-<h3><a href="/user/{{ user_id }}/read-books">Read Books</a></h3>
-<h3><a href="/user/{{ user_id }}/liked-books">Liked Books</a></h3>
-<h3><a href="/user/{{ user_id }}/to-be-read-books">To Be Read Books</a></h3>
+<h3><a href="/recommended-books">Recommended Books</a></h3>
+<h3><a href="/read-books">Read Books</a></h3>
+<h3><a href="/liked-books">Liked Books</a></h3>
+<h3><a href="/to-be-read-books">To Be Read Books</a></h3>
+
+<br>
+
+<h2>Bookshelves</h2>
+{% for bookshelf in session['bookshelf'] %}
+<h3>{{bookshelf}}</h3>
+
+{% endfor %}
+
+
+
+<form action="/create-bookshelf" method="POST">
+    <label>Name: </label>
+    <input type="text" name="bookshelf_name">
+    <input type="submit">
+</form>
+
 
 {% else %}
 <h1>Welcome!</h1>

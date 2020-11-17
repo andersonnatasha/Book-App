@@ -30,6 +30,10 @@ class User(db.Model):
     login_frequency = db.Column(db.Integer)
 
     books_in_library = db.relationship('BookInLibrary')
+    bookshelves = db.relationship('Bookshelf')
+    interests = db.relationship('Interest',
+                                secondary='users_interests',
+                                backref='users')
 
     def __repr__(self):
         return f'<User user_id={self.user_id} email={self.email}>'
@@ -148,7 +152,7 @@ class Bookshelf(db.Model):
                         db.ForeignKey('users.user_id'),
                         nullable=False
                         )
-    #time_created = db.Column(db.DateTime, nullale=False)
+    time_created = db.Column(db.DateTime, nullable=False)
 
     def __repr__(self):
         return f'<Bookshelf bookshelf_id={self.bookshelf_id} name={self.name}>'
@@ -185,8 +189,42 @@ class BookInLibrary(db.Model):
     user = db.relationship('User')
 
     def __repr__(self):
-        return f'BookInLibrary book_in_library_id={self.book_id} book_title={self.book.title} user_id={self.user_id}>'
+        return f'<BookInLibrary book_in_library_id={self.book_id} book_title={self.book.title} user_id={self.user_id}>'
 
+
+class Interest(db.Model):
+    """An interest"""
+
+    __tablename__ = 'interests'
+
+    interest_id = db.Column(db.Integer,
+                  primary_key=True)
+    interest = db.Column(db.String(30))
+
+    def __repr__(self):
+        return f'<Interest interest_id={self.interest_id}  interest={self.interest}>'
+
+
+class UserInterest(db.Model):
+    """A user interest"""
+
+    __tablename__ = 'users_interests'
+
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey('users.user_id'),
+                        primary_key=True
+                        )
+    interest_id = db.Column(db.Integer,
+                        db.ForeignKey('interests.interest_id'),
+                        primary_key=True
+                        )
+
+    user = db.relationship('User')
+    interest = db.relationship('Interest')
+
+
+    def __repr__(self):
+        return f'<UserInterest user_id={self.user_id} interest_id={self.interest_id}>'
 
 
 def connect_to_db(flask_app, db_uri='postgresql:///bookslibrary', echo=True):

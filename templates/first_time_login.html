@@ -11,9 +11,21 @@
 </form>
 
 <h2>Your Library</h2>
-<h3><a href="/user/{{ user_id }}/read-books">Read Books</a></h3>
-<h3><a href="/user/{{ user_id }}/liked-books">Liked Books</a></h3>
-<h3><a href="/user/{{ user_id }}/to-be-read-books">To Be Read Books</a></h3>
+<h3><a href="/made-for-you">Recommended For You</a></h3>
+<h3><a href="/read-books">Read Books</a></h3>
+<h3><a href="/liked-books">Liked Books</a></h3>
+<h3><a href="/to-be-read-books">To Be Read Books</a></h3>
+
+<h2>Bookshelves</h2>
+<h3>{{bookshelf}}</h3>
+
+
+
+<form action="/create-bookshelf" method="POST">
+    <label>Name: </label>
+    <input type="text" name="bookshelf_name">
+    <input type="submit">
+</form>
 
 <h2>Recommended books</h2>
 
@@ -65,11 +77,7 @@ ISBN: {{ book.isbn_13 }}
 
 
 {% endfor %}
-{{data}}
-<br>
-<br>
-<br>
-{{search_results}}
+
 
 {% endblock %}
 

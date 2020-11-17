@@ -27,7 +27,6 @@ API_KEY = os.environ['GOOGLEBOOKS_KEY']
 def homepage():
     """View homepage."""
 
-
     return render_template('homepage.html')
 
 
@@ -91,7 +90,7 @@ def validate_login_credentials():
 
     if user == None or user.password != password:
         flash('The email and password you entered did not match our records. Please double-check and try again.')
-        redirect_location = '/log-in'
+        return redirect('/log-in')
     else:
         session['user_id'] = user.user_id
         user_id = session['user_id']
@@ -102,58 +101,98 @@ def validate_login_credentials():
         login_frequency = crud.get_user_login_frequency(user)
         if login_frequency == None:
             crud.log_login_occurrence(user)
-            redirect_location = '/interests'
+            session['login_frequency'] = login_frequency
+            return redirect('/interests')
         else:
             crud.log_login_occurrence(user)
-            redirect_location = 'user/{user_id}'
+            return redirect('/')
 
-    return redirect(redirect_location)
 
 
 @app.route('/interests')
 def get_user_interests():
+    """View get interests page."""
 
     return render_template('get_user_interests.html')
 
-# def make_googlebooks_api_call(keyword):
+
+def add_interest_to_db(interest):
+    """Add interest to db."""
+
+    # Check to see if interest already exist in db.
+    interest_object = crud.get_interest_by_name(interest)
+    if interest_object == None:
+        interest_object = crud.create_interest(interest)
+    else:
+        pass
+
+    return interest_object
+
+def add_user_interest_to_db(user_id, interest):
+    """Add userinterest to db"""
+
+    # Check if userinterest is in database already;
+    # If userinterest doesn't exist, create userinterest.
+
+    user_interest = crud.get_user_interest(user_id, interest.interest_id)
+    if user_interest == None:
+        user_interest = crud.create_user_interest(user_id, interest.interest_id)
+    else:
+        pass
+
+    return user_interest
 
 
-@app.route('/user-interests')
-def show_reccomended_books():
 
-# get check box values. then do a ge request on check box values
-#
+@app.route('/handle-user-interests', methods=['POST'])
+def handle_user_interests():
+    """Handle user interests from form to add to db."""
+
     user_id = session['user_id']
 
+    keywords = request.form.getlist('interests')
 
-    keywords = request.args.getlist('interests')
+    print("==================================")
+    print("==================================")
+    print("==================================")
+    print(keywords)
+    print("==================================")
 
-    print("===================================")
+    for keyword in keywords:
+        interest = add_interest_to_db(keyword)
+        print("==================================")
+        print("==================================")
+        print("==================================")
+        print(interest)
+        print("==================================")
+        user_interest = add_user_interest_to_db(user_id, interest)
+
+
+
+    return redirect('/')
+
+@app.route('/recommended-books')
+def show_recommended_books():
+    """show recommended books."""
+
+    user_id = session['user_id']
+    keywords = crud.get_all_interests_for_user(user_id)
     print("===================================")
     print("===================================")
     print("===================================")
     print(keywords)
-    print(type(keywords))
     print("===================================")
     print("===================================")
     print("===================================")
 
     search_results = []
     for keyword in keywords:
+        keyword = keyword.interest
         url = 'https://www.googleapis.com/books/v1/volumes'
         keyword = f'subject: {keyword}'
         payload = {'q': keyword, 'maxResults': 5, 'startIndex': randint(0,70), 'apikey': API_KEY}
 
         res = requests.get(url, params=payload)
-
-
-        print("===================================")
-        print("===================================")
-        print("===================================")
-        print(res.url)
-        print("===================================")
-        print("===================================")
-        print("===================================")
 
         data = res.json()
 
@@ -213,26 +252,120 @@ def show_reccomended_books():
 
                 search_results.append(search_result)
 
-
-        # else:
-        #     return redirect('/user/<user_id>')
+    return render_template('recommended_for_you.html', search_results=search_results)
 
 
-    return render_template('first_time_login.html', search_results=search_results, data=data)
+
+# @app.route('/user-interests')
+# def show_recomended_books():
 
 
-@app.route('/user/<user_id>')
-def show_user_details(user_id):
-    """Show user details."""
-
-    user_id = session['user_id']
-    profile_name = session['profile_name']
-
-    return render_template('user_details.html', user_id=user_id, profile_name=profile_name)
+#     user_id = session['user_id']
 
 
-@app.route('/user/<user_id>/read-books')
-def show_read_books(user_id):
+#     keywords = request.form.getlist('interests')
+
+#     print("===================================")
+#     print("===================================")
+#     print("===================================")
+#     print("===================================")
+#     print(keywords)
+#     print(type(keywords))
+#     print("===================================")
+#     print("===================================")
+#     print("===================================")
+
+#     search_results = []
+#     for keyword in keywords:
+#         url = 'https://www.googleapis.com/books/v1/volumes'
+#         keyword = f'subject: {keyword}'
+#         payload = {'q': keyword, 'maxResults': 5, 'startIndex': randint(0,70), 'apikey': API_KEY}
+
+#         res = requests.get(url, params=payload)
+
+
+#         print("===================================")
+#         print("===================================")
+#         print("===================================")
+#         print(res.url)
+#         print("===================================")
+#         print("===================================")
+#         print("===================================")
+
+#         data = res.json()
+
+#         for n in range(len(data['items'])):
+
+#             search_result = {}
+
+#             base = data['items'][n]['volumeInfo']
+#             search_result['isbn_13'] = None
+
+#             if base.get('industryIdentifiers', None) and (base['industryIdentifiers'][-1]['type'] == 'ISBN_13'):
+#                 search_result['isbn_13'] = base['industryIdentifiers'][-1]['identifier']
+
+#             elif base.get('industryIdentifiers', None) and (base['industryIdentifiers'][0]['type'] == 'ISBN_13'):
+#                 search_result['isbn_13'] = base['industryIdentifiers'][0]['identifier']
+
+#             if search_result['isbn_13'] != None:
+#                 title = base['title']
+#                 search_result['title'] = title
+
+#                 subtitle = base.get('subtitle', None)
+#                 if subtitle:
+#                     search_result['subtitle'] = subtitle
+#                 else:
+#                     pass
+
+#                 authors = base.get('authors', None)
+#                 if authors:
+#                     search_result['author'] = authors
+#                 else:
+#                     pass
+
+#                 img_links = base.get('imageLinks', None)
+#                 if img_links:
+#                     thumbnail = img_links['thumbnail']
+#                     search_result['thumbnail'] = thumbnail
+#                 else:
+#                     pass
+
+#                 published_date = base.get('publishedDate', None)
+#                 if published_date:
+#                     search_result['published_date'] = published_date
+#                 else:
+#                     pass
+
+#                 description = base.get('description', None)
+#                 if description:
+#                     search_result['description'] = description
+#                 else:
+#                     pass
+
+#                 categories = base.get('categories', None)
+#                 if categories:
+#                     search_result['categories'] = categories
+#                 else:
+#                     pass
+
+#                 search_results.append(search_result)
+
+
+#     return render_template('first_time_login.html', search_results=search_results, data=data)
+
+
+# @app.route('/user/<user_id>')
+# def show_user_details(user_id):
+#     """Show user details."""
+
+#     user_id = session['user_id']
+#     profile_name = session['profile_name']
+
+#     return render_template('user_details.html', user_id=user_id, profile_name=profile_name)
+
+
+@app.route('/read-books')
+def show_read_books():
     """Show the books the user has read."""
 
 
@@ -244,8 +377,8 @@ def show_read_books(user_id):
     return render_template('user_read_books.html', user=user, read_books=read_books)
 
 
-@app.route('/user/<user_id>/liked-books')
-def show_liked_books(user_id):
+@app.route('/liked-books')
+def show_liked_books():
     """Show the books the user has liked."""
 
     user_id = session['user_id']
@@ -256,8 +389,8 @@ def show_liked_books(user_id):
     return render_template('user_liked_books.html', user=user, liked_books=liked_books)
 
 
-@app.route('/user/<user_id>/to-be-read-books')
-def show_to_be_read_books(user_id):
+@app.route('/to-be-read-books')
+def show_to_be_read_books():
     """Show the books the user has marked to be read."""
 
     user_id = session['user_id']
@@ -491,7 +624,7 @@ def add_book_category_to_db(book, categories_in_db):
     """Create new bookcategory in database."""
 
     # Categories_in_db is a list
-    # Check if bookcategory is in database;
+    # Check if bookcategory is in database already;
     # If bookcategory doesn't exist, create bookcategory.
     if categories_in_db != None:
         book_categories_in_db = []
@@ -613,7 +746,7 @@ def mark_book_as_read():
     book_category = add_book_category_to_db(book, categories_in_db)
     read_book_in_collection = add_book_to_read_list(book_in_library)
 
-    return redirect('/user/<user_id>/read-books')
+    return redirect('/read-books')
 
 
 @app.route('/mark-as-liked')
@@ -645,7 +778,7 @@ def mark_book_as_liked():
     book_category = add_book_category_to_db(book, categories_in_db)
     liked_book_in_collection = add_book_to_liked_list(book_in_library)
 
-    return redirect('/user/<user_id>/liked-books')
+    return redirect('/liked-books')
 
 
 @app.route('/mark-as-to-be-read')
@@ -683,7 +816,7 @@ def mark_book_as_to_be_read():
     book_category = add_book_category_to_db(book, categories_in_db)
     to_be_read_book_in_collection = add_book_to_to_be_read_list(book_in_library)
 
-    return redirect('/user/<user_id>/to-be-read-books')
+    return redirect('/to-be-read-books')
 
 
 @app.route('/handle-remove-read-book' , methods=['POST'])
@@ -695,7 +828,7 @@ def remove_from_read_list():
 
     delete_book_from_read_list(isbn_13, user_id)
 
-    return redirect('/user/<user_id>/read-books')
+    return redirect('/read-books')
 
 
 @app.route('/handle-remove-liked-book', methods=['POST'])
@@ -710,7 +843,7 @@ def remove_from_liked_list():
     book_in_library = crud.get_book_in_library(book, user_id)
     remove_liked_tag(book_in_library)
 
-    return redirect('/user/<user_id>/liked-books')
+    return redirect('/liked-books')
 
 @app.route('/handle-remove-to-be-read-book' , methods=['POST'])
 def remove_from_to_be_read_list():
@@ -721,7 +854,22 @@ def remove_from_to_be_read_list():
 
     delete_book_from_to_be_read_list(isbn_13, user_id)
 
-    return redirect('/user/<user_id>/to-be-read-books')
+    return redirect('/to-be-read-books')
+
+@app.route('/create-bookshelf', methods=['POST'])
+def create_bookshelf():
+
+    user_id = session['user_id']
+    user = crud.get_user_by_id(user_id)
+    bookshelf_name = request.form.get('bookshelf_name')
+
+    bookshelf = crud.create_bookshelf(bookshelf_name, user_id)
+
+    bookshelves = crud.get_user_bookshelves(user_id)
+
+    return redirect('/')
+
+
 
 
 if __name__ == '__main__':

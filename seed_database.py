@@ -74,7 +74,7 @@ for n in range(10):
                             birthday, gender, created_time)
 
 
-
+# Create 30 interests and assign
 
 
 

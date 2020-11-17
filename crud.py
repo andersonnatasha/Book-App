@@ -1,6 +1,6 @@
 """CRUD operations"""
 
-from model import db, User, Book, Author, Category, BookCategory, Bookshelf, BookInLibrary, BookAuthor, connect_to_db
+from model import db, User, Book, Author, Category, BookCategory, Bookshelf, BookInLibrary, BookAuthor, Interest, UserInterest, connect_to_db
 from datetime import datetime
 
 
@@ -332,50 +332,6 @@ def update_book_tags(book_in_library, read_status_update, liked_status):
         print("elif (book_in_library.read == True) and (read_status_update == False):")
 
 
-    #     print("===============================")
-    #     print("===============================")
-    #     print("===============================")
-    #     print(book_in_library.book.title)
-    #     print(f'to be read:{book_in_library.to_be_read}')
-    #     print(f'to be read time: {book_in_library.to_be_read_date}')
-    #     print(f'read: {book_in_library.read}')
-    #     print(f'read time: {book_in_library.read_date}')
-    #     print(f'liked: {book_in_library.liked}')
-    #     print(f'liekd time: {book_in_library.liked_date}')
-    #     print("===============================")
-    #     print("===============================")
-    #     print("===============================")
-
-
-
-
-
-
-    # if (book_in_library.read == None) and (book_in_library.to_be_read == None):
-    #     if read_status_update == True:
-    #         book_in_library.read = True
-    #         book_in_library.read_date = datetime.now() #showing up as None
-    #         print("In if statement under read_DATE")
-    #         book_in_library.to_be_read = False
-    #         book_in_library.to_be_read_date = None
-    #         if liked_status == True:
-    #             print("In if statement LIKED STATUS IS TRUE")
-    #             book_in_library.liked = True
-    #             book_in_library.liked_date = datetime.now()
-    #         else:
-    #             print("In if statement LIKED STATUS IS FAAALLLLSSEEEE")
-    #     else:
-    #         book_in_library.to_be_read = True
-    #         book_in_library.to_be_read_date = datetime.now()
-    #         book_in_library.read = False
-    #         book_in_library.read_date = None
-    #         book_in_library.liked = False
-    #         book_in_library.liked_date = None
-
-    # db.session.add(book_in_library)
-    # db.session.commit()
-
-
 def get_read_books_by_user_id(user_id):
     """Get read books in a user's library by a user id"""
 
@@ -418,22 +374,75 @@ def get_liked_book_by_isbn_13(isbn_13, user_id):
 
 
 def get_to_be_read_book_by_isbn_13(isbn_13, user_id):
-    """Return a to be read book by it's title and user"""
+    """Return a to be read book by it's title and user."""
 
     book = Book.query.filter((Book.title==isbn_13) & (BookInLibrary.to_be_read == True)).first()
 
     return BookInLibrary.query.get((book.book_id, user_id))
 
 
-def create_bookshelf(name, user):
-    """"Create and return a user's bookshelf"""
+def create_bookshelf(name, user_id):
+    """"Create and return a user's bookshelf."""
 
-    bookshelf = Bookshelf(name=name, user=user)
+    time_created = datetime.now()
+    bookshelf = Bookshelf(name = name, user_id = user_id, time_created = time_created)
 
     db.session.add(bookshelf)
     db.session.commit()
 
     return bookshelf
+
+def get_user_bookshelves(user_id):
+    """Get all bookshelves for a particular user."""
+
+    return Bookshelf.query.filter(Bookshelf.user_id==user_id).all()
+
+
+def create_interest(interest):
+    """Create and return an interest."""
+
+    interest = Interest(interest = interest)
+
+    db.session.add(interest)
+    db.session.commit()
+
+    return interest
+
+def get_interest_by_name(interest):
+    """Return a interest by its name"""
+
+    interest = Interest.query.filter(Interest.interest == interest).first()
+
+    return interest
+
+
+def create_user_interest(user_id, interest_id):
+    """Create and return a interest for a specific user."""
+
+    user_interest = UserInterest(user_id = user_id, interest_id = interest_id)
+
+    db.session.add(user_interest)
+    db.session.commit()
+
+    return user_interest
+
+def get_user_interest(user_id, interest_id):
+    """Return a userinterest by a user id"""
+
+    user_id = user_id
+    interest_id = interest_id
+
+    user_interest = UserInterest.query.get((user_id, interest_id))
+
+    return user_interest
+
+def get_all_interests_for_user(user_id):
+    """Return a userinterest by a user id"""
+
+    user = User.query.get(user_id)
+
+    return user.interests
+
 
 
 if __name__ == '__main__':

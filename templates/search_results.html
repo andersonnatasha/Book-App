@@ -4,6 +4,9 @@
 
 {% block body %}
 
+<a href="/">Search for more books</a>
+<br>
+<br>
 {% for book in search_results %}
 
     <img src="{{book.thumbnail}}">
@@ -53,6 +56,5 @@
 
 
 {% endfor %}
-{{ data }}
 
 {% endblock %}

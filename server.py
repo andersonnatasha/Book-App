@@ -4,11 +4,13 @@ from flask import (Flask, render_template, request, flash, session,
 import requests
 
 from model import connect_to_db
+
 import crud
 
 from jinja2 import StrictUndefined
 
 import os
+
 from datetime import datetime
 
 import json
@@ -130,7 +132,6 @@ def add_user_interest_to_db(user_id, interest):
 
     # Check if userinterest is in database already;
     # If userinterest doesn't exist, create userinterest.
-
     user_interest = crud.get_user_interest(user_id, interest.interest_id)
     if user_interest == None:
         user_interest = crud.create_user_interest(user_id, interest.interest_id)
@@ -156,88 +157,88 @@ def handle_user_interests():
 
 
 @app.route('/recommended-books')
-def show_recommended_books():
-    """show recommended books."""
+# def show_recommended_books():
+#     """show recommended books."""
 
-    user_id = session['user_id']
-    keywords = crud.get_all_interests_for_user(user_id)
+#     user_id = session['user_id']
+#     keywords = crud.get_all_interests_for_user(user_id)
 
-    search_results = []
-    for keyword in keywords:
-        keyword = keyword.interest
-        url = 'https://www.googleapis.com/books/v1/volumes'
-        keyword = f'subject: {keyword}'
-        payload = {'q': keyword, 'maxResults': 5, 'startIndex': randint(0,70), 'apikey': API_KEY}
+#     search_results = []
+#     for keyword in keywords:
+#         keyword = keyword.interest
+#         url = 'https://www.googleapis.com/books/v1/volumes'
+#         keyword = f'subject: {keyword}'
+#         payload = {'q': keyword, 'maxResults': 5, 'startIndex': randint(0,70), 'apikey': API_KEY}
 
-        res = requests.get(url, params=payload)
+#         res = requests.get(url, params=payload)
 
-        data = res.json()
+#         data = res.json()
 
-        for n in range(len(data['items'])):
+#         for n in range(len(data['items'])):
 
-            search_result = {}
+#             search_result = {}
 
-            #TODO
-            # stuff_i_want = ['subtitle', 'authors', 'etc']
-            # for key in stuff_i_want:
-            #     if key in base:
-            #         search_result[key] = base[key]
+#             #TODO
+#             # stuff_i_want = ['subtitle', 'authors', 'etc']
+#             # for key in stuff_i_want:
+#             #     if key in base:
+#             #         search_result[key] = base[key]
 
-            # can still do isbn by hand
+#             # can still do isbn by hand
 
-            base = data['items'][n]['volumeInfo']
-            search_result['isbn_13'] = None
+#             base = data['items'][n]['volumeInfo']
+#             search_result['isbn_13'] = None
 
-            if base.get('industryIdentifiers', None) and (base['industryIdentifiers'][-1]['type'] == 'ISBN_13'):
-                search_result['isbn_13'] = base['industryIdentifiers'][-1]['identifier']
+#             if base.get('industryIdentifiers', None) and (base['industryIdentifiers'][-1]['type'] == 'ISBN_13'):
+#                 search_result['isbn_13'] = base['industryIdentifiers'][-1]['identifier']
 
-            elif base.get('industryIdentifiers', None) and (base['industryIdentifiers'][0]['type'] == 'ISBN_13'):
-                search_result['isbn_13'] = base['industryIdentifiers'][0]['identifier']
+#             elif base.get('industryIdentifiers', None) and (base['industryIdentifiers'][0]['type'] == 'ISBN_13'):
+#                 search_result['isbn_13'] = base['industryIdentifiers'][0]['identifier']
 
-            if search_result['isbn_13'] != None:
-                title = base['title']
-                search_result['title'] = title
+#             if search_result['isbn_13'] != None:
+#                 title = base['title']
+#                 search_result['title'] = title
 
-                subtitle = base.get('subtitle', None)
-                if subtitle:
-                    search_result['subtitle'] = subtitle
-                else:
-                    pass
+#                 subtitle = base.get('subtitle', None)
+#                 if subtitle:
+#                     search_result['subtitle'] = subtitle
+#                 else:
+#                     pass
 
-                authors = base.get('authors', None)
-                if authors:
-                    search_result['author'] = authors
-                else:
-                    pass
+#                 authors = base.get('authors', None)
+#                 if authors:
+#                     search_result['author'] = authors
+#                 else:
+#                     pass
 
-                img_links = base.get('imageLinks', None)
-                if img_links:
-                    thumbnail = img_links['thumbnail']
-                    search_result['thumbnail'] = thumbnail
-                else:
-                    pass
+#                 img_links = base.get('imageLinks', None)
+#                 if img_links:
+#                     thumbnail = img_links['thumbnail']
+#                     search_result['thumbnail'] = thumbnail
+#                 else:
+#                     pass
 
-                published_date = base.get('publishedDate', None)
-                if published_date:
-                    search_result['published_date'] = published_date
-                else:
-                    pass
+#                 published_date = base.get('publishedDate', None)
+#                 if published_date:
+#                     search_result['published_date'] = published_date
+#                 else:
+#                     pass
 
-                description = base.get('description', None)
-                if description:
-                    search_result['description'] = description
-                else:
-                    pass
+#                 description = base.get('description', None)
+#                 if description:
+#                     search_result['description'] = description
+#                 else:
+#                     pass
 
-                categories = base.get('categories', None)
-                if categories:
-                    search_result['categories'] = categories
-                else:
-                    pass
+#                 categories = base.get('categories', None)
+#                 if categories:
+#                     search_result['categories'] = categories
+#                 else:
+#                     pass
 
-                search_results.append(search_result)
+#                 search_results.append(search_result)
 
-    return render_template('recommended_for_you.html', search_results=search_results)
+#     return render_template('recommended_for_you.html', search_results=search_results)
 
 
 @app.route('/read-books')
@@ -290,9 +291,11 @@ def search_a_book():
 
     data = res.json()
 
+
     if keyword != '':
 
         search_results = []
+
         for n in range(len(data['items'])):
 
             search_result = {}
@@ -307,52 +310,21 @@ def search_a_book():
                 search_result['isbn_13'] = base['industryIdentifiers'][0]['identifier']
 
             if search_result['isbn_13'] != None:
-                title = base['title']
-                search_result['title'] = title
 
-                subtitle = base.get('subtitle', None)
-                if subtitle:
-                    search_result['subtitle'] = subtitle
-                else:
-                    pass
+                keys_to_search_for_in_data = ['title', 'subtitle', 'authors', 'publishedDate', 'description', 'categories']
 
-                authors = base.get('authors', None)
-                if authors:
-                    search_result['author'] = authors
-                else:
-                    pass
+                for key in keys_to_search_for_in_data:
+                    if key in base:
+                        search_result[key] = base[key]
 
                 img_links = base.get('imageLinks', None)
                 if img_links:
                     thumbnail = img_links['thumbnail']
                     search_result['thumbnail'] = thumbnail
-                else:
-                    pass
 
-                published_date = base.get('publishedDate', None)
-                if published_date:
-                    search_result['published_date'] = published_date
-                else:
-                    pass
+                search_results.append(search_result)
 
-                description = base.get('description', None)
-                if description:
-                    search_result['description'] = description
-                else:
-                    pass
-
-                categories = base.get('categories', None)
-                if categories:
-                    search_result['categories'] = categories
-                else:
-                    pass
-
-            search_results.append(search_result)
-
-    else:
-          return redirect('/user/<user_id>')
-
-    return render_template('search_results.html', search_results=search_results, data=data)
+    return render_template('search_results.html', search_results=search_results)
 
 
 def remove_illegal_characters_to_make_list(string):

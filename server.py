@@ -6,6 +6,7 @@ import requests
 from model import connect_to_db
 
 import crud
+import goole_books_api
 
 from jinja2 import StrictUndefined
 
@@ -21,8 +22,6 @@ app = Flask(__name__)
 app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
 
 app.secret_key = os.environ['FLASK_KEY']
-
-API_KEY = os.environ['GOOGLEBOOKS_KEY']
 
 
 @app.route('/')
@@ -157,88 +156,12 @@ def handle_user_interests():
 
 
 @app.route('/recommended-books')
-# def show_recommended_books():
-#     """show recommended books."""
+def show_recommended_books():
+    """show recommended books."""
 
-#     user_id = session['user_id']
-#     keywords = crud.get_all_interests_for_user(user_id)
+    search_results = goolge_books_api.show_recommended_books()
 
-#     search_results = []
-#     for keyword in keywords:
-#         keyword = keyword.interest
-#         url = 'https://www.googleapis.com/books/v1/volumes'
-#         keyword = f'subject: {keyword}'
-#         payload = {'q': keyword, 'maxResults': 5, 'startIndex': randint(0,70), 'apikey': API_KEY}
-
-#         res = requests.get(url, params=payload)
-
-#         data = res.json()
-
-#         for n in range(len(data['items'])):
-
-#             search_result = {}
-
-#             #TODO
-#             # stuff_i_want = ['subtitle', 'authors', 'etc']
-#             # for key in stuff_i_want:
-#             #     if key in base:
-#             #         search_result[key] = base[key]
-
-#             # can still do isbn by hand
-
-#             base = data['items'][n]['volumeInfo']
-#             search_result['isbn_13'] = None
-
-#             if base.get('industryIdentifiers', None) and (base['industryIdentifiers'][-1]['type'] == 'ISBN_13'):
-#                 search_result['isbn_13'] = base['industryIdentifiers'][-1]['identifier']
-
-#             elif base.get('industryIdentifiers', None) and (base['industryIdentifiers'][0]['type'] == 'ISBN_13'):
-#                 search_result['isbn_13'] = base['industryIdentifiers'][0]['identifier']
-
-#             if search_result['isbn_13'] != None:
-#                 title = base['title']
-#                 search_result['title'] = title
-
-#                 subtitle = base.get('subtitle', None)
-#                 if subtitle:
-#                     search_result['subtitle'] = subtitle
-#                 else:
-#                     pass
-
-#                 authors = base.get('authors', None)
-#                 if authors:
-#                     search_result['author'] = authors
-#                 else:
-#                     pass
-
-#                 img_links = base.get('imageLinks', None)
-#                 if img_links:
-#                     thumbnail = img_links['thumbnail']
-#                     search_result['thumbnail'] = thumbnail
-#                 else:
-#                     pass
-
-#                 published_date = base.get('publishedDate', None)
-#                 if published_date:
-#                     search_result['published_date'] = published_date
-#                 else:
-#                     pass
-
-#                 description = base.get('description', None)
-#                 if description:
-#                     search_result['description'] = description
-#                 else:
-#                     pass
-
-#                 categories = base.get('categories', None)
-#                 if categories:
-#                     search_result['categories'] = categories
-#                 else:
-#                     pass
-
-#                 search_results.append(search_result)
-
-#     return render_template('recommended_for_you.html', search_results=search_results)
+    return render_template('recommended_for_you.html', search_results=search_results)
 
 
 @app.route('/read-books')
@@ -282,47 +205,7 @@ def show_to_be_read_books():
 def search_a_book():
     """Show results from user's book search."""
 
-    keyword = request.args.get('search', '')
-
-    url = 'https://www.googleapis.com/books/v1/volumes'
-    payload = {'q': keyword, 'maxResults': 10, 'apikey': API_KEY}
-
-    res = requests.get(url, params=payload)
-
-    data = res.json()
-
-
-    if keyword != '':
-
-        search_results = []
-
-        for n in range(len(data['items'])):
-
-            search_result = {}
-
-            base = data['items'][n]['volumeInfo']
-            search_result['isbn_13'] = None
-
-            if base.get('industryIdentifiers', None) and (base['industryIdentifiers'][-1]['type'] == 'ISBN_13'):
-                search_result['isbn_13'] = base['industryIdentifiers'][-1]['identifier']
-
-            elif base.get('industryIdentifiers', None) and (base['industryIdentifiers'][0]['type'] == 'ISBN_13'):
-                search_result['isbn_13'] = base['industryIdentifiers'][0]['identifier']
-
-            if search_result['isbn_13'] != None:
-
-                keys_to_search_for_in_data = ['title', 'subtitle', 'authors', 'publishedDate', 'description', 'categories']
-
-                for key in keys_to_search_for_in_data:
-                    if key in base:
-                        search_result[key] = base[key]
-
-                img_links = base.get('imageLinks', None)
-                if img_links:
-                    thumbnail = img_links['thumbnail']
-                    search_result['thumbnail'] = thumbnail
-
-                search_results.append(search_result)
+    search_results = goolge_books_api.search_a_book()
 
     return render_template('search_results.html', search_results=search_results)
 
@@ -353,22 +236,8 @@ def add_book_to_db(title, subtitle, description, image_link, isbn_13):
 
     # Check if the book is already in the database; If not in db, create book.
     book = crud.get_book_by_isbn_13(isbn_13)
-    print("=========================================")
-    print("=========================================")
-    print("=========================================")
-    print(f"book was here didnt need to create: {book}")
-    print("=========================================")
-    print("=========================================")
-    print("=========================================")
     if book == None:
         book = crud.create_book(title, subtitle, description, image_link, isbn_13)
-        print("=========================================")
-        print("=========================================")
-        print("=========================================")
-        print(f"book create: {book}")
-        print("=========================================")
-        print("=========================================")
-        print("=========================================")
     else:
         pass
 

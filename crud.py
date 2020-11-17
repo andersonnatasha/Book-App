@@ -18,10 +18,12 @@ def create_user(email, password, profile_name, birthday, gender, time_created):
 
     return user
 
+
 def get_user_by_id(user_id):
     """Return user by user id."""
 
     return User.query.get(user_id)
+
 
 def get_user_by_email(user_email):
     """Return a user by email."""
@@ -61,6 +63,7 @@ def create_book(title, subtitle, description, image_link, isbn_13):
 
     return book
 
+
 def get_book_by_isbn_13(isbn_13):
     """Return a book by title."""
 
@@ -94,6 +97,7 @@ def create_book_author(book_id, author_id):
 
     return book_author
 
+
 def get_book_author(book_id, author_id):
     """Return a bookauthor."""
 
@@ -104,6 +108,7 @@ def get_book_author(book_id, author_id):
 
     return book_author
 
+
 def create_category(category):
     """Create and return a category."""
 
@@ -113,6 +118,7 @@ def create_category(category):
     db.session.commit()
 
     return category
+
 
 def get_category_by_name(category):
     """Return a category by its name."""
@@ -131,6 +137,7 @@ def create_book_category(book_id, category_id):
     db.session.commit()
 
     return book_category
+
 
 def get_book_category(book_id, category_id):
     """Return a bookauthor."""
@@ -153,6 +160,7 @@ def create_a_book_in_library(book, user_id):
 
     return book_in_library
 
+
 def get_book_in_library(book, user_id):
     """ Gets a book in a library by title user id."""
 
@@ -160,6 +168,7 @@ def get_book_in_library(book, user_id):
     book_in_library = BookInLibrary.query.get((book_id, user_id))
 
     return book_in_library
+
 
 def delete_book_from_library(book_in_library):
     """Delete read book from user library."""
@@ -195,9 +204,6 @@ def mark_book_as_read(book_in_library, read_status_update, liked_status):
         book_in_library.to_be_read = False
         book_in_library.to_be_read_date = None
 
-        db.session.add(book_in_library)
-        db.session.commit()
-
     # Book already in library: Book is on TBR list and moving to read/liked list
     elif (book_in_library.read == False) and (read_status_update == True) and (liked_status == False):
         book_in_library.read = True
@@ -205,16 +211,6 @@ def mark_book_as_read(book_in_library, read_status_update, liked_status):
         book_in_library.liked = False
         book_in_library.to_be_read = False
         book_in_library.to_be_read_date = None
-        db.session.add(book_in_library)
-        db.session.commit()
-        print("========================")
-        print("========================")
-        print("========================")
-        print("========================")
-        print(book_in_library)
-        print("elif (book_in_library.read == False) and (read_status_update == True) and (liked_status == False)")
-        print("========================")
-        print("========================")
 
     # Book already in library: book is on TRB list and moving to read list, but not liked list
     elif (book_in_library.read == False) and (read_status_update == True):
@@ -224,14 +220,9 @@ def mark_book_as_read(book_in_library, read_status_update, liked_status):
         book_in_library.liked_date = None
         book_in_library.to_be_read = False
         book_in_library.to_be_read_date = None
-        db.session.add(book_in_library)
-        db.session.commit()
-        print("========================")
-        print("========================")
-        print("========================")
-        print("========================")
-        print(book_in_library.book.title)
-        print("elif (book_in_library.read == False) and (read_status_update == True):")
+
+    db.session.add(book_in_library)
+    db.session.commit()
 
 
 def mark_book_as_liked(book_in_library, read_status_update, liked_status):
@@ -246,9 +237,6 @@ def mark_book_as_liked(book_in_library, read_status_update, liked_status):
         book_in_library.to_be_read = False
         book_in_library.to_be_read_date = None
 
-        db.session.add(book_in_library)
-        db.session.commit()
-
     # Book already in library: Book is on TBR list and moving to read/liked list
     elif (book_in_library.read == False) and (liked_status == True):
         book_in_library.read = True
@@ -257,27 +245,14 @@ def mark_book_as_liked(book_in_library, read_status_update, liked_status):
         book_in_library.liked_date = datetime.now()
         book_in_library.to_be_read = False
         book_in_library.to_be_read_date = None
-        db.session.add(book_in_library)
-        db.session.commit()
-        print("========================")
-        print("========================")
-        print("========================")
-        print("========================")
-        print(book_in_library.book.title)
-        print("elif (book_in_library.read == False) and (read_status_update == True) and (liked_status == True):")
 
     # Book in library: book is read, but not liked, being added to liked list
     elif (book_in_library.read == True) and (liked_status == True):
         book_in_library.liked = True
         book_in_library.liked_date = datetime.now()
-        db.session.add(book_in_library)
-        db.session.commit()
-        print("========================")
-        print("========================")
-        print("========================")
-        print("========================")
-        print("elif (book_in_library.read == True) and (read_status_update == False):")
 
+    db.session.add(book_in_library)
+    db.session.commit()
 
 
 def mark_book_as_to_be_read(book_in_library, read_status_update, liked_status):
@@ -292,10 +267,6 @@ def mark_book_as_to_be_read(book_in_library, read_status_update, liked_status):
         book_in_library.liked = True
         book_in_library.liked_date = datetime.now()
 
-
-        db.session.add(book_in_library)
-        db.session.commit()
-
     # Book in library: Book is read, possibly liked, and moving to tbr list
     elif (book_in_library.read == True) and (read_status_update == False):
         book_in_library.read = False
@@ -304,13 +275,10 @@ def mark_book_as_to_be_read(book_in_library, read_status_update, liked_status):
         book_in_library.liked_date = None
         book_in_library.to_be_read = True
         book_in_library.to_be_read_date = datetime.now()
-        db.session.add(book_in_library)
-        db.session.commit()
-        print("========================")
-        print("========================")
-        print("========================")
-        print("========================")
-        print("elif (book_in_library.read == True) and (read_status_update == False):")
+
+    db.session.add(book_in_library)
+    db.session.commit()
+
 
 def remove_liked_tag(book_in_library, read_status_update, liked_status):
     """Change a liked tag from True to False."""
@@ -330,6 +298,7 @@ def get_read_books_by_user_id(user_id):
 
     return read_books_in_library
 
+
 def get_liked_books_by_user_id(user_id):
     """Get liked books in a user's library by a user id."""
 
@@ -337,6 +306,7 @@ def get_liked_books_by_user_id(user_id):
     liked_books_in_library = BookInLibrary.query.filter((BookInLibrary.user_id == user.user_id ) & (BookInLibrary.liked == True)).all()
 
     return liked_books_in_library
+
 
 def get_to_be_read_books_by_user_id(user_id):
     """Return to be read books in a user's library by a user id."""
@@ -346,6 +316,7 @@ def get_to_be_read_books_by_user_id(user_id):
 
     return to_be_read_books_in_library
 
+
 def get_read_book_by_isbn_13(isbn_13, user_id):
     """Return a read book by title and user_id."""
 
@@ -354,13 +325,14 @@ def get_read_book_by_isbn_13(isbn_13, user_id):
 
     return BookInLibrary.query.get((book_id, user_id))
 
+
 def get_liked_book_by_isbn_13(isbn_13, user_id):
     """Return a liked book by it's title and user."""
 
     book = Book.query.filter((Book.isbn_13 == isbn_13) & (BookInLibrary.liked == True)).first()
     # book_id = book.book_id
 
-    return ((book))
+    return (book)
 
 
 def get_to_be_read_book_by_isbn_13(isbn_13, user_id):

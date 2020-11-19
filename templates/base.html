@@ -3,6 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.js"
+      integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+      crossorigin="anonymous"></script>
     <title>
       {% block title %}{% endblock %}
     </title>
@@ -18,6 +22,6 @@
     {% endfor %}
 
     {% block body %}{% endblock %}
-
+    <script src="/static/bookProject.js"></script>
   </body>
 </html>

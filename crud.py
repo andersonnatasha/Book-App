@@ -177,25 +177,25 @@ def delete_book_from_library(book_in_library):
     db.session.commit()
 
 
-def create_read_book(user_id, book_id, read, read_date):
-    """Create a read book in a user library."""
+# def create_read_book(user_id, book_id, read, read_date):
+#     """Create a read book in a user library."""
 
-    read_book = BookInLibrary(user_id = user_id,
-                              book_id = book_id,
-                              read = read,
-                              read_date = read_date)
+#     read_book = BookInLibrary(user_id = user_id,
+#                               book_id = book_id,
+#                               read = read,
+#                               read_date = read_date)
 
 
-    db.session.add(read_book)
-    db.session.commit()
+#     db.session.add(read_book)
+#     db.session.commit()
 
-    return read_book
+#     return read_book
 
 
 def mark_book_as_read(book_in_library, read_status_update, liked_status):
     """Update book tags to indicate book is categorized as read."""
 
-    # The first time a book has been marked as read/
+    # The first time a book has been marked as read
     if (book_in_library.read == None) and (book_in_library.to_be_read == None):
         book_in_library.read = True
         book_in_library.read_date = datetime.now()
@@ -208,18 +208,17 @@ def mark_book_as_read(book_in_library, read_status_update, liked_status):
     elif (book_in_library.read == False) and (read_status_update == True) and (liked_status == False):
         book_in_library.read = True
         book_in_library.read_date = datetime.now()
-        book_in_library.liked = False
         book_in_library.to_be_read = False
         book_in_library.to_be_read_date = None
 
-    # Book already in library: book is on TRB list and moving to read list, but not liked list
-    elif (book_in_library.read == False) and (read_status_update == True):
-        book_in_library.read = True
-        book_in_library.read_date = datetime.now()
-        book_in_library.liked = False
-        book_in_library.liked_date = None
-        book_in_library.to_be_read = False
-        book_in_library.to_be_read_date = None
+    # # Book already in library: book is on TRB list and moving to read list, but not liked list
+    # elif (book_in_library.read == False) and (read_status_update == True):
+    #     book_in_library.read = True
+    #     book_in_library.read_date = datetime.now()
+    #     book_in_library.liked = False
+    #     book_in_library.liked_date = None
+    #     book_in_library.to_be_read = False
+    #     book_in_library.to_be_read_date = None
 
     db.session.add(book_in_library)
     db.session.commit()

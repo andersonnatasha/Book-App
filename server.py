@@ -1,5 +1,5 @@
 from flask import (Flask, render_template, request, flash, session,
-                   redirect)
+                   redirect, jsonify)
 
 import requests
 
@@ -28,8 +28,13 @@ app.secret_key = os.environ['FLASK_KEY']
 def homepage():
     """View homepage."""
 
-    return render_template('homepage.html')
+    user_id = session.get('user_id')
+    if user_id:
+        bookshelves = crud.get_user_bookshelves(session['user_id'])
+    else:
+        bookshelves = None
 
+    return render_template('homepage.html', bookshelves=bookshelves)
 
 
 @app.route('/sign-up')
@@ -531,20 +536,43 @@ def remove_from_to_be_read_list():
     return redirect('/to-be-read-books')
 
 
-@app.route('/create-bookshelf', methods=['POST'])
+@app.route('/create-bookshelf.json', methods=['POST'])
 def create_bookshelf():
     """Create a bookshelf."""
 
     user_id = session['user_id']
-    user = crud.get_user_by_id(user_id)
 
-    bookshelf_name = request.form.get('bookshelf_name')
+    bookshelf_name = request.form.get('melonWaffles')
 
     bookshelf = crud.create_bookshelf(bookshelf_name, user_id)
 
-    bookshelves = crud.get_user_bookshelves(user_id)
+    bookshelves_objects = crud.get_user_bookshelves(user_id)
 
-    return redirect('/')
+    new_bookshelf = {'name': bookshelves_objects[-1].name}
+
+    return jsonify(new_bookshelf)
+
+    # bookshelves = {}
+    # for index, bookshelf in enumerate(bookshelves_objects):
+    #     bookshelf = bookshelf.name
+    #     bookshelves[index] = bookshelf
+
+    # return jsonify(bookshelves)
+
+# @app.route('/create-bookshelf.json', methods=['POST'])
+# def create_bookshelf():
+#     """Create a bookshelf."""
+
+#     user_id = session['user_id']
+#     user = crud.get_user_by_id(user_id)
+
+#     bookshelf_name = request.form.get('bookshelf_name')
+
+#     bookshelf = crud.create_bookshelf(bookshelf_name, user_id)
+
+#     bookshelves = crud.get_user_bookshelves(user_id)
+
+#     return redirect('/')
 
 
 if __name__ == '__main__':

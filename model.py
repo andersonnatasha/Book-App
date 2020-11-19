@@ -163,9 +163,6 @@ class BookInLibrary(db.Model):
 
     __tablename__ = 'books_in_library'
 
-    # book_in_library_id = db.Column(db.Integer,
-    #                       primary_key=True,
-    #                       autoincrement=True)
     book_id = db.Column(db.Integer,
                          db.ForeignKey('books.book_id'),
                          primary_key=True

@@ -23,17 +23,17 @@
 
 <br>
 
+<div id="bookshelf-location">
 <h2>Bookshelves</h2>
-{% for bookshelf in session['bookshelf'] %}
-<h3>{{bookshelf}}</h3>
-
+{% for bookshelf in bookshelves %}
+<h3>{{bookshelf.name}}</h3>
 {% endfor %}
+<h3 id="bottom-of-bookshelf"></h3>
 
 
-
-<form action="/create-bookshelf" method="POST">
+<form id="create-bookshelf">
     <label>Name: </label>
-    <input type="text" name="bookshelf_name">
+    <input id="bookshelf-name" type="text" name="bookshelf_name">
     <input type="submit">
 </form>
 

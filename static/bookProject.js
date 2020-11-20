@@ -1,19 +1,7 @@
 'use strict';
 
-// document.querySelector('#create-bookshelf').addEventListener('submit', (event) => {
-//     event.preventDefault();
-//     const bookshelfName = document.querySelector('#bookshelf-name').value;
-//     const bookshelfLocation = document.querySelector('#bookshelf-location');
-//     const newH3 = document.createElement("h3");
-//     newH3.appendChild(document.createTextNode(bookshelfName));
-//     const bottomOfBookshelf = document.querySelector('#bottom-of-bookshelf');
-//     document.body.insertBefore(bottomOfBookshelf, newH3)
-//     (bookshelfLocation.innerHTML = bookshelfName)
-// }
-// );
 
-
-
+/// Creates modal for adding a new bookshelf
 const modal = document.getElementById('modal');
 const modalContent = document.getElementById('modal-content');
 const newBookshelfButton = document.getElementById('create-bookshelf-button');
@@ -32,7 +20,7 @@ cancelButton.addEventListener('click', function() {
 });
 
 
-
+/// Takes user input to create new bookshelf in db and then display on page
 $('#create-bookshelf').on('submit', (evt) => {
     evt.preventDefault();
 

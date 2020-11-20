@@ -266,6 +266,10 @@ def add_author_to_db(authors):
     # Takes in authors as list
     # Check if author is in database;
     # If author doesn't exists, create author
+
+    print('++++++++++++++++++++++++++++++++')
+    print('++++++++++++++++++++++++++++++++')
+    print(authors)
     if authors != None:
         authors_in_db = []
         for author in authors:
@@ -277,6 +281,10 @@ def add_author_to_db(authors):
                 pass
     else:
         authors_in_db = None
+
+    print('++++++++++++++++++++++++++++++++')
+    print('++++++++++++++++++++++++++++++++')
+    print(authors_in_db)
 
     return authors_in_db
 
@@ -295,10 +303,14 @@ def add_book_author_to_db(book, authors_in_db):
                 book_author_object = crud.create_book_author(book.book_id, author.author_id)
 
                 book_authors_in_db.append(book_author_object)
-            else:
-                pass
+
     else:
         book_authors_in_db = None
+
+
+    print('++++++++++++++++++++++++++++++++')
+    print('++++++++++++++++++++++++++++++++')
+    print(book_authors_in_db)
 
     return book_authors_in_db
 

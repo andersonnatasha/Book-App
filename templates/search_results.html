@@ -14,7 +14,7 @@
     {% if book.subtitle %}
      {{book.subtitle}}
     {% endif %}
-    {% for author in book.author %} <br>
+    {% for author in book.authors %} <br>
     {{author}}
     {% endfor %} <br>
     {{ book.description }} <br>
@@ -23,7 +23,7 @@
     <form action='/mark-as-read'>
         <input name="title" type="hidden" value="{{ book.title }}">
         <input name="subtitle" type="hidden" value="{{ book.subtitle }}">
-        <input name="authors" type="hidden" value="{{ book.author }}">
+        <input name="authors" type="hidden" value="{{ book.authors }}">
         <input name="description" type='hidden' value="{{ book.description }}">
         <input name="categories" type='hidden' value="{{ book.categories }}">
         <input name="image_link" type="hidden" value="{{ book.thumbnail }}">
@@ -33,7 +33,7 @@
     <form action='/mark-as-liked'>
         <input name="title" type="hidden" value="{{ book.title }}">
         <input name="subtitle" type="hidden" value="{{ book.subtitle }}">
-        <input name="authors" type="hidden" value="{{ book.author }}">
+        <input name="authors" type="hidden" value="{{ book.authors }}">
         <input name="description" type='hidden' value="{{ book.description }}">
         <input name="categories" type='hidden' value="{{ book.categories }}">
         <input name="image_link" type="hidden" value="{{ book.thumbnail }}">
@@ -43,7 +43,7 @@
     <form action='/mark-as-to-be-read'>
         <input name="title" type="hidden" value="{{ book.title }}">
         <input name="subtitle" type="hidden" value="{{ book.subtitle }}">
-        <input name="authors" type="hidden" value="{{ book.author }}">
+        <input name="authors" type="hidden" value="{{ book.authors }}">
         <input name="description" type='hidden' value="{{ book.description }}">
         <input name="categories" type='hidden' value="{{ book.categories }}">
         <input name="image_link" type="hidden" value="{{ book.thumbnail }}">

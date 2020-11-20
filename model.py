@@ -77,9 +77,9 @@ class Author(db.Model):
                           )
     full_name = db.Column(db.String(70),
                       nullable=False)
-    # book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
+    book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
 
-    # book = db.relationship('Book')
+    book = db.relationship('Book')
 
     def __repr__(self):
         return f'<Author author_id={self.author_id} full_name={self.full_name}>'

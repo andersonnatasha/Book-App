@@ -7,7 +7,6 @@
 {% if session['user_id'] %}
 
 <h2>{{ session['profile_name'] }}</h2>
-<div id="homepage-background">
 <form action='/search-a-book'>
     <label>Search a book by title or author</label>
     <input type="text" name=search>
@@ -34,11 +33,11 @@
 
 <div id="modal">
 <div id="modal-content">
-<form method="POST">
-    <p><label for="bookshelf-name">Name: </label></p>
+<form id="create-bookshelf">
+    <p><label>Name: </label></p>
     <input id="bookshelf-name" type="text" name="bookshelf_name">
-    <input id="cancel" type="reset" value="Cancel">
     <input type="submit">
+    <input id="cancel" type="reset" value="Cancel">
 </form>
 </div>
 </div>

@@ -31,6 +31,7 @@ def homepage():
     user_id = session.get('user_id')
     if user_id:
         bookshelves = crud.get_user_bookshelves(session['user_id'])
+        bookshelves = bookshelves[::-1]
     else:
         bookshelves = None
 

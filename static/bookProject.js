@@ -41,11 +41,11 @@ $('#create-bookshelf').on('submit', (evt) => {
     };
 
     $.post('/create-bookshelf.json', formInput, (res) => {
-        const newDiv = $('#bottom-of-bookshelf').append(res.name);
-        modalContent.style.display = 'none'
-        modal.style.display ='none'
-        // const newH3 = $newDiv.append('h3');
-        // newH3.after(res.name)
+        const bookshelfName = res.name;
+        const location = $('#bookshelf-names').prepend('<li></li>');
+        $('#bookshelf-names li:first-child').html(bookshelfName);
+        modalContent.style.display = 'none';
+        modal.style.display ='none';
         });
 });
 

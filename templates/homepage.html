@@ -22,12 +22,12 @@
 
 <br>
 
-<div id="bookshelf-location">
 <h2>Bookshelves</h2>
+<ul id="bookshelf-names">
 {% for bookshelf in bookshelves %}
-<h3>{{bookshelf.name}}</h3>
+    <li>{{bookshelf.name}}</li>
 {% endfor %}
-<div id="bottom-of-bookshelf"></div>
+</ul>
 
 <button id="create-bookshelf-button">New Bookshelf</button>
 

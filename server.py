@@ -562,6 +562,10 @@ def create_bookshelf():
 
     return jsonify(new_bookshelf)
 
+@app.route('/<bookshelf_name>-bookshelf')
+def show_bookshelf(bookshelf_name):
+
+    return render_template('user_bookshelf.html')
 
 
 if __name__ == '__main__':

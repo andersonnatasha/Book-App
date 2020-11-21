@@ -7,6 +7,8 @@
 <a href="/">Search for more books</a>
 <br>
 <br>
+
+
 {% for book in search_results %}
 
     <img src="{{book.thumbnail}}">
@@ -20,41 +22,44 @@
     {{ book.description }} <br>
     Published: {{ book.published_date }} <br>
     ISBN: {{ book.isbn_13 }}
-    <form action='/mark-as-read'>
-        <input name="title" type="hidden" value="{{ book.title }}">
-        <input name="subtitle" type="hidden" value="{{ book.subtitle }}">
-        <input name="authors" type="hidden" value="{{ book.authors }}">
-        <input name="description" type='hidden' value="{{ book.description }}">
-        <input name="categories" type='hidden' value="{{ book.categories }}">
-        <input name="image_link" type="hidden" value="{{ book.thumbnail }}">
-        <input name="isbn_13" type="hidden" value="{{ book.isbn_13 }}">
+
+    <form class="mark-as-read" id="{{book.isbn_13}}">
+        <input id="read-book-title{{book.isbn_13}}" name="title" type="hidden" value="{{ book.title }}">
+        <input id="read-book-subtitle{{book.isbn_13}}" name="subtitle" type="hidden" value="{{ book.subtitle }}">
+        <input id="read-book-authors{{book.isbn_13}}" name="authors" type="hidden" value="{{ book.authors }}">
+        <input id="read-book-description{{book.isbn_13}}" name="description" type='hidden' value="{{ book.description }}">
+        <input id="read-book-categories{{book.isbn_13}}" name="categories" type='hidden' value="{{ book.categories }}">
+        <input id="read-book-image-link{{book.isbn_13}}" name="image_link" type="hidden" value="{{ book.thumbnail }}">
+        <input id="read-book-isbn-13{{book.isbn_13}}" name="isbn_13" type="hidden" value="{{ book.isbn_13 }}">
         <input value="Read" type="submit">
+        <span id="read-message{{book.isbn_13}}"></span>
     </form>
-    <form action='/mark-as-liked'>
-        <input name="title" type="hidden" value="{{ book.title }}">
-        <input name="subtitle" type="hidden" value="{{ book.subtitle }}">
-        <input name="authors" type="hidden" value="{{ book.authors }}">
-        <input name="description" type='hidden' value="{{ book.description }}">
-        <input name="categories" type='hidden' value="{{ book.categories }}">
-        <input name="image_link" type="hidden" value="{{ book.thumbnail }}">
-        <input name="isbn_13" type="hidden" value="{{ book.isbn_13 }}">
+    <form class="mark-as-liked" id="{{book.isbn_13}}">
+        <input id="liked-book-title{{book.isbn_13}}" name="title" type="hidden" value="{{ book.title }}">
+        <input id="liked-book-subtitle{{book.isbn_13}}" name="subtitle" type="hidden" value="{{ book.subtitle }}">
+        <input id="liked-book-authors{{book.isbn_13}}" name="authors" type="hidden" value="{{ book.authors }}">
+        <input id="liked-book-description{{book.isbn_13}}" name="description" type='hidden' value="{{ book.description }}">
+        <input id="liked-book-categories{{book.isbn_13}}" name="categories" type='hidden' value="{{ book.categories }}">
+        <input id="liked-book-image-link{{book.isbn_13}}" name="image_link" type="hidden" value="{{ book.thumbnail }}">
+        <input id="liked-book-isbn-13{{book.isbn_13}}" name="isbn_13" type="hidden" value="{{ book.isbn_13 }}">
         <input value="Liked" type="submit">
+        <span id="liked-message{{book.isbn_13}}"></span>
     </form>
-    <form action='/mark-as-to-be-read'>
-        <input name="title" type="hidden" value="{{ book.title }}">
-        <input name="subtitle" type="hidden" value="{{ book.subtitle }}">
-        <input name="authors" type="hidden" value="{{ book.authors }}">
-        <input name="description" type='hidden' value="{{ book.description }}">
-        <input name="categories" type='hidden' value="{{ book.categories }}">
-        <input name="image_link" type="hidden" value="{{ book.thumbnail }}">
-        <input name="isbn_13" type="hidden" value="{{ book.isbn_13 }}">
+    <form class="mark-as-to-be-read" id="{{book.isbn_13}}">
+        <input id="to-be-read-book-title{{book.isbn_13}}" name="title" type="hidden" value="{{ book.title }}">
+        <input id="to-be-read-book-subtitle{{book.isbn_13}}" name="subtitle" type="hidden" value="{{ book.subtitle }}">
+        <input id="to-be-read-book-authors{{book.isbn_13}}" name="authors" type="hidden" value="{{ book.authors }}">
+        <input id="to-be-read-book-description{{book.isbn_13}}" name="description" type='hidden' value="{{ book.description }}">
+        <input id="to-be-read-book-categories{{book.isbn_13}}" name="categories" type='hidden' value="{{ book.categories }}">
+        <input id="to-be-read-book-image-link{book.isbn_13}}" name="image_link" type="hidden" value="{{ book.thumbnail }}">
+        <input id="to-be-read-book-isbn-13{{book.isbn_13}}"name="isbn_13" type="hidden" value="{{ book.isbn_13 }}">
         <input value="TBR" type="submit">
+        <span id="to-be-read-message{{book.isbn_13}}"></span>
     </form>
-    <br>
     <br>
 
 
 
 {% endfor %}
-
+<script src="/static/searchResults.js"></script>
 {% endblock %}

@@ -1,11 +1,12 @@
 'use strict';
 
 
-/// Creates modal for adding a new bookshelf
+// /// Creates modal for adding a new bookshelf
 const modal = document.getElementById('modal');
 const modalContent = document.getElementById('modal-content');
 const newBookshelfButton = document.getElementById('create-bookshelf-button');
 const cancelButton = document.getElementById('cancel');
+
 
 newBookshelfButton.addEventListener('click', function() {
   modalContent.style.display = 'flex'
@@ -25,19 +26,18 @@ $('#create-bookshelf').on('submit', (evt) => {
     evt.preventDefault();
 
     const formInput = {
-    melonWaffles: $('#bookshelf-name').val()
+    bookshelfName: $('#bookshelf-name').val()
     };
 
     $.post('/create-bookshelf.json', formInput, (res) => {
         const bookshelfName = res.name;
-        const location = $('#bookshelf-names').prepend('<li></li>');
+        $('#bookshelf-names').prepend('<li></li>');
         $('#bookshelf-names li:first-child').html(bookshelfName);
+        $('#bookshelf-name').val("")
         modalContent.style.display = 'none';
         modal.style.display ='none';
         });
 });
-
-
 
 
 

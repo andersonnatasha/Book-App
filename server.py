@@ -268,9 +268,6 @@ def add_author_to_db(authors):
     # Check if author is in database;
     # If author doesn't exists, create author
 
-    print('++++++++++++++++++++++++++++++++')
-    print('++++++++++++++++++++++++++++++++')
-    print(authors)
     if authors != None:
         authors_in_db = []
         for author in authors:
@@ -282,10 +279,6 @@ def add_author_to_db(authors):
                 pass
     else:
         authors_in_db = None
-
-    print('++++++++++++++++++++++++++++++++')
-    print('++++++++++++++++++++++++++++++++')
-    print(authors_in_db)
 
     return authors_in_db
 
@@ -309,8 +302,6 @@ def add_book_author_to_db(book, authors_in_db):
         book_authors_in_db = None
 
 
-    print('++++++++++++++++++++++++++++++++')
-    print('++++++++++++++++++++++++++++++++')
     print(book_authors_in_db)
 
     return book_authors_in_db
@@ -365,36 +356,41 @@ def add_book_to_read_list(book_in_library):
 
 
     if book_in_library.read == True:
-        flash('This book is already on your read list.')
+        message = '''You've already added this book to your read books.'''
     else:
         read_status_update = True
         liked_status = False
         crud.mark_book_as_read(book_in_library, read_status_update, liked_status)
-        flash('Book Added!')
+        message = 'Added to your read books'
+
+    return message
 
 
 def add_book_to_liked_list(book_in_library):
     """Add a bok to a user liked list."""
 
     if book_in_library.liked == True:
-        flash('''You've already liked this book.''')
+        message = 'This book is already on your liked list.'
     else:
         read_status_update = True
         liked_status = True
         crud.mark_book_as_liked(book_in_library, read_status_update, liked_status)
-        flash('Book Added!')
+        message = 'Added to your liked books'
+
+    return message
 
 def add_book_to_to_be_read_list(book_in_library):
     """Add a book to a user liked list."""
 
     if book_in_library.to_be_read == True:
-        flash('''You've already added this book to your tbr list.''')
+        message = 'This book is already on your tbr list.'
     else:
         read_status_update = False
         liked_status = False
         crud.mark_book_as_to_be_read(book_in_library, read_status_update, liked_status)
-        flash('Book Added!')
+        message = 'Added to your trb list'
 
+    return message
 
 def delete_book_from_read_list(isbn_13, user_id):
     """Remove book from user's read list."""
@@ -420,7 +416,7 @@ def delete_book_from_to_be_read_list(isbn_13, user_id):
     crud.delete_book_from_library(book_in_library)
 
 
-@app.route('/mark-as-read')
+@app.route('/mark-as-read', methods=['POST'])
 def mark_book_as_read():
     """Mark a book as read in a user library."""
 
@@ -428,13 +424,13 @@ def mark_book_as_read():
 
     # get the title/subtitle/authors/image link/categories/description
     # from book user submitted as read
-    title = request.args.get('title')
-    subtitle = request.args.get('subtitle')
-    authors = request.args.get('authors')
-    image_link = request.args.get('image_link')
-    categories = request.args.get('categories')
-    description = request.args.get('description')
-    isbn_13 = request.args.get('isbn_13')
+    title = request.form.get('title')
+    subtitle = request.form.get('subtitle')
+    authors = request.form.get('authors')
+    image_link = request.form.get('image_link')
+    categories = request.form.get('categories')
+    description = request.form.get('description')
+    isbn_13 = request.form.get('isbn_13')
 
     authors_list = remove_illegal_characters_to_make_list(authors)
     categories_list = remove_illegal_characters_to_make_list(categories)
@@ -445,12 +441,13 @@ def mark_book_as_read():
     book_author = add_book_author_to_db(book, authors_in_db)
     categories_in_db = add_category_to_db(categories_list)
     book_category = add_book_category_to_db(book, categories_in_db)
-    read_book_in_collection = add_book_to_read_list(book_in_library)
-
-    return redirect('/read-books')
+    message = add_book_to_read_list(book_in_library)
 
 
-@app.route('/mark-as-liked')
+    return message
+
+
+@app.route('/mark-as-liked', methods=['POST'])
 def mark_book_as_liked():
     """Mark a book as liked in a user library."""
 
@@ -459,13 +456,13 @@ def mark_book_as_liked():
 
     # get the title/subtitle/authors/image link/categories/description
     # from book user submitted as read
-    title = request.args.get('title')
-    subtitle = request.args.get('subtitle')
-    authors = request.args.get('authors')
-    image_link = request.args.get('image_link')
-    categories = request.args.get('categories')
-    description = request.args.get('description')
-    isbn_13 = request.args.get('isbn_13')
+    title = request.form.get('title')
+    subtitle = request.form.get('subtitle')
+    authors = request.form.get('authors')
+    image_link = request.form.get('image_link')
+    categories = request.form.get('categories')
+    description = request.form.get('description')
+    isbn_13 = request.form.get('isbn_13')
 
     authors_list = remove_illegal_characters_to_make_list(authors)
     categories_list = remove_illegal_characters_to_make_list(categories)
@@ -476,12 +473,12 @@ def mark_book_as_liked():
     book_author = add_book_author_to_db(book, authors_in_db)
     categories_in_db = add_category_to_db(categories_list)
     book_category = add_book_category_to_db(book, categories_in_db)
-    liked_book_in_collection = add_book_to_liked_list(book_in_library)
+    message = add_book_to_liked_list(book_in_library)
 
-    return redirect('/liked-books')
+    return message
 
 
-@app.route('/mark-as-to-be-read')
+@app.route('/mark-as-to-be-read', methods=['POST'])
 def mark_book_as_to_be_read():
     """Mark a book as liked in a user library."""
 
@@ -489,13 +486,13 @@ def mark_book_as_to_be_read():
 
     # get the title/subtitle/authors/image link/categories/description
     # from book user submitted as read
-    title = request.args.get('title')
-    subtitle = request.args.get('subtitle')
-    authors = request.args.get('authors')
-    image_link = request.args.get('image_link')
-    categories = request.args.get('categories')
-    description = request.args.get('description')
-    isbn_13 = request.args.get('isbn_13')
+    title = request.form.get('title')
+    subtitle = request.form.get('subtitle')
+    authors = request.form.get('authors')
+    image_link = request.form.get('image_link')
+    categories = request.form.get('categories')
+    description = request.form.get('description')
+    isbn_13 = request.form.get('isbn_13')
 
     authors_list = remove_illegal_characters_to_make_list(authors)
     categories_list = remove_illegal_characters_to_make_list(categories)
@@ -506,9 +503,9 @@ def mark_book_as_to_be_read():
     book_author = add_book_author_to_db(book, authors_in_db)
     categories_in_db = add_category_to_db(categories_list)
     book_category = add_book_category_to_db(book, categories_in_db)
-    to_be_read_book_in_collection = add_book_to_to_be_read_list(book_in_library)
+    message = add_book_to_to_be_read_list(book_in_library)
 
-    return redirect('/to-be-read-books')
+    return message
 
 
 @app.route('/handle-remove-read-book' , methods=['POST'])
@@ -555,7 +552,7 @@ def create_bookshelf():
 
     user_id = session['user_id']
 
-    bookshelf_name = request.form.get('melonWaffles')
+    bookshelf_name = request.form.get('bookshelfName')
 
     bookshelf = crud.create_bookshelf(bookshelf_name, user_id)
 
@@ -565,27 +562,6 @@ def create_bookshelf():
 
     return jsonify(new_bookshelf)
 
-    # bookshelves = {}
-    # for index, bookshelf in enumerate(bookshelves_objects):
-    #     bookshelf = bookshelf.name
-    #     bookshelves[index] = bookshelf
-
-    # return jsonify(bookshelves)
-
-# @app.route('/create-bookshelf.json', methods=['POST'])
-# def create_bookshelf():
-#     """Create a bookshelf."""
-
-#     user_id = session['user_id']
-#     user = crud.get_user_by_id(user_id)
-
-#     bookshelf_name = request.form.get('bookshelf_name')
-
-#     bookshelf = crud.create_bookshelf(bookshelf_name, user_id)
-
-#     bookshelves = crud.get_user_bookshelves(user_id)
-
-#     return redirect('/')
 
 
 if __name__ == '__main__':

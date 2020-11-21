@@ -19,9 +19,9 @@ def search_a_book():
     data = res.json()
 
 
-    if keyword != '':
+    search_results = []
 
-        search_results = []
+    if keyword != '':
 
         for n in range(len(data['items'])):
 

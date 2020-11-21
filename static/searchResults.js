@@ -5,8 +5,6 @@ $('.mark-as-read').on('submit', (evt) => {
     const button = $(evt.target);
     const buttonId = button.attr('id');
 
-    console.log(buttonId);
-
     const formInput = {
       title: $(`#read-book-title${buttonId}`).val(),
       subtitle: $(`#read-book-subtitle${buttonId}`).val(),
@@ -17,8 +15,6 @@ $('.mark-as-read').on('submit', (evt) => {
       isbn_13: $(`#read-book-isbn-13${buttonId}`).val(),
     };
 
-    console.log(formInput)
-
     $.post('/mark-as-read', formInput, (res) => {
     $(`#read-message${formInput['isbn_13']}`).html(res);
     console.log($('.read-book-isbn-13').val());
@@ -27,13 +23,10 @@ $('.mark-as-read').on('submit', (evt) => {
   });
 
 
-
 $('.mark-as-liked').on('submit', (evt) => {
     evt.preventDefault();
     const button = $(evt.target);
     const buttonId = button.attr('id');
-
-    console.log(buttonId);
 
     const formInput = {
       title: $(`#liked-book-title${buttonId}`).val(),
@@ -44,8 +37,6 @@ $('.mark-as-liked').on('submit', (evt) => {
       description: $(`#liked-book-description${buttonId}`).val(),
       isbn_13: $(`#liked-book-isbn-13${buttonId}`).val(),
     };
-
-    console.log(formInput)
 
     $.post('/mark-as-liked', formInput, (res) => {
     $(`#liked-message${formInput['isbn_13']}`).html(res);
@@ -60,7 +51,6 @@ $('.mark-as-to-be-read').on('submit', (evt) => {
     const button = $(evt.target);
     const buttonId = button.attr('id');
 
-    console.log(buttonId);
 
     const formInput = {
       title: $(`#to-be-read-book-title${buttonId}`).val(),
@@ -71,8 +61,6 @@ $('.mark-as-to-be-read').on('submit', (evt) => {
       description: $(`#to-be-read-book-description${buttonId}`).val(),
       isbn_13: $(`#to-be-read-book-isbn-13${buttonId}`).val(),
     };
-
-    console.log(formInput)
 
     $.post('/mark-as-to-be-read', formInput, (res) => {
     $(`#to-be-read-message${formInput['isbn_13']}`).html(res);

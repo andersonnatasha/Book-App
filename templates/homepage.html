@@ -1,8 +1,16 @@
 {% extends 'base.html' %}
-{% block title %} Homepage {% endblock %}
+
+{% block title %}
+{% if session['user_id'] %}
+{{session['profile_name']}} - Library
+
+{% else %}
+Homepage
+{%endif%}
+
+{% endblock %}
 
 {% block body %}
-
 
 {% if session['user_id'] %}
 
@@ -25,7 +33,7 @@
 <h2>Bookshelves</h2>
 <ul id="bookshelf-names">
 {% for bookshelf in bookshelves %}
-    <li>{{bookshelf.name}}</li>
+    <li><a href="/{{bookshelf.name}}">{{bookshelf.name}}</a></li>
 {% endfor %}
 </ul>
 

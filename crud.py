@@ -1,6 +1,6 @@
 """CRUD operations"""
 
-from model import db, User, Book, Author, Category, BookCategory, Bookshelf, BookInLibrary, BookAuthor, Interest, UserInterest, connect_to_db
+from model import db, User, Book, Author, Category, BookCategory, Bookshelf, BookInLibrary, BookOnBookshelf, BookAuthor, Interest, UserInterest, connect_to_db
 from datetime import datetime
 
 
@@ -177,20 +177,22 @@ def delete_book_from_library(book_in_library):
     db.session.commit()
 
 
-# def create_read_book(user_id, book_id, read, read_date):
-#     """Create a read book in a user library."""
+def create_a_book_on_a_bookshelf(book_in_library, bookshelf):
+    """Add a book to a users particular bookshelf."""
 
-#     read_book = BookInLibrary(user_id = user_id,
-#                               book_id = book_id,
-#                               read = read,
-#                               read_date = read_date)
+    book_on_bookshelf = BookOnBookshelf(book_in_library)
 
+    db.session.add(book_on_bookshelf)
+    db.session.commit()
 
-#     db.session.add(read_book)
-#     db.session.commit()
+    return book_on_bookshelf
 
-#     return read_book
+def get_book_on_bookshelf(book_on_bookshelf_id):
+    """Get a book on a users particular bookshelf."""
 
+    book_on_bookshelf = BookOnBookshelf.query.get(book_on_bookshelf_id)
+
+    return book_on_bookshelf
 
 def mark_book_as_read(book_in_library, read_status_update, liked_status):
     """Update book tags to indicate book is categorized as read."""
@@ -358,6 +360,9 @@ def get_user_bookshelves(user_id):
     """Get all bookshelves for a particular user."""
 
     return Bookshelf.query.filter(Bookshelf.user_id==user_id).all()
+
+
+# def get_a_bookshelf(user_id, bookshelf_name)
 
 
 def create_interest(interest):

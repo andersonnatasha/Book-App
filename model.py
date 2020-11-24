@@ -159,7 +159,7 @@ class Bookshelf(db.Model):
 
 
 class BookInLibrary(db.Model):
-    """A book in a particular book self."""
+    """A book in a particular user library."""
 
     __tablename__ = 'books_in_library'
 
@@ -171,9 +171,6 @@ class BookInLibrary(db.Model):
                         db.ForeignKey('users.user_id'),
                         primary_key=True
                         )
-    bookshelf_id = db.Column(db.Integer,
-                            db.ForeignKey('bookshelves.bookshelf_id'),
-                            )
     notes = db.Column(db.Text)
     read = db.Column(db.Boolean)
     read_date = db.Column(db.DateTime) # date read tag was added
@@ -187,6 +184,36 @@ class BookInLibrary(db.Model):
 
     def __repr__(self):
         return f'<BookInLibrary book_in_library_id={self.book_id} book_title={self.book.title} user_id={self.user_id}>'
+
+
+class BookOnBookshelf(db.Model):
+    """A book in a particular book self."""
+
+    __tablename__ = 'books_on_bookshelves'
+
+    book_on_bookshelf_id = db.Column(db.Integer,
+                                     primary_key=True,
+                                     autoincrement=True
+                                    )
+    bookshelf_id = db.Column(db.Integer,
+                            db.ForeignKey('bookshelves.bookshelf_id'),
+                            )
+    book_id = db.Column(db.Integer,
+                         db.ForeignKey('books.book_id'),
+                         primary_key=True
+                         )
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey('users.user_id'),
+                        primary_key=True
+                        )
+    date_added = db.Column(db.DateTime)
+
+    user = db.relationship('User')
+    book = db.relationship('Book')
+
+
+    def __repr__(self):
+        return f'<BookOnBookshelf book_on_bookshelf_id={self.book_on_bookshelf_id} bookshelf={self.bookshelf_id}>'
 
 
 class Interest(db.Model):

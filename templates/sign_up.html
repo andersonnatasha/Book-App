@@ -9,10 +9,10 @@
   <input type="text" name="email" required>
 
   <label>Create a password</label>
-  <input type="password" name="password" minlength="1" required>
+  <input type="password" name="password" minlength="7" required>
 
   <label>Confirm your password</label>
-  <input type="password" name="confirm-password" minlength="1" required>
+  <input type="password" name="confirm-password" minlength="7" required>
 
   <label> What should we call you?</label>
   <input type="text" name="profile-name" required>
@@ -20,7 +20,7 @@
   <label>What's your date of birth?</label>
 
   <select name="birth-month" required>
-    <option value="-">-</option>
+    <option value="">-</option>
     <option value="january">January</option>
     <option value="february">February</option>
     <option value="march">March</option>
@@ -37,7 +37,7 @@
 
   <label>Day</label>
   <select name="birth-day" required>
-  <option value="-">-</option>
+  <option value="">-</option>
   {% for i in range(31) %}
     {% if i < 9 %}
     <option value="0{{ i +1 }}">{{ i+1 }}</option>

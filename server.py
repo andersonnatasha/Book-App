@@ -166,8 +166,10 @@ def show_recommended_books():
     """show recommended books."""
 
     search_results = google_books_api.show_recommended_books()
+    bookshelves = crud.get_user_bookshelves(session['user_id'])
+    bookshelves = bookshelves[::-1]
 
-    return render_template('recommended_for_you.html', search_results=search_results)
+    return render_template('recommended_for_you.html', search_results=search_results, bookshelves=bookshelves)
 
 
 @app.route('/read-books')
@@ -208,12 +210,15 @@ def show_to_be_read_books():
 
 
 @app.route('/search-a-book')
-def search_a_book():
+def show_search_a_book():
     """Show results from user's book search."""
 
     search_results = google_books_api.search_a_book()
 
-    return render_template('search_results.html', search_results=search_results)
+    bookshelves = crud.get_user_bookshelves(session['user_id'])
+    bookshelves = bookshelves[::-1]
+
+    return render_template('search_results.html', search_results=search_results, bookshelves=bookshelves)
 
 
 def remove_illegal_characters_to_make_list(string):
@@ -388,7 +393,7 @@ def add_book_to_to_be_read_list(book_in_library):
         read_status_update = False
         liked_status = False
         crud.mark_book_as_to_be_read(book_in_library, read_status_update, liked_status)
-        message = 'Added to your trb list'
+        message = 'Added to your tbr list'
 
     return message
 
@@ -562,11 +567,48 @@ def create_bookshelf():
 
     return jsonify(new_bookshelf)
 
+
 @app.route('/<bookshelf_name>-bookshelf')
 def show_bookshelf(bookshelf_name):
 
     return render_template('user_bookshelf.html')
 
+def create_book_on_bookshelf(book_in_library):
+
+    crud.create_a_book_on_a_bookshelf(book_in_library, bookshelf)
+
+    return 'book added'
+
+
+@app.route('/add-book-to-bookshelf', methods=['POST'])
+def add_book_to_bookshelf():
+
+    user_id = session['user_id']
+
+    # get the book that will be added to bookshelf
+    # get the shelf that will be added to bookshelf
+
+    title = request.form.get('title')
+    subtitle = request.form.get('subtitle')
+    authors = request.form.get('authors')
+    image_link = request.form.get('image_link')
+    categories = request.form.get('categories')
+    description = request.form.get('description')
+    isbn_13 = request.form.get('isbn_13')
+
+    authors_list = remove_illegal_characters_to_make_list(authors)
+    categories_list = remove_illegal_characters_to_make_list(categories)
+
+    book = add_book_to_db(title, subtitle, description, image_link, isbn_13)
+    book_in_library = add_book_to_library(book, user_id)
+    authors_in_db = add_author_to_db(authors_list)
+    book_author = add_book_author_to_db(book, authors_in_db)
+    categories_in_db = add_category_to_db(categories_list)
+    book_category = add_book_category_to_db(book, categories_in_db)
+    message = add_book_to_to_be_read_list(book_in_library)
+
+
+    return message
 
 if __name__ == '__main__':
     connect_to_db(app)

@@ -122,7 +122,6 @@ $('.add-to-bookshelf').on('submit', (evt) => {
   }
   )
 
-
   $.post('/add-book-to-bookshelf', formInput, (res) => {
     $(`#add-to-bookshelf-message${formInput['isbn_13']}`).html(res);
   console.log($('.add-to-bookshelf-isbn-13').val());

@@ -171,10 +171,11 @@ def get_book_in_library(book, user_id):
 
 
 def delete_book_from_library(book_in_library):
-    """Delete read book from user library."""
+    """Delete read and to be read books from user library."""
 
     db.session.delete(book_in_library)
     db.session.commit()
+
 
 
 def create_a_book_on_a_bookshelf(book_in_library, bookshelf, date_added):
@@ -224,14 +225,14 @@ def mark_book_as_read(book_in_library, read_status_update, liked_status):
         book_in_library.to_be_read = False
         book_in_library.to_be_read_date = None
 
-    # # Book already in library: book is on TRB list and moving to read list, but not liked list
-    # elif (book_in_library.read == False) and (read_status_update == True):
-    #     book_in_library.read = True
-    #     book_in_library.read_date = datetime.now()
-    #     book_in_library.liked = False
-    #     book_in_library.liked_date = None
-    #     book_in_library.to_be_read = False
-    #     book_in_library.to_be_read_date = None
+    # Book already in library: book is on TRB list and moving to read list, but not liked list
+    elif (book_in_library.read == False) and (read_status_update == True):
+        book_in_library.read = True
+        book_in_library.read_date = datetime.now()
+        book_in_library.liked = False
+        book_in_library.liked_date = None
+        book_in_library.to_be_read = False
+        book_in_library.to_be_read_date = None
 
     db.session.add(book_in_library)
     db.session.commit()
@@ -299,6 +300,20 @@ def remove_liked_tag(book_in_library, read_status_update, liked_status):
     book_in_library.liked = False
     book_in_library.liked_date = None
     db.session.add(book_in_library)
+    db.session.commit()
+
+
+def remove_book_from_bookshelf(user_id, isbn_13, bookshelf_name):
+    """Remove book from a user's bookshelf."""
+
+    book = get_book_by_isbn_13(isbn_13)
+    bookshelf = Bookshelf.query.filter(Bookshelf.user_id == user_id, Bookshelf.name == bookshelf_name).first()
+
+    book_on_bookshelf = BookOnBookshelf.query.filter(BookOnBookshelf.user_id==user_id, BookOnBookshelf.book_id==book.book_id, BookOnBookshelf.bookshelf_id == bookshelf.bookshelf_id).first()
+
+
+
+    db.session.delete(book_on_bookshelf)
     db.session.commit()
 
 

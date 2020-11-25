@@ -16,8 +16,7 @@ $('.mark-as-read').on('submit', (evt) => {
   };
 
   $.post('/mark-as-read', formInput, (res) => {
-  $(`#read-message${formInput['isbn_13']}`).html(res);
-  console.log($('.read-book-isbn-13').val());
+  $(`#read-message${formInput['isbn_13']}`).html(res).delay(1000).fadeOut(2500, 'linear' );
   })
 });
 
@@ -38,8 +37,7 @@ $('.mark-as-liked').on('submit', (evt) => {
   };
 
   $.post('/mark-as-liked', formInput, (res) => {
-  $(`#liked-message${formInput['isbn_13']}`).html(res);
-  console.log($('.liked-book-isbn-13').val());
+  $(`#liked-message${formInput['isbn_13']}`).html(res).delay(1000).fadeOut(2500, 'linear' );
   })
 });
 
@@ -61,8 +59,7 @@ $('.mark-as-to-be-read').on('submit', (evt) => {
   };
 
   $.post('/mark-as-to-be-read', formInput, (res) => {
-  $(`#to-be-read-message${formInput['isbn_13']}`).html(res);
-  console.log($('.to-be-read-book-isbn-13').val());
+  $(`#to-be-read-message${formInput['isbn_13']}`).html(res).delay(1000).fadeOut(2500, 'linear' );
   })
 });
 
@@ -111,7 +108,7 @@ $('.add-to-bookshelf').on('submit', (evt) => {
 
   if (formInput['book_tag'] !== 'cancel') {
     $.post('/handle-adding-book-to-bookshelf', formInput, (res) => {
-      $(`#add-to-bookshelf-message${formInput['isbn_13']}`).html(res);
+      $(`#add-to-bookshelf-message${formInput['isbn_13']}`).html(res).delay(1000).fadeOut(2500, 'linear' );
       modalContent[0].style.display = 'none';
       modal[0].style.display ='none';
     })

@@ -13,6 +13,7 @@ Homepage
 {% block body %}
 
 {% if session['user_id'] %}
+<a href="/interests">Your interests</a>
 
 <h2>{{ session['profile_name'] }}</h2>
 <form action='/search-a-book'>

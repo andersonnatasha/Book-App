@@ -550,6 +550,19 @@ def remove_from_to_be_read_list():
 
     return redirect('/to-be-read-books')
 
+@app.route('/handle-remove-book-on-bookshelf', methods=['POST'])
+def remove_from_particular_bookshelf():
+    """Remove book from a user's bookshelf."""
+
+    user_id = session['user_id']
+    isbn_13 = request.form.get('isbn_13')
+    bookshelf_name = request.form.get('bookshelf_name')
+    crud.remove_book_from_bookshelf(user_id, isbn_13, bookshelf_name)
+
+    return redirect(f'/{bookshelf_name}-bookshelf')
+
+
+
 
 @app.route('/create-bookshelf.json', methods=['POST'])
 def create_bookshelf():
@@ -621,13 +634,13 @@ def handle_adding_book_to_bookshelf():
     book_on_bookshelf = add_book_to_bookshelf(book_in_library, bookshelf)
 
     if book_tag == 'read':
-        message = add_book_to_read_list(book_in_library)
+        add_book_to_read_list(book_in_library)
     elif book_tag == 'liked':
-        message = add_book_to_liked_list(book_in_library)
+        add_book_to_liked_list(book_in_library)
     elif book_tag =='tbr':
-        message = add_book_to_to_be_read_list(book_in_library)
+        add_book_to_to_be_read_list(book_in_library)
 
-    return message
+    return f'Book added to {bookshelf_name} bookshelf.'
 
 if __name__ == '__main__':
     connect_to_db(app)

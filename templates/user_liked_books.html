@@ -23,7 +23,8 @@
           <input type="submit" value="Remove">
           </form>
       </td>
-         <td>{{ liked_book.book.title }}
+         <td>
+           {{ liked_book.book.title }}
          </td>
          {% for author_name in liked_book.book.authors %}
          <td>{{ author_name.full_name }}</td>

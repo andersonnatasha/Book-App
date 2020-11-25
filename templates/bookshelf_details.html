@@ -17,14 +17,19 @@
     {% for book in books_on_bookshelf %}
     <tr>
 
-      <td>
-      </td>
-         <td>{{ book.book.title }}
-         </td>
-         {% for author_name in book.book.authors %}
-         <td>{{ author_name.full_name }}</td>
-         {% endfor %}
-         <td>{{ book.date_added }}</td>
+        <td>
+        <form action="/handle-remove-book-on-bookshelf" method="POST">
+            <input name="isbn_13" type="hidden" value="{{ book.book.isbn_13 }}">
+            <input name="bookshelf_name" type="hidden" value="{{ bookshelf_name }}">
+            <input type="submit" value="Remove">
+            </form>
+        <td>
+            {{ book.book.title }}
+        </td>
+        {% for author_name in book.book.authors %}
+        <td>{{ author_name.full_name }}</td>
+        {% endfor %}
+        <td>{{ book.date_added }}</td>
     </tr>
     {% endfor %}
 

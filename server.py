@@ -626,8 +626,8 @@ def handle_adding_book_to_bookshelf():
 
     if book_tag == 'read':
         message = add_book_to_read_list(book_in_library)
-    elif book_tag == 'liked':
-        message = add_book_to_liked_list(book_in_library)
+    # elif book_tag == 'liked':
+    #     message = add_book_to_liked_list(book_in_library)
     elif book_tag =='tbr':
         message = add_book_to_to_be_read_list(book_in_library)
 

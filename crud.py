@@ -204,8 +204,8 @@ def mark_book_as_read(book_in_library, read_status_update, liked_status):
     if (book_in_library.read == None) and (book_in_library.to_be_read == None):
         book_in_library.read = True
         book_in_library.read_date = datetime.now()
-        book_in_library.liked = True
-        book_in_library.liked_date = datetime.now()
+        book_in_library.liked = False
+        book_in_library.liked_date = None
         book_in_library.to_be_read = False
         book_in_library.to_be_read_date = None
 
@@ -268,8 +268,8 @@ def mark_book_as_to_be_read(book_in_library, read_status_update, liked_status):
         book_in_library.to_be_read_date = datetime.now()
         book_in_library.read = False
         book_in_library.read_date = None
-        book_in_library.liked = True
-        book_in_library.liked_date = datetime.now()
+        book_in_library.liked = False
+        book_in_library.liked_date = None
 
     # Book in library: Book is read, possibly liked, and moving to tbr list
     elif (book_in_library.read == True) and (read_status_update == False):

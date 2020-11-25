@@ -2,7 +2,8 @@
 import unittest
 
 from server import app
-from model import connect_to_db
+import model
+from test_data import test_data
 
 
 class BookAppTests(unittest.TestCase):
@@ -33,14 +34,6 @@ class BookAppTests(unittest.TestCase):
         self.assertIn(b'''Don't have an account''', result.data)
 
 
-    def test_homepage_after_login(self):
-        result = self.client.get('/log-in-credentials',
-                                data={'email': 'user1@test.com',
-                                      'password': 'testpassword1'},
-                                       follow_redirects=True)
-        self.assertEqual(result.status_code, 200)
-        self.assertIn(b'Your Library', result.data)
-
 
 class BookAppTestsDatabase(unittest.TestCase):
     """Flask test that use the database"""
@@ -53,9 +46,25 @@ class BookAppTestsDatabase(unittest.TestCase):
         app.config['TESTING'] = True
 
         # Connect to test database
-        connect_to_db(app, "postgresql:///testdb")
+        model.connect_to_db(app, "postgresql:///testdb")
 
         # Create tables and add sample data
+        model.db.create_all()
+        test_data()
+
+    def tearDown(self):
+        """Do after each test"""
+
+        model.db.session.close()
+        model.db.drop_all()
+
+    def test_homepage_after_login(self):
+        result = self.client.get('/log-in-credentials',
+                                data={'email': 'user1@test.com',
+                                      'password': 'test'},
+                                       follow_redirects=True)
+        self.assertEqual(result.status_code, 200)
+        self.assertIn(b'Your Library', result.data)
 
 
 if __name__ == '__main__':

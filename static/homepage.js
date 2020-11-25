@@ -19,7 +19,7 @@ cancelButton.addEventListener('click', function() {
 });
 
 
-/// Takes user input to create new bookshelf in db and then display on page
+/// Takes user input to create new bookshelf in db and then display on page as a link
 $('#create-bookshelf').on('submit', (evt) => {
     evt.preventDefault();
 

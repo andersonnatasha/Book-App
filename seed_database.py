@@ -65,13 +65,13 @@ gender_options = ['Female', 'Male', 'Non-binary', 'Prefer not to say']
 for n in range(10):
     email = f'user{n+1}@test.com'
     password = f'testpassword{n+1}'
-    full_name = fake.name()
+    profile_name = fake.name()
     birthday = datetime.strptime(fake.date(), '%Y-%m-%d')
     gender = choice(gender_options)
-    created_time = datetime.now()  # strptime(fake.date(), '%Y-%m-%d')
+    time_created  = datetime.now()
 
-    user = crud.create_user(email, password, full_name,
-                            birthday, gender, created_time)
+    user = crud.create_user(email, password, profile_name,
+                            birthday, gender, time_created)
 
 
 # Create 30 interests and assign

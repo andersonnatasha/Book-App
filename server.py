@@ -571,22 +571,22 @@ def create_bookshelf():
 @app.route('/<bookshelf_name>-bookshelf')
 def show_bookshelf(bookshelf_name):
 
-    return render_template('bookshelf_details.html')
+    bookshelf_name = bookshelf_name
+    user_id = session['user_id']
+    books_on_bookshelf = crud.get_all_books_on_a_bookshelf(bookshelf_name, user_id)
 
-def create_book_on_bookshelf(book_in_library, bookshelf):
-
-    crud.create_a_book_on_a_bookshelf(book_in_library, bookshelf)
-
-    return 'book added'
+    return render_template('bookshelf_details.html', books_on_bookshelf=books_on_bookshelf, bookshelf_name=bookshelf_name)
 
 
 def add_book_to_bookshelf(book_in_library, bookshelf):
     """Check to see if book_in_library is already on bookshelf and if not add it."""
 
-    book_on_bookshelf = crud.get_book_on_bookshelf(book_in_library, bookshelf)
+    user_id = session['user_id']
+    book_on_bookshelf = crud.get_book_on_bookshelf(book_in_library, bookshelf, user_id)
     print(f'its on the shelf already {book_on_bookshelf}')
     if book_on_bookshelf == None:
-        book_on_bookshelf = crud.create_a_book_on_a_bookshelf(book_in_library, bookshelf)
+        date_added = datetime.now()
+        book_on_bookshelf = crud.create_a_book_on_a_bookshelf(book_in_library, bookshelf, date_added)
     print(f'it has to be created on the shelf  {book_on_bookshelf}')
     return book_on_bookshelf
 
@@ -622,8 +622,8 @@ def handle_adding_book_to_bookshelf():
 
     if book_tag == 'read':
         message = add_book_to_read_list(book_in_library)
-    # elif book_tag == 'liked':
-    #     message = add_book_to_liked_list(book_in_library)
+    elif book_tag == 'liked':
+        message = add_book_to_liked_list(book_in_library)
     elif book_tag =='tbr':
         message = add_book_to_to_be_read_list(book_in_library)
 

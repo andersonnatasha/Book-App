@@ -177,25 +177,33 @@ def delete_book_from_library(book_in_library):
     db.session.commit()
 
 
-def create_a_book_on_a_bookshelf(book_in_library, bookshelf):
+def create_a_book_on_a_bookshelf(book_in_library, bookshelf, date_added):
     """Add a book to a users particular bookshelf."""
 
-    book_on_bookshelf = BookOnBookshelf(book_id=book_in_library.book.book_id, bookshelf_id=bookshelf.bookshelf_id, user_id=book_in_library.user_id)
+
+    book_on_bookshelf = BookOnBookshelf(book_id=book_in_library.book.book_id, bookshelf_id=bookshelf.bookshelf_id, user_id=book_in_library.user_id, date_added=date_added)
 
     db.session.add(book_on_bookshelf)
     db.session.commit()
 
     return book_on_bookshelf
 
-def get_book_on_bookshelf(book_in_library, bookshelf):
+def get_book_on_bookshelf(book_in_library, bookshelf, user_id):
     """Get a book on a users particular bookshelf."""
 
     book_id = book_in_library.book.book_id
     bookshelf_id = bookshelf.bookshelf_id
+    user_id = user_id
 
-    book_on_bookshelf = BookOnBookshelf.query.filter(BookOnBookshelf.book_id==book_id, BookOnBookshelf.bookshelf_id==bookshelf_id).first()
+    book_on_bookshelf = BookOnBookshelf.query.filter(BookOnBookshelf.book_id==book_id, BookOnBookshelf.bookshelf_id==bookshelf_id, BookOnBookshelf.user_id==user_id).first()
 
     return book_on_bookshelf
+
+def get_all_books_on_a_bookshelf(bookshelf_name, user_id):
+
+    bookshelf = Bookshelf.query.filter(Bookshelf.name == bookshelf_name).first()
+
+    return BookOnBookshelf.query.filter(BookOnBookshelf.user_id==user_id, BookOnBookshelf.bookshelf_id==bookshelf.bookshelf_id).all()
 
 def mark_book_as_read(book_in_library, read_status_update, liked_status):
     """Update book tags to indicate book is categorized as read."""

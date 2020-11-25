@@ -3,7 +3,30 @@
 {% block title %}fill in {% endblock %}
 
 {% block body %}
-<h2>BOOKS</h2>
 
+<h3>BOOKSHELF</h3>
+<h1>{{bookshelf_name}}</h1>
+<a href="/">Search for more books</a>
+<table>
+    <tr>
+      <th></th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Added Date</th>
+    </tr>
+    {% for book in books_on_bookshelf %}
+    <tr>
 
-{% endblock %}
+      <td>
+      </td>
+         <td>{{ book.book.title }}
+         </td>
+         {% for author_name in book.book.authors %}
+         <td>{{ author_name.full_name }}</td>
+         {% endfor %}
+         <td>{{ book.date_added }}</td>
+    </tr>
+    {% endfor %}
+
+  </table>
+  {% endblock %}

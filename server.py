@@ -573,15 +573,29 @@ def show_bookshelf(bookshelf_name):
 
     return render_template('user_bookshelf.html')
 
-def create_book_on_bookshelf(book_in_library):
+def create_book_on_bookshelf(book_in_library, bookshelf):
 
     crud.create_a_book_on_a_bookshelf(book_in_library, bookshelf)
 
     return 'book added'
 
 
-@app.route('/add-book-to-bookshelf', methods=['POST'])
-def add_book_to_bookshelf():
+def add_book_to_bookshelf(book_in_library, bookshelf):
+    """Check to see if book_in_library is already on bookshelf and if not add it."""
+
+    book_on_bookshelf = crud.get_book_on_bookshelf(book_in_library, bookshelf)
+    print("++++++++++++++++++++++++++++++++++++++++")
+    print("++++++++++++++++++++++++++++++++++++++++")
+    print(f'its on the shelf already {book_on_bookshelf}')
+    if book_on_bookshelf == None:
+        book_on_bookshelf = crud.create_a_book_on_a_bookshelf(book_in_library, bookshelf)
+    print("++++++++++++++++++++++++++++++++++++++++")
+    print("++++++++++++++++++++++++++++++++++++++++")
+    print(f'it has to be created on the shelf  {book_on_bookshelf}')
+    return book_on_bookshelf
+
+@app.route('/handle-adding-book-to-bookshelf', methods=['POST'])
+def handle_adding_book_to_bookshelf():
 
     user_id = session['user_id']
 
@@ -595,6 +609,8 @@ def add_book_to_bookshelf():
     categories = request.form.get('categories')
     description = request.form.get('description')
     isbn_13 = request.form.get('isbn_13')
+    bookshelf_name = request.form.get('bookshelf_name')
+    book_tag = request.form.get('book_tag')
 
     authors_list = remove_illegal_characters_to_make_list(authors)
     categories_list = remove_illegal_characters_to_make_list(categories)
@@ -605,8 +621,15 @@ def add_book_to_bookshelf():
     book_author = add_book_author_to_db(book, authors_in_db)
     categories_in_db = add_category_to_db(categories_list)
     book_category = add_book_category_to_db(book, categories_in_db)
-    message = add_book_to_to_be_read_list(book_in_library)
+    bookshelf = crud.get_a_bookshelf(user_id, bookshelf_name)
+    book_on_bookshelf = add_book_to_bookshelf(book_in_library, bookshelf)
 
+    if book_tag == 'read':
+        message = add_book_to_read_list(book_in_library)
+    elif book_tag == 'liked':
+        message = add_book_to_liked_list(book_in_library)
+    elif book_tag =='tbr':
+        message = add_book_to_to_be_read_list(book_in_library)
 
     return message
 

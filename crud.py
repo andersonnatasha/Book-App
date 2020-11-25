@@ -180,17 +180,20 @@ def delete_book_from_library(book_in_library):
 def create_a_book_on_a_bookshelf(book_in_library, bookshelf):
     """Add a book to a users particular bookshelf."""
 
-    book_on_bookshelf = BookOnBookshelf(book_in_library)
+    book_on_bookshelf = BookOnBookshelf(book_id=book_in_library.book.book_id, bookshelf_id=bookshelf.bookshelf_id, user_id=book_in_library.user_id)
 
     db.session.add(book_on_bookshelf)
     db.session.commit()
 
     return book_on_bookshelf
 
-def get_book_on_bookshelf(book_on_bookshelf_id):
+def get_book_on_bookshelf(book_in_library, bookshelf):
     """Get a book on a users particular bookshelf."""
 
-    book_on_bookshelf = BookOnBookshelf.query.get(book_on_bookshelf_id)
+    book_id = book_in_library.book.book_id
+    bookshelf_id = bookshelf.bookshelf_id
+
+    book_on_bookshelf = BookOnBookshelf.query.filter(BookOnBookshelf.book_id==book_id, BookOnBookshelf.bookshelf_id==bookshelf_id).first()
 
     return book_on_bookshelf
 
@@ -357,12 +360,18 @@ def create_bookshelf(name, user_id):
 
 
 def get_user_bookshelves(user_id):
-    """Get all bookshelves for a particular user."""
+    """Return all bookshelves for a particular user."""
 
     return Bookshelf.query.filter(Bookshelf.user_id==user_id).all()
 
 
-# def get_a_bookshelf(user_id, bookshelf_name)
+def get_a_bookshelf(user_id, bookshelf_name):
+    """Return a particular bookshelf by the shelf name and user id."""
+
+    user_id = user_id
+    bookshelf_name = bookshelf_name
+
+    return Bookshelf.query.filter(Bookshelf.name==bookshelf_name, Bookshelf.user_id==user_id ).first()
 
 
 def create_interest(interest):

@@ -71,12 +71,23 @@ $('.mark-as-to-be-read').on('submit', (evt) => {
 /////
 
 
-
-
 $('.add-to-bookshelf').on('submit', (evt) => {
   evt.preventDefault();
   const button = $(evt.target);
   const buttonId = button.attr('id');
+
+  const modal = $(`#modal-bookshelf${buttonId}`);
+  const modalContent = $(`#modal-content-bookshelf${buttonId}`);
+  const cancelButton = $('#cancel');
+
+
+  modalContent[0].style.display = 'flex'
+  modal[0].style.display ='block'
+
+  cancelButton.on('click', () => {
+    modalContent[0].style.display = 'none'
+    modal[0].style.display ='none'
+  });
 
   const formInput = {
     title: $(`#add-to-bookshelf-title${buttonId}`).val(),
@@ -89,43 +100,27 @@ $('.add-to-bookshelf').on('submit', (evt) => {
     bookshelf_name: $(`#add-to-bookshelf-name${buttonId}`).val(),
   };
 
-  console.log(formInput);
   console.log(formInput['bookshelf_name']);
 
-  const modal = $(`#modal-bookshelf${buttonId}`);
-  const modalContent = $(`#modal-content-bookshelf${buttonId}`);
-  const bookshelfName = $(`#bookshelf-name${buttonId}`);
-  const cancelButton = $('#cancel');
-
-  console.log(modal)
-
-
-  modalContent[0].style.display = 'flex'
-  modal[0].style.display ='block'
-
-  cancelButton.on('click', () => {
-    modalContent[0].style.display = 'none'
-    modal[0].style.display ='none'
-  });
-
-
-  $(`#bookshelf-name${buttonId}`).on('submit', formInput, (evt) => {
+  $(`#book-on-bookshelf-status${buttonId}`).on('click', formInput, (evt) => {
     evt.preventDefault();
+    const target = $(evt.target)
 
-    const modalFormInput = {
-      book_tag: $(`#read-book-on-bookshelf${buttonId}`).val()
-    };
+     formInput['book_tag'] = target.val();
 
-    console.log(modalFormInput['book_tag']);
+    console.log(target)
+    console.log(formInput['book_tag']);
     console.log(buttonId);
-    console.log(modalFormInput)
-  }
-  )
+    // console.log(modalFormInput)
 
-  $.post('/add-book-to-bookshelf', formInput, (res) => {
-    $(`#add-to-bookshelf-message${formInput['isbn_13']}`).html(res);
-  console.log($('.add-to-bookshelf-isbn-13').val());
-  })
+  if (formInput['book_tag'] !== 'cancel') {
+    $.post('/handle-adding-book-to-bookshelf', formInput, (res) => {
+      $(`#add-to-bookshelf-message${formInput['isbn_13']}`).html(res);
+      modalContent[0].style.display = 'none';
+      modal[0].style.display ='none';
+    })
+  }
+});
 });
 
 

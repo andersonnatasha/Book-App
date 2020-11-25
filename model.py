@@ -51,16 +51,17 @@ class Book(db.Model):
     title = db.Column(db.String(250), nullable=False)
     subtitle = db.Column(db.String(200))
     description = db.Column(db.Text)
-    categories = db.relationship('Category',
-                                 secondary="books_categories",
-                                 backref='books'
-                                )
+
     isbn_13 = db.Column(db.String(13))
     image_link = db.Column(db.String(350))
 
     authors = db.relationship('Author',
                               secondary="books_authors",
                               backref='books')
+    categories = db.relationship('Category',
+                                 secondary="books_categories",
+                                 backref='books'
+                                )
 
     def __repr__(self):
         return f'<Book book_id={self.book_id} title={self.title}>'
@@ -199,17 +200,16 @@ class BookOnBookshelf(db.Model):
                             db.ForeignKey('bookshelves.bookshelf_id'),
                             )
     book_id = db.Column(db.Integer,
-                         db.ForeignKey('books.book_id'),
-                         primary_key=True
+                         db.ForeignKey('books.book_id')
                          )
     user_id = db.Column(db.Integer,
-                        db.ForeignKey('users.user_id'),
-                        primary_key=True
+                        db.ForeignKey('users.user_id')
                         )
     date_added = db.Column(db.DateTime)
 
     user = db.relationship('User')
     book = db.relationship('Book')
+    bookshelf = db.relationship('Bookshelf')
 
 
     def __repr__(self):

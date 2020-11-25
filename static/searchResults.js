@@ -68,9 +68,6 @@ $('.mark-as-to-be-read').on('submit', (evt) => {
 
 
 
-/////
-
-
 $('.add-to-bookshelf').on('submit', (evt) => {
   evt.preventDefault();
   const button = $(evt.target);
@@ -78,7 +75,7 @@ $('.add-to-bookshelf').on('submit', (evt) => {
 
   const modal = $(`#modal-bookshelf${buttonId}`);
   const modalContent = $(`#modal-content-bookshelf${buttonId}`);
-  const cancelButton = $('#cancel');
+  const cancelButton = $(`#cancel${buttonId}`);
 
 
   modalContent[0].style.display = 'flex'
@@ -111,7 +108,6 @@ $('.add-to-bookshelf').on('submit', (evt) => {
     console.log(target)
     console.log(formInput['book_tag']);
     console.log(buttonId);
-    // console.log(modalFormInput)
 
   if (formInput['book_tag'] !== 'cancel') {
     $.post('/handle-adding-book-to-bookshelf', formInput, (res) => {

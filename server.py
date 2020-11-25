@@ -584,13 +584,9 @@ def add_book_to_bookshelf(book_in_library, bookshelf):
     """Check to see if book_in_library is already on bookshelf and if not add it."""
 
     book_on_bookshelf = crud.get_book_on_bookshelf(book_in_library, bookshelf)
-    print("++++++++++++++++++++++++++++++++++++++++")
-    print("++++++++++++++++++++++++++++++++++++++++")
     print(f'its on the shelf already {book_on_bookshelf}')
     if book_on_bookshelf == None:
         book_on_bookshelf = crud.create_a_book_on_a_bookshelf(book_in_library, bookshelf)
-    print("++++++++++++++++++++++++++++++++++++++++")
-    print("++++++++++++++++++++++++++++++++++++++++")
     print(f'it has to be created on the shelf  {book_on_bookshelf}')
     return book_on_bookshelf
 

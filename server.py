@@ -571,7 +571,7 @@ def create_bookshelf():
 @app.route('/<bookshelf_name>-bookshelf')
 def show_bookshelf(bookshelf_name):
 
-    return render_template('user_bookshelf.html')
+    return render_template('bookshelf_details.html')
 
 def create_book_on_bookshelf(book_in_library, bookshelf):
 

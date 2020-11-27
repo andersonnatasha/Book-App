@@ -44,11 +44,40 @@ class BookAppTests(unittest.TestCase):
         self.assertEqual(result.status_code, 200)
 
 
-    def test_show_recommended_books_before_user_logged_in(self):
+    def test_recommended_books_page_before_user_logged_in(self):
         result = self.client.get('/recommended-books',
                                  follow_redirects=True)
         self.assertEqual(result.status_code, 200)
+        self.assertIn(b'Please log in to see your recommended books.', result.data)
+
+
+    def test_read_books_page_before_user_logged_in(self):
+        result = self.client.get('/read-books',
+                                 follow_redirects=True)
+        self.assertEqual(result.status_code, 200)
+        self.assertIn(b'Please log in to see your read books.', result.data)
+
+
+    def test_liked_books_page_before_user_logged_in(self):
+        result = self.client.get('/liked-books',
+                                 follow_redirects=True)
+        self.assertEqual(result.status_code, 200)
+        self.assertIn(b'Please log in to see your liked books.', result.data)
+
+
+    def test_to_be_read_books_page_before_user_logged_in(self):
+        result = self.client.get('/to-be-read-books',
+                                 follow_redirects=True)
+        self.assertEqual(result.status_code, 200)
+        self.assertIn(b'Please log in to see your tbr list.', result.data)
+
+
+    def test_search_a_book_page_before_user_logged_in(self):
+        result = self.client.get('/search-a-book',
+                                 follow_redirects=True)
+        self.assertEqual(result.status_code, 200)
         self.assertIn(b'Please log in.', result.data)
+
 
 class BookAppTestsDatabase(unittest.TestCase):
     """Flask test that use the database"""
@@ -182,6 +211,13 @@ class BookAppTestsDatabase(unittest.TestCase):
 
         interest = model.UserInterest.query.get((1,1))
         self.assertEqual('art', interest.interest.interest)
+
+    def test_searching_a_book(self):
+        result = self.client.get('/search-a-book',
+                                  data={'keywords': 'Another Country'})
+        self.assertEqual(result.status_code, 200)
+        self.assertIn(b'Another Country', result.data)
+
 
 
 if __name__ == '__main__':

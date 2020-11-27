@@ -173,9 +173,8 @@ def show_recommended_books():
         bookshelves = crud.get_user_bookshelves(session['user_id'])
         bookshelves = bookshelves[::-1]
         return render_template('recommended_for_you.html', search_results=search_results, bookshelves=bookshelves)
-
     else:
-        flash("Please log in.")
+        flash('Please log in to see your recommended books.')
         return redirect("/log-in")
 
 
@@ -183,49 +182,54 @@ def show_recommended_books():
 def show_read_books():
     """Show the books the user has read."""
 
-    user_id = session['user_id']
-    user = crud.get_user_by_id(user_id)
+    if session.get('user_id'):
+        user = crud.get_user_by_id(session['user_id'])
+        read_books = crud.get_read_books_by_user_id(session['user_id'])
+        return render_template('user_read_books.html', user=user, read_books=read_books)
+    else:
+        flash('Please log in to see your read books.')
+        return redirect("/log-in")
 
-    read_books = crud.get_read_books_by_user_id(user_id)
-
-    return render_template('user_read_books.html', user=user, read_books=read_books)
 
 
 @app.route('/liked-books')
 def show_liked_books():
     """Show the books the user has liked."""
 
-    user_id = session['user_id']
-    user = crud.get_user_by_id(user_id)
+    if session.get('user_id'):
+        user = crud.get_user_by_id(session['user_id'])
+        liked_books = crud.get_liked_books_by_user_id(session['user_id'])
+        return render_template('user_liked_books.html', user=user, liked_books=liked_books)
+    else:
+        flash('Please log in to see your liked books.')
+        return redirect("/log-in")
 
-    liked_books = crud.get_liked_books_by_user_id(user_id)
-
-    return render_template('user_liked_books.html', user=user, liked_books=liked_books)
 
 
 @app.route('/to-be-read-books')
 def show_to_be_read_books():
     """Show the books the user has marked to be read."""
 
-    user_id = session['user_id']
-
-    user = crud.get_user_by_id(user_id)
-
-    to_be_read_books = crud.get_to_be_read_books_by_user_id(user_id)
-
-    return render_template('user_to_be_read_books.html', user=user, to_be_read_books=to_be_read_books)
+    if session.get('user_id'):
+        user = crud.get_user_by_id(session['user_id'])
+        to_be_read_books = crud.get_to_be_read_books_by_user_id(session['user_id'])
+        return render_template('user_to_be_read_books.html', user=user, to_be_read_books=to_be_read_books)
+    else:
+        flash('Please log in to see your tbr list.')
+        return redirect("/log-in")
 
 
 @app.route('/search-a-book')
 def show_search_a_book():
     """Show results from user's book search."""
-
-    search_results = google_books_api.search_a_book()
-
-    bookshelves = crud.get_user_bookshelves(session['user_id'])
-    bookshelves = bookshelves[::-1]
-
-    return render_template('search_results.html', search_results=search_results, bookshelves=bookshelves)
+    if session.get('user_id'):
+        search_results = google_books_api.search_a_book()
+        bookshelves = crud.get_user_bookshelves(session['user_id'])
+        bookshelves = bookshelves[::-1]
+        return render_template('search_results.html', search_results=search_results, bookshelves=bookshelves)
+    else:
+        flash('Please log in.')
+        return redirect("/log-in")
 
 
 def remove_illegal_characters_to_make_list(string):

@@ -31,19 +31,19 @@ def get_user_by_email(user_email):
     return User.query.filter(User.email == user_email).first()
 
 
-def get_user_login_frequency(user):
+def get_user_login_occurrences(user):
     """Return number of times user has logged in."""
 
-    return user.login_frequency
+    return user.login_occurrences
 
 
 def log_login_occurrence(user):
-    """Add one to user login_frequency."""
+    """Add one to user login_occurrences."""
 
-    if user.login_frequency == None:
-        user.login_frequency = 0
+    if user.login_occurrences == None:
+        user.login_occurrences= 0
     else:
-        user.login_frequency =+ 1
+        user.login_occurrences =+ 1
 
     db.session.add(user)
     db.session.commit()

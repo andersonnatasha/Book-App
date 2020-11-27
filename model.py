@@ -27,7 +27,7 @@ class User(db.Model):
     birthday = db.Column(db.Date, nullable=False)
     time_created = db.Column(db.DateTime, nullable=False)
     gender = db.Column(db.String(17))
-    login_frequency = db.Column(db.Integer)
+    login_occurrences = db.Column(db.Integer)
 
     books_in_library = db.relationship('BookInLibrary')
     bookshelves = db.relationship('Bookshelf')
@@ -251,7 +251,7 @@ class UserInterest(db.Model):
         return f'<UserInterest user_id={self.user_id} interest_id={self.interest_id}>'
 
 
-def connect_to_db(flask_app, db_uri='postgresql:///testdb', echo=True):
+def connect_to_db(flask_app, db_uri='postgresql:///bookslibrary', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     flask_app.config['SQLALCHEMY_ECHO'] = echo
     flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

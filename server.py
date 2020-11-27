@@ -85,16 +85,16 @@ def log_in():
     return render_template('log_in.html')
 
 
-@app.route('/log-in-credentials')
+@app.route('/log-in-credentials', methods=['POST'])
 def validate_login_credentials():
 
-    email = request.args.get('email')
-    password = request.args.get('password')
+    email = request.form.get('email')
+    password = request.form.get('password')
 
     user = crud.get_user_by_email(email)
 
     if user == None or user.password != password:
-        flash('The email and password you entered did not match our records. Please double-check and try again.')
+        flash(f' {user}, {password}, {email} The email and password you entered did not match our records. Please double-check and try again.')
         return redirect('/log-in')
     else:
         session['user_id'] = user.user_id
@@ -103,10 +103,10 @@ def validate_login_credentials():
         session['profile_name'] = user.profile_name
         user = crud.get_user_by_id(user_id)
 
-        login_frequency = crud.get_user_login_frequency(user)
-        if login_frequency == None:
+        login_occurrences = crud.get_user_login_occurrences(user)
+        if login_occurrences == None:
             crud.log_login_occurrence(user)
-            session['login_frequency'] = login_frequency
+            session['login_occurrences'] = login_occurrences
             return redirect('/interests')
         else:
             crud.log_login_occurrence(user)
@@ -117,7 +117,10 @@ def validate_login_credentials():
 def get_user_interests():
     """View get interests page."""
 
-    return render_template('get_user_interests.html')
+    if session.get('user_id'):
+        return render_template('get_user_interests.html')
+    else:
+        return redirect ("/")
 
 
 def add_interest_to_db(interest):
@@ -165,11 +168,15 @@ def handle_user_interests():
 def show_recommended_books():
     """show recommended books."""
 
-    search_results = google_books_api.show_recommended_books()
-    bookshelves = crud.get_user_bookshelves(session['user_id'])
-    bookshelves = bookshelves[::-1]
+    if session.get('user_id'):
+        search_results = google_books_api.show_recommended_books()
+        bookshelves = crud.get_user_bookshelves(session['user_id'])
+        bookshelves = bookshelves[::-1]
+        return render_template('recommended_for_you.html', search_results=search_results, bookshelves=bookshelves)
 
-    return render_template('recommended_for_you.html', search_results=search_results, bookshelves=bookshelves)
+    else:
+        flash("Please log in.")
+        return redirect("/log-in")
 
 
 @app.route('/read-books')

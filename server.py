@@ -191,7 +191,6 @@ def show_read_books():
         return redirect("/log-in")
 
 
-
 @app.route('/liked-books')
 def show_liked_books():
     """Show the books the user has liked."""
@@ -203,7 +202,6 @@ def show_liked_books():
     else:
         flash('Please log in to see your liked books.')
         return redirect("/log-in")
-
 
 
 @app.route('/to-be-read-books')
@@ -238,7 +236,7 @@ def remove_illegal_characters_to_make_list(string):
     illegal_characters = ["[", "]", "'"]
 
     valid_list = []
-    if string != "''":
+    if (string != "''") or (string != None):
         for letter in string:
             if letter in illegal_characters:
                 continue
@@ -246,7 +244,6 @@ def remove_illegal_characters_to_make_list(string):
                 valid_list.append(letter)
                 valid_string = "".join(valid_list)
                 valid_list = valid_string.split(",")
-
     else:
         valid_list = None
 
@@ -370,14 +367,13 @@ def add_book_to_read_list(book_in_library):
     # Check if book is already on marked as a liked book for user
     # if so, flash message. If not mark as liked
 
-
     if book_in_library.read == True:
         message = '''You've already added this book to your read books.'''
     else:
         read_status_update = True
         liked_status = False
         crud.mark_book_as_read(book_in_library, read_status_update, liked_status)
-        message = 'Added to your read books'
+        message = 'Added to your read books.'
 
     return message
 
@@ -442,9 +438,9 @@ def mark_book_as_read():
     # from book user submitted as read
     title = request.form.get('title')
     subtitle = request.form.get('subtitle')
-    authors = request.form.get('authors')
+    authors = request.form.get('authors', '')
     image_link = request.form.get('image_link')
-    categories = request.form.get('categories')
+    categories = request.form.get('categories', '')
     description = request.form.get('description')
     isbn_13 = request.form.get('isbn_13')
 

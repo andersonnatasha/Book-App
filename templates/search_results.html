@@ -12,16 +12,16 @@
 {% for book in search_results %}
 
     <img src="{{book.thumbnail}}">
-    <br>{{ book.title }}
+    <p>{{ book.title }} <br>
     {% if book.subtitle %}
-     {{book.subtitle}}
+    {{book.subtitle}} <br>
     {% endif %}
-    {% for author in book.authors %} <br>
-    {{author}}
-    {% endfor %} <br>
+    {% for author in book.authors %}
+    {{author}} <br>
+    {% endfor %}
     {{ book.description }} <br>
-    Published: {{ book.published_date }} <br>
-    ISBN: {{ book.isbn_13 }}
+    Published: {{ book.publishedDate }}<br>
+    ISBN: {{ book.isbn_13 }}</p>
 
     <form class="mark-as-read" id="{{book.isbn_13}}">
         <input id="read-book-title{{book.isbn_13}}" name="title" type="hidden" value="{{ book.title }}">
@@ -74,8 +74,7 @@
     <input type="submit">
     <span id="add-to-bookshelf-message{{book.isbn_13}}"></span>
     </form>
-    <br>
-    <br>
+
 
     <div class="modal-bookshelf" id="modal-bookshelf{{book.isbn_13}}">
         <div class="modal-content" id="modal-content-bookshelf{{book.isbn_13}}">
@@ -88,7 +87,7 @@
         </div>
         </div>
 
-
+<br>
 {% endfor %}
 <script src="/static/searchResults.js"></script>
 {% endblock %}

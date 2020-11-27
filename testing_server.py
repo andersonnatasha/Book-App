@@ -19,7 +19,7 @@ class BookAppTests(unittest.TestCase):
     def test_homepage_before_login(self):
         """Test that homepage version if user is not logged in renders"""
         result = self.client.get('/')
-        self.assertEqual(result.status_code, 200)
+        self.assertEqual(200, result.status_code)
         self.assertIn(b'Welcome!', result.data)
 
 
@@ -27,7 +27,7 @@ class BookAppTests(unittest.TestCase):
         """Test that sign up page renders."""
 
         result = self.client.get('/sign-up')
-        self.assertEqual(result.status_code, 200)
+        self.assertEqual(200, result.status_code)
         self.assertIn(b'Whats your email?', result.data)
 
 
@@ -35,47 +35,47 @@ class BookAppTests(unittest.TestCase):
         """Test that login page renders."""
 
         result = self.client.get('/log-in')
-        self.assertEqual(result.status_code, 200)
+        self.assertEqual(200, result.status_code)
         self.assertIn(b'''Don't have an account''', result.data)
 
 
     def test_interests_page_before_login(self):
         result = self.client.get('/')
-        self.assertEqual(result.status_code, 200)
+        self.assertEqual(200, result.status_code)
 
 
     def test_recommended_books_page_before_user_logged_in(self):
         result = self.client.get('/recommended-books',
                                  follow_redirects=True)
-        self.assertEqual(result.status_code, 200)
+        self.assertEqual(200, result.status_code)
         self.assertIn(b'Please log in to see your recommended books.', result.data)
 
 
     def test_read_books_page_before_user_logged_in(self):
         result = self.client.get('/read-books',
                                  follow_redirects=True)
-        self.assertEqual(result.status_code, 200)
+        self.assertEqual(200, result.status_code)
         self.assertIn(b'Please log in to see your read books.', result.data)
 
 
     def test_liked_books_page_before_user_logged_in(self):
         result = self.client.get('/liked-books',
                                  follow_redirects=True)
-        self.assertEqual(result.status_code, 200)
+        self.assertEqual(200, result.status_code)
         self.assertIn(b'Please log in to see your liked books.', result.data)
 
 
     def test_to_be_read_books_page_before_user_logged_in(self):
         result = self.client.get('/to-be-read-books',
                                  follow_redirects=True)
-        self.assertEqual(result.status_code, 200)
+        self.assertEqual(200, result.status_code)
         self.assertIn(b'Please log in to see your tbr list.', result.data)
 
 
     def test_search_a_book_page_before_user_logged_in(self):
         result = self.client.get('/search-a-book',
                                  follow_redirects=True)
-        self.assertEqual(result.status_code, 200)
+        self.assertEqual(200, result.status_code)
         self.assertIn(b'Please log in.', result.data)
 
 
@@ -129,7 +129,7 @@ class BookAppTestsDatabase(unittest.TestCase):
                                  'birth-year': '1998',
                                  'gender': 'Female'},
                                  follow_redirects=True)
-        self.assertEqual(result.status_code, 200)
+        self.assertEqual(200, result.status_code)
         self.assertIn(b'Passwords do not match.', result.data)
 
 
@@ -146,7 +146,7 @@ class BookAppTestsDatabase(unittest.TestCase):
                                  'birth-year': '1998',
                                  'gender': 'Female'},
                                  follow_redirects=True)
-        self.assertEqual(result.status_code, 200)
+        self.assertEqual(200, result.status_code)
         self.assertIn(b'Account created! Please sign in.', result.data)
         self.assertIn(b'''Don't have an account''', result.data)
 
@@ -164,7 +164,7 @@ class BookAppTestsDatabase(unittest.TestCase):
                                  'birth-year': '1998',
                                  'gender': 'Female'},
                                  follow_redirects=True)
-        self.assertEqual(result.status_code, 200)
+        self.assertEqual(200, result.status_code)
         self.assertIn(b'Account already exists.', result.data)
 
 
@@ -174,7 +174,7 @@ class BookAppTestsDatabase(unittest.TestCase):
                                 data= {'email':'user1@test.com',
                                       'password':'test'},
                                        follow_redirects=True)
-        self.assertEqual(result.status_code, 200)
+        self.assertEqual(200, result.status_code)
         self.assertIn(b'<input type="checkbox" name="interests" value="young adult nonfiction">', result.data)
 
 
@@ -183,7 +183,7 @@ class BookAppTestsDatabase(unittest.TestCase):
                                 data={'email': 'user2@test.com',
                                       'password': 'test'},
                                        follow_redirects=True)
-        self.assertEqual(result.status_code, 200)
+        self.assertEqual(200, result.status_code)
         self.assertIn(b'Your Library', result.data)
 
 
@@ -192,13 +192,13 @@ class BookAppTestsDatabase(unittest.TestCase):
                                  data={'email': 'not_a_user@test.com',
                                        'password': 'test'},
                                        follow_redirects=True)
-        self.assertEqual(result.status_code, 200)
+        self.assertEqual(200, result.status_code)
         self.assertIn(b'The email and password you entered did not match our records.', result.data)
 
 
     def test_interest_page_after_login(self):
         result = self.client.get('/interests')
-        self.assertEqual(result.status_code, 200)
+        self.assertEqual(200, result.status_code)
         self.assertIn(b'Art', result.data)
 
 
@@ -206,17 +206,56 @@ class BookAppTestsDatabase(unittest.TestCase):
         result = self.client.post('/handle-user-interests',
                                   data={'interests':'art'},
                                   follow_redirects=True)
-        self.assertEqual(result.status_code, 200)
+        self.assertEqual(200, result.status_code)
         self.assertIn(b'Your Library', result.data)
 
         interest = model.UserInterest.query.get((1,1))
         self.assertEqual('art', interest.interest.interest)
 
+
     def test_searching_a_book(self):
         result = self.client.get('/search-a-book',
-                                  data={'keywords': 'Another Country'})
-        self.assertEqual(result.status_code, 200)
+                                  query_string={'search': 'Another Country'})
+        self.assertEqual(200, result.status_code)
         self.assertIn(b'Another Country', result.data)
+        self.assertIn(b'Read', result.data)
+        self.assertIn(b'Liked', result.data)
+        self.assertIn(b'TBR', result.data)
+        self.assertIn(b'Add to Bookshelf', result.data)
+        self.assertIn(b'<img src="http://books.google', result.data)
+        self.assertIn(b'James Baldwin', result.data)
+        self.assertIn(b'Nominated as one of', result.data)
+
+    def test_view_read_books_page(self):
+        result = self.client.get('/read-books',)
+        self.assertEqual(200, result.status_code)
+        self.assertIn(b"Your Read Books", result.data)
+
+    def test_view_liked_books_page(self):
+        result = self.client.get('/liked-books',)
+        self.assertEqual(200, result.status_code)
+        self.assertIn(b"Your Liked Books", result.data)
+
+    def test_view_to_be_read_books_page(self):
+        result = self.client.get('/to-be-read-books',)
+        self.assertEqual(200, result.status_code)
+        self.assertIn(b"Your TBR List", result.data)
+
+    def test_adding_book_to_read_list(self):
+        result = self.client.post('/mark-as-read',
+                                  data={'title': 'Another Country',
+                                        'subtitle': None,
+                                        'authors': 'James Baldwin',
+                                        'image_link': None,
+                                        'categories': None,
+                                        'description': None,
+                                        'isbn_13': '9780804149716'})
+        read_book = model.BookInLibrary.query.get((1,1))
+        self.assertEqual(200, result.status_code)
+        self.assertIn(b"Added to your read books.", result.data)
+        self.assertEqual('Another Country', read_book.book.title)
+
+
 
 
 

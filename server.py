@@ -420,6 +420,11 @@ def remove_liked_tag(book_in_library):
     crud.remove_liked_tag(book_in_library, read_status_update, liked_status)
 
 
+def remove_interest(interest):
+    """Remove interest form user profile"""
+
+
+
 def delete_book_from_to_be_read_list(isbn_13, user_id):
     """Remove book from user's read list."""
 
@@ -557,6 +562,7 @@ def remove_from_to_be_read_list():
 
     return redirect('/to-be-read-books')
 
+
 @app.route('/handle-remove-book-on-bookshelf', methods=['POST'])
 def remove_from_particular_bookshelf():
     """Remove book from a user's bookshelf."""
@@ -567,6 +573,18 @@ def remove_from_particular_bookshelf():
     crud.remove_book_from_bookshelf(user_id, isbn_13, bookshelf_name)
 
     return redirect(f'/{bookshelf_name}-bookshelf')
+
+
+@app.route('/handle-remove-interest', methods=['POST'])
+def handle_removing_interest_from_user_profile():
+    """Remove interest from technical profile."""
+
+    user_id = session['user_id']
+    interest = request.form.get('interest')
+
+    crud.remove_interest(interest, user_id)
+
+    return redirect('/interests')
 
 
 @app.route('/create-bookshelf.json', methods=['POST'])

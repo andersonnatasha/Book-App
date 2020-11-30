@@ -116,9 +116,20 @@
 
 {%if session['log_in_occurrences']%}
 
-<ul>Your Interests</ul>
-{% for interest in all_interests_for_a_user%}
-<li>{{ interest.interest.interest }}</li>
+<table>
+    <tr>
+        <th>Your Interests</th>
+    <tr>
+{% for interest in all_interests_for_a_user %}
+<tr>
+<td>
+<form action="/handle-remove-interest" method="POST">
+    <input name="interest" type="hidden" value="{{ interest.interest.interest }}">
+    <input type="submit" value="Remove">
+    </form>
+</td>
+<td>{{ interest.interest.interest }}</td>
+</tr>
 
 {% endfor %}
 {% endif %}

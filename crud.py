@@ -303,6 +303,18 @@ def remove_liked_tag(book_in_library, read_status_update, liked_status):
     db.session.commit()
 
 
+def remove_interest(interest, user_id):
+    """Remove an interest from a user's profile."""
+
+    interest = interest
+    user_id = user_id
+
+    interest = Interest.query.filter(Interest.interest == interest).first()
+    user_interest = UserInterest.query.filter(UserInterest.user_id == user_id, UserInterest.interest_id==interest.interest_id).first()
+    db.session.delete(user_interest)
+    db.session.commit()
+
+
 def remove_book_from_bookshelf(user_id, isbn_13, bookshelf_name):
     """Remove book from a user's bookshelf."""
 

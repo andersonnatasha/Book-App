@@ -91,13 +91,5 @@ ISBN: {{ book.isbn_13 }}
 {% endfor %}
 
 
-{if session['log_in_occurrences']}
-
-<ul>Your Interests</ul>
-
-{% for interests in all_interests_for_a_user %}
-<li>interests</li>
-
-
 <script src="/static/addToBookshelfFunctionality.js"></script>
 {% endblock %}

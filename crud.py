@@ -441,9 +441,8 @@ def get_user_interest(user_id, interest_id):
 def get_all_interests_for_user(user_id):
     """Return a userinterest by a user id."""
 
-    user = User.query.get(user_id)
+    return UserInterest.query.filter(UserInterest.user_id ==user_id).all()
 
-    return user.interests
 
 
 if __name__ == '__main__':

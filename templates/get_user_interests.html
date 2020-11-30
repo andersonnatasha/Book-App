@@ -114,4 +114,14 @@
     <input type="submit">
 </form>
 
+{%if session['log_in_occurrences']%}
+
+<ul>Your Interests</ul>
+{% for interest in all_interests_for_a_user%}
+<li>{{ interest.interest.interest }}</li>
+
+{% endfor %}
+{% endif %}
+
+
 {% endblock %}

@@ -114,7 +114,11 @@ def get_user_interests():
     """View get interests page."""
 
     if session.get('user_id'):
-        return render_template('get_user_interests.html')
+        all_interests_for_a_user = crud.get_all_interests_for_user(session['user_id'])
+        session['log_in_occurrences'] = crud.get_user_login_occurrences(crud.get_user_by_id(session['user_id']))
+        print('++++++++++++++++++++++++++++++++++++')
+        print(all_interests_for_a_user)
+        return render_template('get_user_interests.html', all_interests_for_a_user=all_interests_for_a_user)
     else:
         return redirect ("/")
 

@@ -344,30 +344,30 @@ def get_to_be_read_books_by_user_id(user_id):
     return to_be_read_books_in_library
 
 
-def get_read_book_by_isbn_13(isbn_13, user_id):
-    """Return a read book by title and user_id."""
+# def get_read_book_by_isbn_13(isbn_13, user_id):
+#     """Return a read book by title and user_id."""
 
-    book = Book.query.filter((Book.isbn_13 == isbn_13) & (BookInLibrary.read == True)).first()
-    book_id = book.book_id
-
-    return BookInLibrary.query.get((book_id, user_id))
+#     book = Book.query.filter((Book.isbn_13 == isbn_13) & (BookInLibrary.read == True)).first()
 
 
-def get_liked_book_by_isbn_13(isbn_13, user_id):
-    """Return a liked book by it's title and user."""
-
-    book = Book.query.filter((Book.isbn_13 == isbn_13) & (BookInLibrary.liked == True)).first()
-    # book_id = book.book_id
-
-    return (book)
+#     return BookInLibrary.query.get((book_id, user_id))
 
 
-def get_to_be_read_book_by_isbn_13(isbn_13, user_id):
-    """Return a to be read book by it's title and user."""
+# def get_liked_book_by_isbn_13(isbn_13, user_id):
+#     """Return a liked book by it's title and user."""
 
-    book = Book.query.filter((Book.title==isbn_13) & (BookInLibrary.to_be_read == True)).first()
+#     book = Book.query.filter((Book.isbn_13 == isbn_13) & (BookInLibrary.liked == True)).first()
 
-    return BookInLibrary.query.get((book.book_id, user_id))
+
+#     return (BookInLibrary.query.get((book.book_id, user_id)))
+
+
+# def get_to_be_read_book_by_isbn_13(isbn_13, user_id):
+#     """Return a to be read book by it's title and user."""
+
+#     book = Book.query.filter((Book.title==isbn_13) & (BookInLibrary.to_be_read == True)).first()
+
+#     return BookInLibrary.query.get((book.book_id, user_id))
 
 
 def create_bookshelf(name, user_id):

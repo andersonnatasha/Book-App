@@ -1,8 +1,6 @@
 from flask import (Flask, render_template, request, flash, session,
                    redirect, jsonify)
 
-import requests
-
 from model import connect_to_db
 
 import crud
@@ -10,18 +8,16 @@ import google_books_api
 
 from jinja2 import StrictUndefined
 
-import os
+from os import environ
 
 from datetime import datetime
-
-import json
 
 from random import randint
 
 app = Flask(__name__)
 app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
 
-app.secret_key = os.environ['FLASK_KEY']
+app.secret_key = environ['FLASK_KEY']
 
 
 @app.route('/')
@@ -470,9 +466,9 @@ def mark_book_as_liked():
     # from book user submitted as read
     title = request.form.get('title')
     subtitle = request.form.get('subtitle')
-    authors = request.form.get('authors')
+    authors = request.form.get('authors', '')
     image_link = request.form.get('image_link')
-    categories = request.form.get('categories')
+    categories = request.form.get('categories', '')
     description = request.form.get('description')
     isbn_13 = request.form.get('isbn_13')
 
@@ -500,9 +496,9 @@ def mark_book_as_to_be_read():
     # from book user submitted as read
     title = request.form.get('title')
     subtitle = request.form.get('subtitle')
-    authors = request.form.get('authors')
+    authors = request.form.get('authors', '')
     image_link = request.form.get('image_link')
-    categories = request.form.get('categories')
+    categories = request.form.get('categories', '')
     description = request.form.get('description')
     isbn_13 = request.form.get('isbn_13')
 
@@ -569,8 +565,6 @@ def remove_from_particular_bookshelf():
     return redirect(f'/{bookshelf_name}-bookshelf')
 
 
-
-
 @app.route('/create-bookshelf.json', methods=['POST'])
 def create_bookshelf():
     """Create a bookshelf."""
@@ -589,7 +583,7 @@ def create_bookshelf():
 
 
 @app.route('/<bookshelf_name>-bookshelf')
-def show_bookshelf(bookshelf_name):
+def show_bookshelf_details(bookshelf_name):
 
     bookshelf_name = bookshelf_name
     user_id = session['user_id']

@@ -184,7 +184,7 @@ class BookInLibrary(db.Model):
     user = db.relationship('User')
 
     def __repr__(self):
-        return f'<BookInLibrary book_in_library_id={self.book_id} book_title={self.book.title} user_id={self.user_id}>'
+        return f'<BookInLibrary book_id={self.book_id} book_title={self.book.title} user_id={self.user_id}>'
 
 
 class BookOnBookshelf(db.Model):

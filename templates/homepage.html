@@ -1,68 +1,61 @@
 {% extends 'base.html' %}
 
 {% block title %}
-{% if session['user_id'] %}
-{{session['profile_name']}} - Library
-
-{% else %}
-Homepage
-{%endif%}
-
+  {% if session['user_id'] %}
+    {{session['profile_name']}} - Library
+  {% else %}
+    Homepage
+  {%endif%}
 {% endblock %}
-
 {% block body %}
 
-{% if session['user_id'] %}
-<a href="/interests">Your interests</a>
+  {% if session['user_id'] %}
+    <a href="/interests">Your interests</a>
 
-<h2>{{ session['profile_name'] }}</h2>
-<form action='/search-a-book'>
-    <label>Search a book by title or author</label>
-    <input type="text" name=search>
+    <h2>{{ session['profile_name'] }}</h2>
+    <form action='/search-a-book'>
+      <label>Search a book by title or author</label>
+      <input type="text" name=search>
+      <input type="submit">
+    </form>
 
-    <input type="submit">
-</form>
+  <h2>Your Library</h2>
+    <h3><a href="/recommended-books">Recommended Books</a></h3>
+    <h3><a href="/read-books">Read Books</a></h3>
+    <h3><a href="/liked-books">Liked Books</a></h3>
+    <h3><a href="/to-be-read-books">To Be Read Books</a></h3>
 
-<h2>Your Library</h2>
-<h3><a href="/recommended-books">Recommended Books</a></h3>
-<h3><a href="/read-books">Read Books</a></h3>
-<h3><a href="/liked-books">Liked Books</a></h3>
-<h3><a href="/to-be-read-books">To Be Read Books</a></h3>
+  <br>
 
-<br>
+  <h2>Bookshelves</h2>
+    <ul id="bookshelf-names">
+    {% for bookshelf in bookshelves %}
+      <li><a href="/{{bookshelf.name}}-bookshelf">{{bookshelf.name}}</a></li>
+    {% endfor %}
+    </ul>
 
-<h2>Bookshelves</h2>
-<ul id="bookshelf-names">
-{% for bookshelf in bookshelves %}
-    <li><a href="/{{bookshelf.name}}-bookshelf">{{bookshelf.name}}</a></li>
-{% endfor %}
-</ul>
+  <button id="create-bookshelf-button">New Bookshelf</button>
 
-<button id="create-bookshelf-button">New Bookshelf</button>
+  <div id="modal">
+    <div id="modal-content">
+      <form id="create-bookshelf">
+      <p><label>Name: </label></p>
+      <input id="bookshelf-name" type="text" name="bookshelf_name">
+      <input type="submit">
+      <input id="cancel" type="reset" value="Cancel">
+    </form>
+   </div>
+  </div>
 
-<div id="modal">
-<div id="modal-content">
-<form id="create-bookshelf">
-    <p><label>Name: </label></p>
-    <input id="bookshelf-name" type="text" name="bookshelf_name">
-    <input type="submit">
-    <input id="cancel" type="reset" value="Cancel">
-</form>
-</div>
-</div>
+  {% else %}
 
+    <nav class="navbar sticky-top navbar-light bg-light">
+      <ul>
+      <li><a href="/sign-up">Sign up</a></li>
+      <li><a href="/log-in">Log in</a></li>
+   </ul>
+   </nav>
 
-
-{% else %}
-<h1>Welcome!</h1>
-
-<h3>Navigation</h3>
-<ul>
-    <li><a href="/sign-up">Sign up</a></li>
-    <li><a href="/log-in">Log in</a></li>
-</ul>
-</div>
-
-{% endif %}
+  {% endif %}
 <script src="/static/homepage.js"></script>
 {% endblock %}

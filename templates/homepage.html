@@ -7,8 +7,8 @@
     Homepage
   {%endif%}
 {% endblock %}
-{% block body %}
 
+{% block body %}
   {% if session['user_id'] %}
     <a href="/interests">Your interests</a>
 
@@ -49,13 +49,34 @@
 
   {% else %}
 
-    <nav class="navbar sticky-top navbar-light bg-light">
-      <ul>
-      <li><a href="/sign-up">Sign up</a></li>
-      <li><a href="/log-in">Log in</a></li>
-   </ul>
-   </nav>
+  <nav class="navbar fixed-top navbar-expand-md">
+    <a id="logo" class="navbar-brand" href="/">Dogeared</a>
+    <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse"
+    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+    aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a id="sign-up" class="nav-link" href="/sign-up">Sign up<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a id="sign-up" class="nav-link" href="/log-in">Log in</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div id="before-login-body-image" class="jumbotron jumbotron-fluid""></div>
+
+  <nav class="navbar fixed-bottom">
+    <a class="navbar-brand" href="/">Dogeared</a>
+  </nav>
+
+  <div class="circle"></div>
 
   {% endif %}
-<script src="/static/homepage.js"></script>
+  <script src="/static/homepage.js"></script>
 {% endblock %}

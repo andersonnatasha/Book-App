@@ -45,7 +45,7 @@
             </div>
             <div class="col-3">
             <form action="/log-out">
-                <input type="submit" value="Logout" method="POST">
+                <input type="submit" value="Logout">
             </form>
             </div>
         </div>
@@ -155,7 +155,28 @@
 
   {% else %}
   <body>
-    <div class="bg"></div>
+    <div class="bg">
+        <div class="align-items-center">
+            <!-- Content -->
+            <div class="container-fluid">
+              <!--Grid row-->
+              <div class="row">
+                <!--Grid column-->
+                <div id="slogan" class="col-md-12 mb-4 text-center">
+                  <p id="slogan-text">A Reader's Best Friend</p>
+                  <p id="slogan-text-pt2">Keep track of every book you’ve ever read <br>And every book you want to read</p>
+                </div>
+                <!--Grid column-->
+              </div>
+              <!--Grid row-->
+            </div>
+            <!-- Content -->
+          </div>
+          <!-- Mask & flexbox options-->
+        </div>
+    </div>
+
+
   <nav class="navbar fixed-top navbar-expand-md">
     <a id="logo" class="navbar-brand" href="/">Doggeared</a>
     <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse"
@@ -175,6 +196,7 @@
       </ul>
     </div>
   </nav>
+
 
   <nav class="navbar fixed-bottom">
     <a class="navbar-brand" href="/">Doggeared</a>

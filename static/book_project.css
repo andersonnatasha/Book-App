@@ -48,7 +48,7 @@
 }
 
 .navbar { background-color: #141414;
-          height: 80px}
+          height: 75px}
 
 .navbar-brand{color: white;}
 
@@ -84,17 +84,6 @@
         border-left: 400px solid transparent;
         border-right: 150px solid transparent;
         border-bottom: 300px solid #B7521E} */
-
-.triangle-left{background: #E4B04A;
-        width: 0;
-        height: 0;
-        border-top: 25px solid transparent;
-        border-right: 25px solid #B7521E;
-        border-bottom: 25px solid transparent;
-        margin: auto;
-        margin-top: 20px;
-        margin-right: 0px;
-}
 
 .slogan{color: red;
         margin-top: 300px;
@@ -144,15 +133,41 @@ label{ font-family: 'Montserrat', sans-serif
 body, html {
     height: 100%;
   }
-  .bg {
-    /* The image used */
+
+.bg{
     background-image: url("/static/images/dog-photo.jpg");
-
-    /* Full height */
     height: 100%;
-
-    /* Center and scale the image nicely */
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
   }
+
+  body{
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  p{color:red}
+
+  #testing{
+      height: 100%;
+  }
+
+  #slogan{
+    position: absolute;
+    left: 80%;
+    top: 75%;
+    transform: translate(-50%, -50%);
+  }
+
+  #slogan-text{
+    font-family: 'Roboto', sans-serif;
+    color: #3C3446;
+    font-size: 250%;
+    margin-bottom: 1px;
+  }
+
+  #slogan-text-pt2{
+    font-family: 'Open Sans', sans-serif;
+    color: #805249;
+    font-size: 150%;
+}

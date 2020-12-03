@@ -37,6 +37,7 @@ $('#create-bookshelf').on('submit', (evt) => {
         });
 });
 
-
-
-
+$('.book-image').on('click', (evt) => {
+  $('.book-description').style.display = 'block'
+  // modal.style.display ='block'
+});

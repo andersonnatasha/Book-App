@@ -28,11 +28,15 @@ def homepage():
     if user_id:
         bookshelves = crud.get_user_bookshelves(session['user_id'])
         bookshelves = bookshelves[::-1]
+
+        search_results = google_books_api.show_recommended_books()
+        bookshelves = crud.get_user_bookshelves(session['user_id'])
+        bookshelves = bookshelves[::-1]
+        return render_template('homepage.html',search_results=search_results, bookshelves=bookshelves)
+
     else:
         bookshelves = None
-
-    return render_template('homepage.html', bookshelves=bookshelves)
-
+        return render_template('homepage.html', bookshelves=bookshelves)
 
 @app.route('/sign-up')
 def sign_up():
@@ -79,6 +83,14 @@ def log_in():
     """User log in."""
 
     return render_template('log_in.html')
+
+@app.route('/log-out')
+def handle_logging_out():
+    """Log a user out."""
+
+    session['user_id'] = None
+
+    return redirect("/")
 
 
 @app.route('/log-in-credentials', methods=['POST'])

@@ -43,18 +43,18 @@
 
 
 #before-login-body-image{
-    background-color: #CBC0AD;
+    background-color: #E4B04A;
     height: 800px;
 }
 
-.navbar { background-color: black;
+.navbar { background-color: #141414;
           height: 80px}
 
 .navbar-brand{color: white;}
 
 .nav-link{color: white;}
 
-.fixed-bottom{background-color: black;}
+.fixed-bottom{background-color: #141414;}
 /*
 .navbar-toggler-icon{border-color:pink;} */
 
@@ -76,9 +76,83 @@
     border-radius: 50%;
           } */
 
-.circle{background:rgba(0,0,0,.3);
-        width: 100px;
-        height: 100px;
-        margin-left: auto;
-        margin-right: auto;
-        border-radius: 50%;}
+/* .triangle-up{background:#E4B04A;
+        width: 0;
+        height: 0;
+        margin: auto;
+        margin-right: 0px;
+        border-left: 400px solid transparent;
+        border-right: 150px solid transparent;
+        border-bottom: 300px solid #B7521E} */
+
+.triangle-left{background: #E4B04A;
+        width: 0;
+        height: 0;
+        border-top: 25px solid transparent;
+        border-right: 25px solid #B7521E;
+        border-bottom: 25px solid transparent;
+        margin: auto;
+        margin-top: 20px;
+        margin-right: 0px;
+}
+
+.slogan{color: red;
+        margin-top: 300px;
+
+}
+
+.wrapper {
+    display: flex;
+    width: 100%;
+}
+
+#sidebar {
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 999;
+    background:#141414;
+    color: #fff;
+    transition: all 0.3s;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.side-nav-items{font-family: 'Montserrat', sans-serif;
+    color:white;
+}
+
+label{ font-family: 'Montserrat', sans-serif
+}
+
+.book{
+    margin-left: 270px;
+}
+
+#homepage-header{
+    margin-left: 270px;
+}
+
+#see-more-recs{
+    margin-left: 270px;
+}
+
+.book-description{display: none;
+}
+
+body, html {
+    height: 100%;
+  }
+  .bg {
+    /* The image used */
+    background-image: url("/static/images/dog-photo.jpg");
+
+    /* Full height */
+    height: 100%;
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }

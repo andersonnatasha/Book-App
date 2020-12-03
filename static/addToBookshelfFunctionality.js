@@ -100,7 +100,7 @@ $('.add-to-bookshelf').on('submit', (evt) => {
     evt.preventDefault();
     const target = $(evt.target)
 
-     formInput['book_tag'] = target.val();
+  formInput['book_tag'] = target.val();
 
     console.log(target)
     console.log(formInput['book_tag']);

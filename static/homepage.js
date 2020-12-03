@@ -38,6 +38,8 @@ $('#create-bookshelf').on('submit', (evt) => {
 });
 
 $('.book-image').on('click', (evt) => {
+  const button = $(evt.target);
+  const buttonId = button.attr('id');
   $('.book-description').style.display = 'block'
   // modal.style.display ='block'
 });

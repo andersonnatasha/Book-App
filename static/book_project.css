@@ -1,5 +1,5 @@
 #modal { display: none ;
-    position: absolute;
+    position: fixed;
     left: 50%;
     top: 50%;
     width: 35%;
@@ -21,7 +21,7 @@
 
 
 .modal-bookshelf { display: none ;
-    position: absolute;
+    position: fixed;
     left: 50%;
     top: 50%;
     width: 35%;
@@ -85,10 +85,6 @@
         border-right: 150px solid transparent;
         border-bottom: 300px solid #B7521E} */
 
-.slogan{color: red;
-        margin-top: 300px;
-
-}
 
 .wrapper {
     display: flex;
@@ -130,7 +126,7 @@ label{ font-family: 'Montserrat', sans-serif
 .book-description{display: none;
 }
 
-body, html {
+#prior-to-login-homepage, html {
     height: 100%;
   }
 
@@ -146,28 +142,44 @@ body, html {
     font-family: 'Montserrat', sans-serif;
   }
 
-  p{color:red}
-
-  #testing{
-      height: 100%;
-  }
-
-  #slogan{
-    position: absolute;
+/* #slogan-row{
+    position: relative;
     left: 80%;
     top: 75%;
+    padding: 5em;
+    position: absolute;
+    margin-left: 70em;
     transform: translate(-50%, -50%);
-  }
+  } */
+
+  /* #slogan-col{
+      width: 100%;
+  } */
 
   #slogan-text{
     font-family: 'Roboto', sans-serif;
     color: #3C3446;
-    font-size: 250%;
-    margin-bottom: 1px;
+    font-size: 270%;
+    margin-top: 35%;
+    margin-bottom: 0;
+    text-align: right;
+    margin-right: 1.65em;
   }
 
   #slogan-text-pt2{
     font-family: 'Open Sans', sans-serif;
     color: #805249;
-    font-size: 150%;
+    font-size: 160%;
+    text-align: right;
+    margin-top: -.2em;
+    margin-right: 2.4em;
+    margin-bottom: 0px;
+}
+
+
+.form-signin {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
 }

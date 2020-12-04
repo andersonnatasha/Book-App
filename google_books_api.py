@@ -12,7 +12,7 @@ def search_a_book():
     keyword = request.args.get('search', '')
 
     url = 'https://www.googleapis.com/books/v1/volumes'
-    payload = {'q': keyword, 'maxResults': 10, 'apikey': API_KEY}
+    payload = {'q': keyword, 'maxResults': 20, 'apikey': API_KEY}
 
     res = requests.get(url, params=payload)
 
@@ -65,7 +65,7 @@ def show_recommended_books():
         keyword = keyword.interest
         url = 'https://www.googleapis.com/books/v1/volumes'
         keyword = f'subject: {keyword}'
-        payload = {'q': keyword, 'maxResults': 5, 'startIndex': randint(0,70), 'apikey': API_KEY}
+        payload = {'q': keyword, 'maxResults': 20, 'startIndex': randint(0,500), 'apikey': API_KEY}
 
         res = requests.get(url, params=payload)
 

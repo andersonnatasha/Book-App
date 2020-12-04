@@ -41,7 +41,7 @@ def log_login_occurrence(user):
     """Add one to user login_occurrences."""
 
     if user.login_occurrences == None:
-        user.login_occurrences= 0
+        user.login_occurrences = 0
     else:
         user.login_occurrences =+ 1
 

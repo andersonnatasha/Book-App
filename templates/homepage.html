@@ -21,26 +21,26 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarResponsive">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-        </li>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {{session['profile_name']}}
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="/interests">Your interests</a>
-          </div>
-        </li>
-      </ul>
-      <form id="search-a-book" action='/search-a-book' class="form-inline my-2 my-lg-0">
-        <input name=search class="form-control mr-sm-2" type="search" placeholder="Search a book" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
-    </div>
-  </nav>
+  <div class="collapse navbar-collapse" id="navbarResponsive">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{session['profile_name']}}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/interests">Your interests</a>
+        </div>
+      </li>
+    </ul>
+    <form id="search-a-book" action='/search-a-book' class="form-inline my-2 my-lg-0">
+      <input name=search class="form-control mr-sm-2" type="search" placeholder="Search a book" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    <form action="/log-out" class="form-inline my-2 my-lg-0">
+      <input type="submit" value="Logout">
+  </form>
+  </div>
+</nav>
 
     <div class="wrapper">
         <nav id="sidebar">
@@ -61,25 +61,7 @@
         </nav>
     </div>
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-3 offset-3">
-                <form id="search-a-book" action='/search-a-book'>
-                  <label>Search a book by title or author</label>
-                  <input type="text" name=search>
-                  <input type="submit">
-                </form>
-            </div>
-            <div class="col-3">
-              <p>{{ session['profile_name'] }}</p>
-            </div>
-            <div class="col-3">
-            <form action="/log-out">
-                <input type="submit" value="Logout">
-            </form>
-            </div>
-        </div>
-    </div>
+
 
 
     <div class="col-3">
@@ -97,8 +79,11 @@
     </form>
    </div>
   </div>
-
-
+<br>
+<br>
+<br>
+<br>
+<br>
   <h2 id="homepage-header">CHOSEN FOR YOU</h2>
   <a id="see-more-recs" href="/recommended-books">See more recommended books</a>
   <br>
@@ -114,7 +99,7 @@
     <div class="book-description" id="book-description{{book.isbn_13}}">{{ book.description }}</div>
     </p>
 
-  <form class="mark-as-read" id="{{book.isbn_13}}">
+  <form class="mark-as-read book-tag" id="{{book.isbn_13}}">
     <input id="read-book-title{{book.isbn_13}}" name="title" type="hidden" value="{{ book.title }}">
     <input id="read-book-subtitle{{book.isbn_13}}" name="subtitle" type="hidden" value="{{ book.subtitle }}">
     <input id="read-book-authors{{book.isbn_13}}" name="authors" type="hidden" value="{{ book.authors }}">
@@ -125,7 +110,7 @@
     <input value="Read" type="submit">
     <span id="read-message{{book.isbn_13}}"></span>
   </form>
-  <form class="mark-as-liked" id="{{book.isbn_13}}">
+  <form class="mark-as-liked book-tag" id="{{book.isbn_13}}">
     <input id="liked-book-title{{book.isbn_13}}" name="title" type="hidden" value="{{ book.title }}">
     <input id="liked-book-subtitle{{book.isbn_13}}" name="subtitle" type="hidden" value="{{ book.subtitle }}">
     <input id="liked-book-authors{{book.isbn_13}}" name="authors" type="hidden" value="{{ book.authors }}">
@@ -136,7 +121,7 @@
     <input value="Liked" type="submit">
     <span id="liked-message{{book.isbn_13}}"></span>
   </form>
-  <form class="mark-as-to-be-read" id="{{book.isbn_13}}">
+  <form class="mark-as-to-be-read book-tag" id="{{book.isbn_13}}">
     <input id="to-be-read-book-title{{book.isbn_13}}" name="title" type="hidden" value="{{ book.title }}">
     <input id="to-be-read-book-subtitle{{book.isbn_13}}" name="subtitle" type="hidden" value="{{ book.subtitle }}">
     <input id="to-be-read-book-authors{{book.isbn_13}}" name="authors" type="hidden" value="{{ book.authors }}">
@@ -192,7 +177,7 @@
                 <!--Grid column-->
                 <div id="slogan-col" class="col-md col-sm">
                   <p id="slogan-text">A Reader's Best Friend</p>
-                  <p id="slogan-text-pt2">Never lose track of your TBR list again</p>
+                  <p id="slogan-text-pt2">Never lose track of a book you want to read again</p>
                 </div>
                 <!--Grid column-->
               </div>

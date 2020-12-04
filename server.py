@@ -102,7 +102,7 @@ def validate_login_credentials():
     user = crud.get_user_by_email(email)
 
     if user == None or user.password != password:
-        flash(f'{password}The email and password you entered did not match our records. Please double-check and try again.')
+        flash(f'The email and password you entered did not match our records. Please double-check and try again.')
         return redirect('/log-in')
     else:
         session['user_id'] = user.user_id
@@ -128,8 +128,6 @@ def get_user_interests():
     if session.get('user_id'):
         all_interests_for_a_user = crud.get_all_interests_for_user(session['user_id'])
         session['log_in_occurrences'] = crud.get_user_login_occurrences(crud.get_user_by_id(session['user_id']))
-        print('++++++++++++++++++++++++++++++++++++')
-        print(all_interests_for_a_user)
         return render_template('get_user_interests.html', all_interests_for_a_user=all_interests_for_a_user)
     else:
         return redirect ("/")

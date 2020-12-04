@@ -3,74 +3,69 @@
 {% block title %}Sign up{% endblock %}
 
 {% block body %} 
-<form action="/handle-sign-up" method="POST">
 
-  <label>Whats your email?</label>
-  <input type="text" name="email" required>
 
-  <label>Create a password</label>
-  <input type="password" name="password" minlength="7" required>
+<body class="account-details">
+  <form action="/handle-sign-up" method="POST">
+    <p class="p mb-3 text-center">Sign up for free</p>
 
-  <label>Confirm your password</label>
-  <input type="password" name="confirm-password" minlength="7" required>
+    <label class="sign-up-or-log-in-form text-left">Whats your email?</label>
+    <input type="email" name="email" class="form-control" placeholder="Enter your email address." required autofocus>
 
-  <label> What should we call you?</label>
-  <input type="text" name="profile-name" required>
+    <label class="sign-up-or-log-in-form">Password</label>
+    <input type="password" name="password" class="form-control" placeholder="Enter your password." required autofocus>
 
-  <label>What's your date of birth?</label>
+    <label class="sign-up-or-log-in-form">Confirm your password</label>
+    <input type="password" name="confirm-password" class="form-control" placeholder="Enter your password again." required autofocus>
 
-  <select name="birth-month" required>
-    <option value="">-</option>
-    <option value="january">January</option>
-    <option value="february">February</option>
-    <option value="march">March</option>
-    <option value="april">April</option>
-    <option value="may">May</option>
-    <option value="june">June</option>
-    <option value="july">July</option>
-    <option value="august">August</option>
-    <option value="september">September</option>
-    <option value="october">October</option>
-    <option value="november">November</option>
-    <option value="december">December</option>
-  </select>
 
-  <label>Day</label>
-  <select name="birth-day" required>
-  <option value="">-</option>
-  {% for i in range(31) %}
-    {% if i < 9 %}
-    <option value="0{{ i +1 }}">{{ i+1 }}</option>
-    {% else %}
-    <option value="{{ i +1 }}">{{ i+1 }}</option>
-    {% endif %}
+    <label class="sign-up-or-log-in-form">What should we call you?</label>
+    <input type="text" name="profile-name" class="form-control" placeholder="Enter your name." required autofocus>
 
-  {% endfor %}
-  </select>
+    <label class="sign-up-or-log-in-form">What's your date of birth?</label>
+    <br>
+    <label class="sign-up-or-log-in-form birthday-label">Month</label>
+    <label class="sign-up-or-log-in-form birthday-label">Day</label>
+    <label class="sign-up-or-log-in-form birthday-label">Year</label>
+    <br>
+    <select class="birthday" name="birth-month" required>
+      <option value="">Month</option>
+      <option value="january">January</option>
+      <option value="february">February</option>
+      <option value="march">March</option>
+      <option value="april">April</option>
+      <option value="may">May</option>
+      <option value="june">June</option>
+      <option value="july">July</option>
+      <option value="august">August</option>
+      <option value="september">September</option>
+      <option value="october">October</option>
+      <option value="november">November</option>
+      <option value="december">December</option>
+    </select>
 
-  <!-- <input type="text" name="birth-day" required> -->
+    <input class="birthday" id="day" type="text" name="birth-day" class="form-control" placeholder="DD" required autofocus>
 
-  <label>Year</label>
-  <input type="text" name="birth-year" required>
+    <input class="birthday" id="year" type="text" name="birth-year" class="form-control" placeholder="YYYY" required autofocus>
 
-  <label>What's your gender?</label>
-
+    <label class="sign-up-or-log-in-form">What's your gender?</label>
+    <br>
     <input type="radio" name="gender" value="female">
-    <label>Female</label>
+    <label class="sign-up-or-log-in-form gender-radio-button">Female</label>
 
     <input type="radio" name="gender" value="male">
-    <label>Male</label>
+    <label class="sign-up-or-log-in-form gender-radio-button">Male</label>
 
     <input type="radio" name="gender" value="Non-binary">
-    <label>Non-binary</label>
+    <label class="sign-up-or-log-in-form gender-radio-button">Non-binary</label>
 
     <input type="radio" name="gender" value="Non-binary">
-  <label>Prefer Not To Say</label>
+    <label class="sign-up-or-log-in-form gender-radio-button">Prefer Not To Say</label>
 
-  <input type="submit">
+    <button class="btn btn-lg btn-primary btn-block sign-up-form" type="submit">Sign up</button>
 
-</form>
+    <p class="text-center sign-up-or-log-in-form">Have an account? <a href="/log-in">Log in</a>. </p>
 
-<p>Have an account? <a href="/log-in">Log in</a>. </p>
+
 
 {% endblock %}

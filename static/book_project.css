@@ -176,10 +176,34 @@ label{ font-family: 'Montserrat', sans-serif
     margin-bottom: 0px;
 }
 
-
-.form-signin {
+.account-details{
     width: 100%;
-    max-width: 330px;
+    max-width: 500px;
     padding: 15px;
     margin: auto;
 }
+
+.birthday-label{display: inline;
+                height:24px;
+                margin:55px}
+
+.birthday{display: inline-block;
+         width: 149px;
+         height: 30px;
+         margin: 2px;}
+
+
+.sign-up-or-log-in-form{
+    margin-top: 2em;
+}
+
+.gender-radio-button{
+    margin: 8px
+}
+
+/* #sign-up-button{display: grid;
+                justify-content: center; */
+
+    /* width:245.98px;
+                margin-left: auto;
+                margin-right: auto;} */

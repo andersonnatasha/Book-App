@@ -4,30 +4,28 @@
 
 {% block body %} 
 
-<nav class="navbar fixed-top">
-  <a class="navbar-brand" href="/">Doggeared</a>
-</nav>
-
 <br>
 <br>
 <br>
 <br>
 
-  <body class="text-center">
-    <form class="form-signin">
-      <p class="p mb-3 strong">To continue, log in to Doggeared</p>
-      <label for="inputEmail" class="sr-only">Email address</label>
-      <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-      <label for="inputPassword" class="sr-only">Password</label>
-      <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-      </div>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-    </form>
-  </body>
-</html>
+<body class="account-details">
+<form action="/log-in-credentials" method="POST">
+  <p class="p mb-3 strong text-center">To continue, log in to Doggeared</p>
+
+  <label class="sign-up-or-log-in-form text-left">Email address</label>
+  <input type="email" name="email" class="form-control" placeholder="Email address" required autofocus>
+
+  <label class="sign-up-or-log-in-form"name="password">Password</label>
+  <input type="password" name="password" class="form-control" placeholder="Password" required>
+  <button class="btn btn-lg btn-primary btn-block sign-up-or-log-in-form" type="submit">Log in</button>
+
+</form>
 
 
-<p>Don't have an account?</p>
-<button type="button" class="btn btn-outline-dark"><a href="/sign-up">SIGN UP FOR DOGGEARED</a></button>
-
+<p class="sign-up-or-log-in-form text-center">Don't have an account?</p>
+<div class="text-center">
+<button type="button" id="sign-up-button" class="btn btn-outline-dark"><a href="/sign-up">SIGN UP FOR DOGGEARED</a></button>
+</div>
+</body>
 {% endblock %}

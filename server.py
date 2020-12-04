@@ -102,7 +102,7 @@ def validate_login_credentials():
     user = crud.get_user_by_email(email)
 
     if user == None or user.password != password:
-        flash(f' {user}, {password}, {email} The email and password you entered did not match our records. Please double-check and try again.')
+        flash(f'{password}The email and password you entered did not match our records. Please double-check and try again.')
         return redirect('/log-in')
     else:
         session['user_id'] = user.user_id

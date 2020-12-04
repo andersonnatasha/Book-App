@@ -12,6 +12,36 @@
 {% block body %}
 <body>
   {% if session['user_id'] %}
+
+  <nav class="navbar fixed-top navbar-expand-md">
+    <a class="navbar-brand" href="/">Doggeared</a>
+    <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse"
+    data-target="#navbarResponsive" aria-controls="navbarSupportedContent"
+    aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+        </li>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{session['profile_name']}}
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="/interests">Your interests</a>
+          </div>
+        </li>
+      </ul>
+      <form id="search-a-book" action='/search-a-book' class="form-inline my-2 my-lg-0">
+        <input name=search class="form-control mr-sm-2" type="search" placeholder="Search a book" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+
     <div class="wrapper">
         <nav id="sidebar">
             <p>YOUR LIBRARY</p>
@@ -174,7 +204,7 @@
 
 
   <nav class="navbar fixed-top navbar-expand-md">
-    <a id="logo" class="navbar-brand" href="/">Doggeared</a>
+    <a class="navbar-brand" href="/">Doggeared</a>
     <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse"
     data-target="#navbarResponsive" aria-controls="navbarSupportedContent"
     aria-expanded="false" aria-label="Toggle navigation">
@@ -200,4 +230,5 @@
   {% endif %}
 </body>
   <script src="/static/homepage.js"></script>
+  <script src="/static/addToBookshelfFunctionality.js"></script>
 {% endblock %}

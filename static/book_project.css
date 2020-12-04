@@ -97,8 +97,8 @@
     top: 0;
     left: 0;
     height: 100vh;
-    z-index: 999;
-    background:#141414;
+    z-index: 9999;
+    background:#141416;
     color: #fff;
     transition: all 0.3s;
     font-family: 'Montserrat', sans-serif;
@@ -158,7 +158,7 @@ label{ font-family: 'Montserrat', sans-serif
 
   #slogan-text{
     font-family: 'Roboto', sans-serif;
-    color: #3C3446;
+    color: #2a1d17;
     font-size: 270%;
     margin-top: 35%;
     margin-bottom: 0;
@@ -168,7 +168,7 @@ label{ font-family: 'Montserrat', sans-serif
 
   #slogan-text-pt2{
     font-family: 'Open Sans', sans-serif;
-    color: #805249;
+    color: #69493a;
     font-size: 160%;
     text-align: right;
     margin-top: -.2em;
@@ -201,9 +201,8 @@ label{ font-family: 'Montserrat', sans-serif
     margin: 8px
 }
 
-/* #sign-up-button{display: grid;
-                justify-content: center; */
+.account-header{margin: 2px;}
 
-    /* width:245.98px;
-                margin-left: auto;
-                margin-right: auto;} */
+#log-in-background{
+background-attachment: #2a1d17;
+  }

@@ -66,8 +66,9 @@
         <div class="book-outterdiv text-center">
           <div class="book">
             <!-- <img class="book-image" id="book-image{{book.isbn_13}}" src="{{book.thumbnail}}"> -->
+            <i class="fas fa-ellipsis-v ellipsis"></i>
             <img class="book-image" id="book-image{{book.isbn_13}}" src="{{book.thumbnail}}">
-            <p class="book-title">{{book.title}} </p>
+            <div class="book-title"><i class="far fa-heart heart-icon" id="{{book.isbn_13}}"></i> {{book.title}} </div>
             <div class="book-author">
             {% for author in book.authors %}
             {%if book.authors|length == 1 or loop.last %}
@@ -75,12 +76,11 @@
             {% else %}
               {{ author}},
               {%endif%}
-
             {% endfor %}
             </div>
-            </div>
+          </div>
         </div>
-    </div>
+      </div>
       {%endfor%}
 
 

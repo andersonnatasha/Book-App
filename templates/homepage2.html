@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {% if session['user_id'] %}
+    {{session['profile_name']}} - Library
+  {% else %}
+    Doggeared
+  {%endif%}
+{% endblock %}
+
+
+{% block body %}
+<body id="homepage-after-login">
+  {% if session['user_id'] %}
+
+  <!-- Static navigation bar -->
+  <nav class="navbar fixed-top navbar-expand-md navbar-expand-sm">
+    <a class="navbar-brand" href="/">Doggeared</a>
+    <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse"
+    data-target="#navbarResponsive" aria-controls="navbarSupportedContent"
+    aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{session['profile_name']}}
+          </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="/interests">Your interests</a>
+            </div>
+        </li>
+      </ul>
+    <form id="search-a-book" action='/search-a-book' class="form-inline my-2 my-lg-0">
+      <input name=search class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    <form action="/log-out" class="form-inline my-2 my-lg-0">
+      <input type="submit" value="Logout">
+    </form>
+    </div>
+  </nav>
+
+  <!-- Container-fluid so it spans the entire page -->
+  <div class="container-fluid">
+      <!-- Chosen for you heading -->
+      <div class="row">
+          <section class="col-md-3 col-sm-1">
+              <H2>CHOSEN FOR YOU</H2>
+          </section>
+      </div>
+      <!-- See more rec'd books subtext -->
+      <div class="row">
+        <section class="col-md-4 col-sm-3">
+            <a id="see-more-recs" href="/recommended-books">See more recommended books</a>
+        </section>
+      </div>
+      <!-- See the books displayed -->
+
+      {% for book in search_results %}
+      {% if loop.index0 % 4 == 0 %}
+      <div id="row{{loop.index0}}" class="row book-row"></div>
+      {%endif%}
+      <div id=col{{loop.index}} class="col-md-3 col-sm-2 book-col">
+        <div class="book-outterdiv text-center">
+          <div class="book">
+            <img class="book-image" id="book-image{{book.isbn_13}}" src="{{book.thumbnail}}">
+            <p>
+            {{book.title}} <br>
+            {% for author in book.authors %}
+            {{ author }}<br>
+            </p>
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+
+      {%endfor%}
+
+
+
+</body>
+
+  {% else %}
+  <body id="prior-to-login-homepage">
+    <div class="bg">
+            <div class="container-fluid">
+              <!--Grid row-->
+              <div id="slogan-row" class="row">
+                <!--Grid column-->
+                <div id="slogan-col" class="col-md col-sm">
+                  <p id="slogan-text">A Reader's Best Friend</p>
+                  <p id="slogan-text-pt2">Never forget a book again</p>
+                </div>
+                <!--Grid column-->
+              </div>
+              <!--Grid row-->
+            </div>
+            <!-- Content -->
+        </div>
+    </div>
+
+
+
+  <nav class="navbar fixed-bottom">
+    <a class="navbar-brand" href="/">Doggeared</a>
+  </nav>
+  {% endif %}
+</body>
+  <script src="/static/homepage.js"></script>
+  <script src="/static/markBook.js"></script>
+{% endblock %}

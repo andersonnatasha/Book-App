@@ -62,20 +62,24 @@
       {% if loop.index0 % 4 == 0 %}
       <div id="row{{loop.index0}}" class="row book-row"></div>
       {%endif%}
-      <div id=col{{loop.index}} class="col-md-3 col-sm-2 book-col">
+      <div id=col{{loop.index}} class="col-md-3 col-sm-1 book-col">
         <div class="book-outterdiv text-center">
           <div class="book">
-            <img class="book-image" id="book-image{{book.isbn_13}}" src="{{book.thumbnail}}">
-            <p>
-            {{book.title}} <br>
+            <!-- <img class="book-image" id="book-image{{book.isbn_13}}" src="{{book.thumbnail}}"> -->
+            <p class="book-title">{{book.title}} </p>
+            <div class="book-author">
             {% for author in book.authors %}
-            {{ author }}<br>
-            </p>
+            {%if book.authors|length == 1 or loop.last %}
+              {{ author }}
+            {% else %}
+              {{ author}},
+              {%endif%}
+
             {% endfor %}
+            </div>
             </div>
         </div>
     </div>
-
       {%endfor%}
 
 

@@ -30,10 +30,10 @@ def search_a_book():
             base = data['items'][n]['volumeInfo']
             search_result['isbn_13'] = None
 
-            if base.get('industryIdentifiers', None) and (base['industryIdentifiers'][-1]['type'] == 'ISBN_13'):
+            if base.get('industryIdentifiers', None) and (base['industryIdentifiers'][-1]['type'] == 'ISBN_13') and (base.get('imageLinks')):
                 search_result['isbn_13'] = base['industryIdentifiers'][-1]['identifier']
 
-            elif base.get('industryIdentifiers', None) and (base['industryIdentifiers'][0]['type'] == 'ISBN_13'):
+            elif base.get('industryIdentifiers', None) and (base['industryIdentifiers'][0]['type'] == 'ISBN_13') and (base.get('imageLinks')):
                 search_result['isbn_13'] = base['industryIdentifiers'][0]['identifier']
 
             if search_result['isbn_13'] != None:
@@ -44,7 +44,6 @@ def search_a_book():
                     if key in base:
                         search_result[key] = base[key]
 
-                if base.get('imageLinks', None):
                     search_result['thumbnail'] = base['imageLinks']['thumbnail']
 
                 search_results.append(search_result)

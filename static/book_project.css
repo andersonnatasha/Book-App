@@ -47,8 +47,9 @@
     height: 800px;
 }
 
-.navbar { background-color: #141414;
-          height: 75px}
+.navbar {background-color: #252321;
+        height: 75px;}
+
 
 .navbar-brand{color: white;}
 
@@ -98,10 +99,11 @@
     left: 0;
     height: 100vh;
     z-index: 9999;
-    background:#141416;
+    background:#1b1811;
     color: #fff;
     transition: all 0.3s;
     font-family: 'Montserrat', sans-serif;
+    margin-right:20px
 }
 
 .side-nav-items{font-family: 'Montserrat', sans-serif;
@@ -111,15 +113,7 @@
 label{ font-family: 'Montserrat', sans-serif
 }
 
-.book{
-    margin-left: 270px;
-    display: inline-block;}
-
 #homepage-header{
-    margin-left: 270px;
-}
-
-#see-more-recs{
     margin-left: 270px;
 }
 
@@ -170,10 +164,10 @@ label{ font-family: 'Montserrat', sans-serif
   #slogan-text-pt2{
     font-family: 'Open Sans', sans-serif;
     color: #694946;
-    font-size: 160%;
+    font-size: 200%;
     text-align: left;
     margin-top: -.2em;
-    padding-left: 58%;
+    padding-left: 72%;
     /* margin-right: 2.4em; */
     margin-bottom: 0px;
 }
@@ -207,5 +201,58 @@ label{ font-family: 'Montserrat', sans-serif
 
 
 .book-tag{
-    display: inline;
+    display: inline-block;
 }
+
+#homepage-header{
+    margin-top: 7%
+}
+
+.book-image{
+            width: 128px;
+            height:204px;
+            border: 1px gold solid;
+            border-spacing: 10px;
+            /* text-align: center; */
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);}
+
+.book-outterdiv{margin-left: 10px;
+                display: inline-block;
+                position: relative;
+                text-align: center;
+                }
+
+.book{margin: 1em;
+    background-color: rgba(46, 49, 49, .6);
+    width:300px;
+    height: 300px;
+    text-align: center;
+    padding-top: 1em;
+    padding-bottom: 1em;}
+
+#homepage-after-login{background-color: #1b1811;
+                      color: white;
+                    padding-top: 5em;}
+
+
+.book-author{
+    text-align: center;
+    width: 70%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: 75%;
+    margin-left: auto;
+    margin-right: auto;}
+
+.book-title{
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;}

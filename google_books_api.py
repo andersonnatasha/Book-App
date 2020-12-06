@@ -48,9 +48,8 @@ def search_a_book():
 
                 search_results.append(search_result)
 
-    return search_results
-
-
+        search_result_and_keyword = [search_results, keyword]
+    return search_result_and_keyword
 
 
 def show_recommended_books():

@@ -27,6 +27,8 @@ $('#create-bookshelf').on('submit', (evt) => {
     bookshelfName: $('#bookshelf-name').val()
     };
 
+    console.log(formInput.bookshelfName)
+
     $.post('/create-bookshelf.json', formInput, (res) => {
         const bookshelfName = res.name;
         $('#bookshelf-names').prepend('<li></li>');
@@ -43,3 +45,6 @@ $('.book-image').on('click', (evt) => {
   $('.book-description').style.display = 'block'
   // modal.style.display ='block'
 });
+
+
+

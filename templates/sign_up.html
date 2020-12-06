@@ -6,7 +6,7 @@
 
 
 <body class="account-details">
-  <form action="/handle-sign-up" method="POST">
+  <form class="form-sign-or-log-out" action="/handle-sign-up" method="POST">
     <h3 class="h3 mb-3 text-center account-header">Sign up for free</h3>
 
     <label class="sign-up-or-log-in-form text-left">Whats your email?</label>
@@ -62,9 +62,9 @@
     <input type="radio" name="gender" value="Non-binary">
     <label class="sign-up-or-log-in-form gender-radio-button">Prefer Not To Say</label>
 
-    <button class="btn btn-lg btn-primary btn-block sign-up-or-log-in-form" type="submit">Sign up</button>
+    <button class="btn btn-lg btn-primary btn-block sign-up-or-log-in-form sign-up-or-log-in-button" type="submit">Sign up</button>
 
-    <p class="text-center sign-up-or-log-in-form">Have an account? <a href="/log-in">Log in</a>. </p>
+    <p class="text-center sign-up-or-log-in-form">Have an account? <a id="log-in-link" href="/log-in">Log in</a>. </p>
 
 
 

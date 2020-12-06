@@ -32,7 +32,7 @@ def homepage():
         search_results = google_books_api.show_recommended_books()
         bookshelves = crud.get_user_bookshelves(session['user_id'])
         bookshelves = bookshelves[::-1]
-        return render_template('homepage2.html',search_results=search_results, bookshelves=bookshelves, col_num=0)
+        return render_template('homepage2.html',search_results=search_results, bookshelves=bookshelves)
 
     else:
         bookshelves = None
@@ -180,7 +180,9 @@ def show_read_books():
     if session.get('user_id'):
         user = crud.get_user_by_id(session['user_id'])
         read_books = crud.get_read_books_by_user_id(session['user_id'])
-        return render_template('user_read_books.html', user=user, read_books=read_books)
+        bookshelves = crud.get_user_bookshelves(session['user_id'])
+        bookshelves = bookshelves[::-1]
+        return render_template('user_read_books.html', user=user, read_books=read_books, bookshelves=bookshelves)
     else:
         flash('Please log in to see your read books.')
         return redirect("/log-in")
@@ -193,7 +195,9 @@ def show_liked_books():
     if session.get('user_id'):
         user = crud.get_user_by_id(session['user_id'])
         liked_books = crud.get_liked_books_by_user_id(session['user_id'])
-        return render_template('user_liked_books.html', user=user, liked_books=liked_books)
+        bookshelves = crud.get_user_bookshelves(session['user_id'])
+        bookshelves = bookshelves[::-1]
+        return render_template('user_liked_books.html', user=user, liked_books=liked_books, bookshelves=bookshelves)
     else:
         flash('Please log in to see your liked books.')
         return redirect("/log-in")
@@ -206,7 +210,9 @@ def show_to_be_read_books():
     if session.get('user_id'):
         user = crud.get_user_by_id(session['user_id'])
         to_be_read_books = crud.get_to_be_read_books_by_user_id(session['user_id'])
-        return render_template('user_to_be_read_books.html', user=user, to_be_read_books=to_be_read_books)
+        bookshelves = crud.get_user_bookshelves(session['user_id'])
+        bookshelves = bookshelves[::-1]
+        return render_template('user_to_be_read_books.html', user=user, to_be_read_books=to_be_read_books, bookshelves=bookshelves)
     else:
         flash('Please log in to see your tbr list.')
         return redirect("/log-in")
@@ -216,10 +222,10 @@ def show_to_be_read_books():
 def show_search_a_book():
     """Show results from user's book search."""
     if session.get('user_id'):
-        search_results = google_books_api.search_a_book()
+        search_result_and_keyword = google_books_api.search_a_book()
         bookshelves = crud.get_user_bookshelves(session['user_id'])
         bookshelves = bookshelves[::-1]
-        return render_template('search_results.html', search_results=search_results, bookshelves=bookshelves)
+        return render_template('search_results.html', search_results=search_result_and_keyword[0], keyword=search_result_and_keyword[1], bookshelves=bookshelves)
     else:
         flash('Please log in.')
         return redirect("/log-in")

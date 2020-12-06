@@ -1,6 +1,6 @@
 'use strict';
 
-$('.mark-as-read').on('submit', (evt) => {
+$('.read-button').on('click', (evt) => {
   evt.preventDefault();
   const button = $(evt.target);
   const buttonId = button.attr('id');
@@ -26,6 +26,16 @@ $('.heart-icon').on('click', (evt) => {
   const button = $(evt.target);
   const buttonId = button.attr('id');
 
+  if (button[0].style === "color: green"){
+    (button[0].style = "color: white");
+    console.log("first condition");
+    console.log(button[0]);
+  } else {
+      button[0].style = "color:green";
+      console.log("first condition");
+  };
+
+
   const formInput = {
     title: $(`#liked-book-title${buttonId}`).val(),
     subtitle: $(`#liked-book-subtitle${buttonId}`).val(),
@@ -37,12 +47,12 @@ $('.heart-icon').on('click', (evt) => {
   };
 
   $.post('/mark-as-liked', formInput, (res) => {
-  $(`#liked-message${formInput['isbn_13']}`).html(res).delay(1000).fadeOut(2500, 'linear' );
+  $(`#liked-message${formInput['isbn_13']}`).html(res).fadeIn().delay(1000).fadeOut(2500, 'linear' );
   })
 });
 
 
-$('.mark-as-to-be-read').on('submit', (evt) => {
+$('.to-be-read-button').on('click', (evt) => {
   evt.preventDefault();
   const button = $(evt.target);
   const buttonId = button.attr('id');
@@ -116,4 +126,17 @@ $('.add-to-bookshelf').on('submit', (evt) => {
 });
 });
 
+
+const bookRows = document.querySelectorAll('.book-row');
+const bookCols = document.querySelectorAll('.book-col');
+
+let bookCounter = 0
+for (const bookRow of bookRows){
+  let bookColCounter = 0;
+  while (bookColCounter < 4 && bookCols[bookCounter] !== undefined) {
+    bookRow.append(bookCols[bookCounter]);
+    bookColCounter += 1;
+    bookCounter +=1;
+  }
+}
 

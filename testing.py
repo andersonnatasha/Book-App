@@ -256,7 +256,7 @@ class BookAppTestsDatabase(unittest.TestCase):
                                         'password':'test'},
                                         follow_redirects=True)
         self.assertEqual(200, result.status_code)
-        self.assertIn(b'<input type="checkbox" name="interests" value="young adult nonfiction">', result.data)
+        self.assertIn(b'<input type="checkbox" name="interests" value="Young Adult Nonfiction">', result.data)
 
 
     def test_successful_login_for_user_who_has_logged_in_at_once(self):

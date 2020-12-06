@@ -32,11 +32,11 @@ def homepage():
         search_results = google_books_api.show_recommended_books()
         bookshelves = crud.get_user_bookshelves(session['user_id'])
         bookshelves = bookshelves[::-1]
-        return render_template('homepage.html',search_results=search_results, bookshelves=bookshelves)
+        return render_template('homepage2.html',search_results=search_results, bookshelves=bookshelves, col_num=0)
 
     else:
         bookshelves = None
-        return render_template('homepage.html', bookshelves=bookshelves)
+        return render_template('homepage2.html', bookshelves=bookshelves)
 
 @app.route('/sign-up')
 def sign_up():
@@ -172,21 +172,6 @@ def handle_user_interests():
         user_interest = add_user_interest_to_db(user_id, interest)
 
     return redirect('/')
-
-
-@app.route('/recommended-books')
-def show_recommended_books():
-    """show recommended books."""
-
-    if session.get('user_id'):
-        search_results = google_books_api.show_recommended_books()
-        bookshelves = crud.get_user_bookshelves(session['user_id'])
-        bookshelves = bookshelves[::-1]
-        return render_template('recommended_for_you.html', search_results=search_results, bookshelves=bookshelves)
-    else:
-        flash('Please log in to see your recommended books.')
-        return redirect("/log-in")
-
 
 @app.route('/read-books')
 def show_read_books():
@@ -378,12 +363,12 @@ def add_book_to_read_list(book_in_library):
     # if so, flash message. If not mark as liked
 
     if book_in_library.read == True:
-        message = '''You've already added this book to your read books.'''
+        message = '''You've already added this book to your Read Books'''
     else:
         read_status_update = True
         liked_status = False
         crud.mark_book_as_read(book_in_library, read_status_update, liked_status)
-        message = 'Added to your read books.'
+        message = 'Added to your Read Books'
 
     return message
 
@@ -392,12 +377,15 @@ def add_book_to_liked_list(book_in_library):
     """Add a bok to a user liked list."""
 
     if book_in_library.liked == True:
-        message = 'This book is already on your liked list.'
+        read_status_update = True
+        liked_status = False
+        crud.remove_liked_tag(book_in_library, read_status_update, liked_status)
+        message = 'Removed from your Liked Books'
     else:
         read_status_update = True
         liked_status = True
         crud.mark_book_as_liked(book_in_library, read_status_update, liked_status)
-        message = 'Added to your liked books'
+        message = 'Added to your Liked Books'
 
     return message
 
@@ -405,12 +393,12 @@ def add_book_to_to_be_read_list(book_in_library):
     """Add a book to a user liked list."""
 
     if book_in_library.to_be_read == True:
-        message = 'This book is already on your tbr list.'
+        message = 'This book is already on your TBR list.'
     else:
         read_status_update = False
         liked_status = False
         crud.mark_book_as_to_be_read(book_in_library, read_status_update, liked_status)
-        message = 'Added to your tbr list'
+        message = 'Added to your TBR list'
 
     return message
 
@@ -428,11 +416,6 @@ def remove_liked_tag(book_in_library):
     read_status_update = True
     liked_status = False
     crud.remove_liked_tag(book_in_library, read_status_update, liked_status)
-
-
-def remove_interest(interest):
-    """Remove interest form user profile"""
-
 
 
 def delete_book_from_to_be_read_list(isbn_13, user_id):

@@ -13,7 +13,7 @@
 <body id="homepage-after-login">
   {% if session['user_id'] %}
 
-  <nav class="navbar  fixed-top navbar-expand-md">
+  <nav class="navbar fixed-top navbar-expand-md">
     <a class="navbar-brand" href="/">Doggeared</a>
     <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse"
     data-target="#navbarResponsive" aria-controls="navbarSupportedContent"
@@ -138,11 +138,8 @@
 </body>
 
   {% else %}
-<html>
-
-<div class="jumbotron big-banner" style="height: 500px; padding-top: 150px;">
-
-
+  <body id="prior-to-login-homepage">
+    <div class="bg">
             <div class="container-fluid">
               <!--Grid row-->
               <div id="slogan-row" class="row">

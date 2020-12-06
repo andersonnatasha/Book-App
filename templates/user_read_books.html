@@ -15,7 +15,6 @@
     </button>
     <form action='/search-a-book' class="form-inline my-2 my-lg-0">
         <input name=search class="form-control ml-sm-2 mr-auto" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
       </form>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ml-auto">
@@ -53,7 +52,9 @@
             <li><a class="side-nav-items" href="/{{bookshelf.name}}-bookshelf">{{bookshelf.name}}</a></li>
           {% endfor %}
           </ul>
-        <button id="create-bookshelf-button">New Bookshelf</button>
+          <div id="create-bookshelf-button" >
+            <i class="fas fa-plus-circle"></i><h6 class="create-bookshelf-button-text" >New Bookshelf</h6>
+          </div>
     </nav>
 </div>
 

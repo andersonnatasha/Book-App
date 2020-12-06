@@ -24,7 +24,6 @@
     </button>
     <form action='/search-a-book' class="form-inline my-2 my-lg-0">
         <input name=search class="form-control ml-sm-2 mr-auto" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
       </form>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ml-auto">
@@ -62,7 +61,9 @@
             <li><a class="side-nav-items" href="/{{bookshelf.name}}-bookshelf">{{bookshelf.name}}</a></li>
           {% endfor %}
           </ul>
-        <button id="create-bookshelf-button">New Bookshelf</button>
+          <div id="create-bookshelf-button" >
+          <i class="fas fa-plus-circle"></i><h6 class="create-bookshelf-button-text" >New Bookshelf</h6>
+        </div>
     </nav>
 </div>
 
@@ -226,17 +227,20 @@
     <div class="bg">
             <div class="container-fluid">
               <!--Grid row-->
-              <div id="slogan-row" class="row">
+              <div class="row">
                 <!--Grid column-->
-                <div id="slogan-col" class="col-md col-sm">
+                <div class="col-md-12 col-sm-12">
                   <p id="slogan-text">A Reader's Best Friend</p>
+                </div>
+              </div>
+                <!--Grid column-->
+                <div class="row">
+                <div class="col-md-12 col-sm-12">
                   <p id="slogan-text-pt2">Never forget a book again</p>
                 </div>
-                <!--Grid column-->
+                </div>
               </div>
-              <!--Grid row-->
             </div>
-            <!-- Content -->
         </div>
     </div>
 

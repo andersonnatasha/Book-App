@@ -304,7 +304,7 @@ class BookAppTestsDatabase(unittest.TestCase):
     def test_view_read_books_page(self):
         result = self.client.get('/read-books',)
         self.assertEqual(200, result.status_code)
-        self.assertIn(b"Your Read Books", result.data)
+        self.assertIn(b"Read Books", result.data)
 
 
     def test_view_liked_books_page(self):

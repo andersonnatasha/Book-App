@@ -63,7 +63,7 @@ def show_recommended_books():
         keyword = keyword.interest
         url = 'https://www.googleapis.com/books/v1/volumes'
         keyword = f'subject: {keyword}'
-        payload = {'q': keyword, 'maxResults': 20, 'startIndex': randint(0,500), 'apikey': API_KEY}
+        payload = {'q': keyword, 'maxResults': 10, 'startIndex': randint(0,500), 'apikey': API_KEY}
 
         res = requests.get(url, params=payload)
 
@@ -76,10 +76,10 @@ def show_recommended_books():
             base = data['items'][n]['volumeInfo']
             search_result['isbn_13'] = None
 
-            if base.get('industryIdentifiers') and (base['industryIdentifiers'][-1]['type'] == 'ISBN_13'):
+            if base.get('industryIdentifiers', None) and (base['industryIdentifiers'][-1]['type'] == 'ISBN_13') and (base.get('imageLinks')):
                 search_result['isbn_13'] = base['industryIdentifiers'][-1]['identifier']
 
-            elif base.get('industryIdentifiers') and (base['industryIdentifiers'][0]['type'] == 'ISBN_13'):
+            elif base.get('industryIdentifiers', None) and (base['industryIdentifiers'][0]['type'] == 'ISBN_13') and (base.get('imageLinks')):
                 search_result['isbn_13'] = base['industryIdentifiers'][0]['identifier']
 
             if search_result['isbn_13'] != None:

@@ -109,7 +109,7 @@
                   </li>
                 </ul>
               </div>
-            <img class="book-image" id="book-image{{book.isbn_13}}" src="{{book.thumbnail}}">
+            <img class="book-image" id="{{book.isbn_13}}" src="{{book.thumbnail}}">
             <div class="book-title">
                 <i class="far fa-heart heart-icon" id="{{book.isbn_13}}"></i> {{book.title}}
             </div>
@@ -122,9 +122,7 @@
               {%endif%}
             {% endfor %}
             </div>
-            <div class="book-description" id="book-description{{book.isbn_13}}">
-                {{ book.description }}
-            </div>
+                <p class="book-description"  id="book-description{{book.isbn_13}}"> {{ book.description }}</p>
             <div id="to-be-read-message{{book.isbn_13}}"></div>
             <div id="read-message{{book.isbn_13}}"></div>
             <div id="liked-message{{book.isbn_13}}"></div>
@@ -251,6 +249,7 @@
   </nav>
   {% endif %}
 </body>
+
   <script src="/static/homepage.js"></script>
   <script src="/static/markBook.js"></script>
 {% endblock %}

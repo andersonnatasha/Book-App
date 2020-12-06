@@ -40,9 +40,18 @@ $('#create-bookshelf').on('submit', (evt) => {
 $('.book-image').on('click', (evt) => {
   const button = $(evt.target);
   const buttonId = button.attr('id');
-  $('.book-description').style.display = 'block'
-  // modal.style.display ='block'
+  const description = $(`#book-description${buttonId}`)
+  console.log(description[0])
+
+  description[0].style.display = 'block'
+
+  $(description[0]).on('click', (evt) => {
+    description[0].style.display = 'none'
+
+  })
 });
+
+
 
 
 

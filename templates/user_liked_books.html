@@ -3,7 +3,7 @@
 {% block title %} {{ session['profile_name'] }} - Liked Books {% endblock %}
 
 {% block body %}
-
+<body class="homepage-after-login">
 <h2>Your Liked Books</h2>
 <a href="/">Search for more books</a>
 
@@ -35,5 +35,6 @@
 
   </table>
   <script src="/static/homepage.js"></script>
-  <script src="/static/markBook.js"></script>
+ <script src="/static/markBook.js"></script>
+</body>
   {% endblock %}

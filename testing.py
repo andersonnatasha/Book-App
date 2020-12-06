@@ -45,13 +45,6 @@ class BookAppTests(unittest.TestCase):
         self.assertEqual(200, result.status_code)
 
 
-    def test_recommended_books_page_before_user_logged_in(self):
-        result = self.client.get('/recommended-books',
-                                 follow_redirects=True)
-        self.assertEqual(200, result.status_code)
-        self.assertIn(b'Please log in to see your recommended books.', result.data)
-
-
     def test_read_books_page_before_user_logged_in(self):
         result = self.client.get('/read-books',
                                  follow_redirects=True)
@@ -324,12 +317,6 @@ class BookAppTestsDatabase(unittest.TestCase):
         result = self.client.get('/to-be-read-books',)
         self.assertEqual(200, result.status_code)
         self.assertIn(b"Your TBR List", result.data)
-
-
-    def test_view_recommended_books_page(self):
-        result = self.client.get('/recommended-books')
-        self.assertEqual(200, result.status_code)
-        self.assertIn(b'Your Recommended Books', result.data)
 
 
     def test_marking_a_new_book_in_library_as_read(self):

@@ -140,10 +140,34 @@
                     </li>
                   <li>
                       <button class="dropdown-item to-be-read-button" id="{{book.isbn_13}}" type="button">TBR</button></li>
-                  <li class="dropdown-submenu">
-                    <button class="dropdown-item dropdown-toggle">Add to Bookshelf</button>
-                    <ul class="dropdown-menu">
-                      <li><button class="dropdown-item sublist" href="#">Subsubmenu action</button></li>
+                      <div class="dropdown-divider"></div>
+                      <form class="add-to-bookshelf" id="{{book.isbn_13}}">
+                        <select class="add-to-bookshelf-dropdown" id="add-to-bookshelf-name{{book.isbn_13}}" name="add-to-bookshelf">
+                          <option value="">Add to Bookshelf</option>
+                          {% for bookshelf in bookshelves %}
+                          <option value="{{ bookshelf.name }}">{{ bookshelf.name }}</option>
+                          {% endfor %}
+                        </select>
+                          <input id="add-to-bookshelf-title{{book.isbn_13}}" name="title" type="hidden" value="{{ book.title }}">
+                          <input id="add-to-bookshelf-subtitle{{book.isbn_13}}" name="subtitle" type="hidden" value="{{ book.subtitle }}">
+                          <input id="add-to-bookshelf-authors{{book.isbn_13}}" name="authors" type="hidden" value="{{ book.authors }}">
+                          <input id="add-to-bookshelf-description{{book.isbn_13}}" name="description" type='hidden' value="{{ book.description }}">
+                          <input id="add-to-bookshelf-categories{{book.isbn_13}}" name="categories" type='hidden' value="{{ book.categories }}">
+                          <input id="add-to-bookshelf-image-link{book.isbn_13}}" name="image_link" type="hidden" value="{{ book.thumbnail }}">
+                          <input id="add-to-bookshelf-isbn-13{{book.isbn_13}}"name="isbn_13" type="hidden" value="{{ book.isbn_13 }}">
+                          <input type="submit">
+                          <span id="add-to-bookshelf-message{{book.isbn_13}}"></span>
+                      </form>
+                      <div class="modal-bookshelf" id="modal-bookshelf{{book.isbn_13}}">
+                        <div class="modal-content" id="modal-content-bookshelf{{book.isbn_13}}">
+                        <form id="book-on-bookshelf-status{{book.isbn_13}}">
+                          <input value="read" type="submit">
+                          <input value="liked" type="submit">
+                          <input value="tbr" type="submit">
+                          <input id="cancel{{book.isbn_13}}" type="reset" value="cancel">
+                        </form>
+                        </div>
+                      </div>
                     </ul>
                   </li>
                 </ul>
@@ -192,33 +216,6 @@
                 <input id="to-be-read-book-image-link{book.isbn_13}}" name="image_link" type="hidden" value="{{ book.thumbnail }}">
                 <input id="to-be-read-book-isbn-13{{book.isbn_13}}"name="isbn_13" type="hidden" value="{{ book.isbn_13 }}">
               </form>
-              <form class="add-to-bookshelf" id="{{book.isbn_13}}">
-                <select id="add-to-bookshelf-name{{book.isbn_13}}" name="add-to-bookshelf">
-                  <option value="">Add to Bookshelf</option>
-                  {% for bookshelf in bookshelves %}
-                  <option value="{{ bookshelf.name }}">{{ bookshelf.name }}</option>
-                  {% endfor %}
-                </select>
-                  <input id="add-to-bookshelf-title{{book.isbn_13}}" name="title" type="hidden" value="{{ book.title }}">
-                  <input id="add-to-bookshelf-subtitle{{book.isbn_13}}" name="subtitle" type="hidden" value="{{ book.subtitle }}">
-                  <input id="add-to-bookshelf-authors{{book.isbn_13}}" name="authors" type="hidden" value="{{ book.authors }}">
-                  <input id="add-to-bookshelf-description{{book.isbn_13}}" name="description" type='hidden' value="{{ book.description }}">
-                  <input id="add-to-bookshelf-categories{{book.isbn_13}}" name="categories" type='hidden' value="{{ book.categories }}">
-                  <input id="add-to-bookshelf-image-link{book.isbn_13}}" name="image_link" type="hidden" value="{{ book.thumbnail }}">
-                  <input id="add-to-bookshelf-isbn-13{{book.isbn_13}}"name="isbn_13" type="hidden" value="{{ book.isbn_13 }}">
-                  <input type="submit">
-                  <span id="add-to-bookshelf-message{{book.isbn_13}}"></span>
-              </form>
-              <div class="modal-bookshelf" id="modal-bookshelf{{book.isbn_13}}">
-                <div class="modal-content" id="modal-content-bookshelf{{book.isbn_13}}">
-                <form id="book-on-bookshelf-status{{book.isbn_13}}">
-                  <input value="read" type="submit">
-                  <input value="liked" type="submit">
-                  <input value="tbr" type="submit">
-                  <input id="cancel{{book.isbn_13}}" type="reset" value="cancel">
-                </form>
-                </div>
-                </div>
           </div>
         </div>
       </div>

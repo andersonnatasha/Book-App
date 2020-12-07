@@ -1,39 +1,7 @@
+{% extends 'base.html' %}
+{% block title %} {{ keyword }} - Search Results {% endblock %}
 
-
-<!doctype html height="100%;">
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="/static/book_project.css">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.11/css/all.css">
-    <link rel="shortcut icon" href="#">
-    <script
-      src="https://code.jquery.com/jquery-3.4.1.js"
-      integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-      crossorigin="anonymous"></script>
-    <title>
-      {% block title %}{% endblock %}
-    </title>
-
-    {% block head %}{% endblock %}
-  </head>
-
-<title>
-  {% if session['user_id'] %}
-    {{session['profile_name']}} - Library
-  {% else %}
-    Doggeared
-  {%endif%}
-  </title>
-
+{% block body %}
   {% if session['user_id'] %}
   <body class="homepage-after-login">
     <body>
@@ -234,81 +202,6 @@
           </form>
          </div>
         </div>
-
-
-
 </body>
+{% endblock %}
 
-  {% else %}
- <body id="prior-to-login-homepage" height="100%;">
-    <script src="https://code.jquery.com/jquery-3.4.1.js"
-    integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-    crossorigin="anonymous"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-    crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-    crossorigin="anonymous"></script>
-
-    {% for msg in get_flashed_messages() %}
-      <p class="flash=msg">
-        {{ msg }}
-      </p>
-    {% endfor %}
-
-    {% block body %}{% endblock %}
-
-  <nav id="prior-to-log-in-nav-bar" class="navbar fixed-top navbar-expand-md">
-    <a class="navbar-brand ml-auto" href="/">Doggeared</a>
-    <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse"
-    data-target="#navbarResponsive" aria-controls="navbarSupportedContent"
-    aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarResponsive">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a id="sign-up" class="nav-link" href="/sign-up">Sign up<span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a id="sign-up" class="nav-link" href="/log-in">Log in</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-
-
-    <div class="bg">
-            <div class="container-fluid">
-              <!--Grid row-->
-              <div class="row">
-                <!--Grid column-->
-                <div class="col-md-12 col-sm-12">
-                  <p id="slogan-text">A Reader's Best Friend</p>
-                </div>
-              </div>
-                <!--Grid column-->
-                <div class="row">
-                <div class="col-md-12 col-sm-12">
-                  <p id="slogan-text-pt2">Never forget a book again</p>
-                </div>
-                </div>
-              </div>
-            </div>
-        </div>
-    </div>
-
-
-
-  <nav class="navbar fixed-bottom">
-    <a class="navbar-brand" href="/">Doggeared</a>
-  </nav>
-  {% endif %}
-</body>
-
-  <script src="/static/homepage.js"></script>
-  <script src="/static/markBook.js"></script>
-</html>

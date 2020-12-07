@@ -55,7 +55,7 @@
       {% endfor %}
 
   <!-- Static navigation bar -->
-  <nav class="navbar fixed-top navbar-expand-md navbar-expand-sm navbar-logged-in">
+  <nav class="navbar navbar-expand-md navbar-expand-sm navbar-logged-in">
     <a class="navbar-brand" href="/">Doggeared</a>
     <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse"
     data-target="#navbarResponsive" aria-controls="navbarSupportedContent"
@@ -93,7 +93,7 @@
         <ul class="list-unstyled components">
           <li><a class="side-nav-items" href="/read-books">Read Books</a></li>
           <li><a class="side-nav-items" href="/liked-books">Liked Books</a></li>
-          <li><a class="side-nav-items" href="/to-be-read-books">To Be Read Books</a></li>
+          <li><a class="side-nav-items" href="/to-be-read-books">To Be Read List</a></li>
         </ul>
         <p>BOOKSHELVES</p>
         <ul id="bookshelf-names" class="list-unstyled components">
@@ -140,11 +140,10 @@
                     </li>
                   <li>
                       <button class="dropdown-item to-be-read-button" id="{{book.isbn_13}}" type="button">TBR</button></li>
-
                   <li class="dropdown-submenu">
                     <button class="dropdown-item dropdown-toggle">Add to Bookshelf</button>
                     <ul class="dropdown-menu">
-                      <li><button class="dropdown-item" href="#">Subsubmenu action</button></li>
+                      <li><button class="dropdown-item sublist" href="#">Subsubmenu action</button></li>
                     </ul>
                   </li>
                 </ul>
@@ -236,6 +235,9 @@
           </form>
          </div>
         </div>
+
+
+
 </body>
 
   {% else %}

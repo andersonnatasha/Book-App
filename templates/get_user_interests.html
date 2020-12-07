@@ -2,124 +2,276 @@
 {% block title %} {{ session['profile_name'] }} - Reading Preferences {% endblock %}
 
 {% block body %}
+<body id="interest-background">
 
-<form action='handle-user-interests', method="POST">
-    <label>What are you interested in?</label>
+    <body class="homepage-after-login" >
+        <!-- Static navigation bar -->
+        <nav id="interest-nav" class="navbar fixed-top navbar-expand-md navbar-expand-sm navbar-logged-in">
+          <a class="navbar-brand" href="/">Doggeared</a>
+          <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse"
+          data-target="#navbarResponsive" aria-controls="navbarSupportedContent"
+          aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <form action='/search-a-book' class="form-inline my-2 my-lg-0">
+              <input name=search class="form-control ml-sm-2 mr-auto" type="search" placeholder="Search" aria-label="Search">
+            </form>
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {{session['profile_name']}}
+                </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/interests">Your interests</a>
+                  </div>
+              </li>
+            </ul>
 
-    <input type="checkbox" name="interests" value="Architecture">
-    <label>Architecture</label>
+          <form action="/log-out" class="form-inline my-2 my-lg-0">
+            <input type="submit" value="Logout">
+          </form>
+          </div>
+        </nav>
 
-    <input type="checkbox" name="interests" value="Art">
-    <label>Art</label>
+    <div class="wrapper">
+        <nav id="sidebar">
+            <ul class="list-unstyled components">
+              <li><a class="side-nav-items" href="/"> <i class="fas fa-home"> </i></a></li>
+            </ul>
+            <p>YOUR LIBRARY</p>
+            <ul class="list-unstyled components">
+              <li><a class="side-nav-items" href="/read-books">Read Books</a></li>
+              <li><a class="side-nav-items" href="/liked-books">Liked Books</a></li>
+              <li><a class="side-nav-items" href="/to-be-read-books">To Be Read List</a></li>
+            </ul>
+            <p>BOOKSHELVES</p>
+            <ul id="bookshelf-names" class="list-unstyled components">
+                {% for bookshelf in bookshelves %}
+                <li><a class="side-nav-items" href="/{{bookshelf.name}}-bookshelf">{{bookshelf.name}}</a></li>
+              {% endfor %}
+              </ul>
+              <div id="create-bookshelf-button" >
+                <i class="fas fa-plus-circle"></i><h6 class="create-bookshelf-button-text" >New Bookshelf</h6>
+              </div>
+        </nav>
+    </div>
+<div class="container">
+    <div class="row text-center">
+        <div class="col">
+            <form action='handle-user-interests', method="POST">
+                <label id="interest-header">What are you interested in?</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <input type="checkbox" name="interests" value="Architecture">
+            <label class="interest-label">Architecture</label>
+        </div>
+        <div class="col">
+            <input type="checkbox" name="interests" value="Art">
+            <label class="interest-label">Art</label>
 
-    <input type="checkbox" name="interests" value="Autobiography">
-    <label>Autobiography</label>
+        </div>
+        <div class="col">
 
-    <input type="checkbox" name="interests" value="Comics">
-    <label>Comics</label>
+            <input type="checkbox" name="interests" value="Autobiography">
+            <label class="interest-label">Autobiography</label>
 
-    <input type="checkbox" name="interests" value="Computers">
-    <label>Computers</label>
+        </div>
+        <div class="col">
+            <input type="checkbox" name="interests" value="Comics">
+            <label class="interest-label">Comics</label>
 
-    <input type="checkbox" name="interests" value="Cooking">
-    <label>Cooking</label>
+        </div>
+        <div class="col">
+            <input type="checkbox" name="interests" value="Computers">
+            <label class="interest-label">Computers</label>
+        </div>
+        <div class="col">
+            <input type="checkbox" name="interests" value="Cooking">
+            <label class="interest-label">Cooking</label>
+        </div>
+    </div>
 
-    <input type="checkbox" name="interests" value="Crafts">
-    <label>Crafts</label>
+    <div class="row">
+        <div class="col">
 
-    <input type="checkbox" name="interests" value="Design">
-    <label>Design</label>
+            <input type="checkbox" name="interests" value="Crafts">
+            <label class="interest-label">Crafts</label>
 
-    <input type="checkbox" name="interests" value="Drama">
-    <label>Drama</label>
+        </div>
+        <div class="col">
+            <input type="checkbox" name="interests" value="Design">
+            <label class="interest-label">Design</label>
 
-    <input type="checkbox" name="interests" value="Education">
-    <label>Education</label>
+        </div>
+        <div class="col">
+            <input type="checkbox" name="interests" value="Drama">
+            <label class="interest-label">Drama</label>
 
-    <input type="checkbox" name="interests" value="Fiction">
-    <label>Fiction</label>
+        </div>
+        <div class="col">
+            <input type="checkbox" name="interests" value="Education">
+            <label class="interest-label">Education</label>
 
-    <input type="checkbox" name="interests" value="Gardening">
-    <label>Gardening</label>
+        </div>
+        <div class="col">
 
-    <input type="checkbox" name="interests" value="Graphic Novels">
-    <label>Graphic novels</label>
+            <input type="checkbox" name="interests" value="Fiction">
+            <label class="interest-label">Fiction</label>
 
-    <input type="checkbox" name="interests" value="Humor">
-    <label>Humor</label>
+        </div>
+        <div class="col">
+            <input type="checkbox" name="interests" value="Gardening">
+            <label class="interest-label">Gardening</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <input type="checkbox" name="interests" value="Graphic Novels">
+            <label class="interest-label">Graphic novels</label>
+        </div>
+        <div class="col">
+            <input type="checkbox" name="interests" value="Humor">
+            <label class="interest-label">Humor</label>
 
-    <input type="checkbox" name="interests" value="Juvenile fiction">
-    <label>Juvenile Fiction</label>
+        </div>
+        <div class="col">
+            <input type="checkbox" name="interests" value="Juvenile fiction">
+            <label class="interest-label">Juvenile Fiction</label>
 
-    <input type="checkbox" name="interests" value="Juvenile nonfiction">
-    <label>Juvenile Nonfiction</label>
+        </div>
+        <div class="col">
+            <input type="checkbox" name="interests" value="Juvenile nonfiction">
+            <label class="interest-label label-too-long" >Juvenile Nonfiction</label>
 
-    <input type="checkbox" name="interests" value="Law">
-    <label>Law</label>
+        </div>
+        <div class="col">
+            <input type="checkbox" name="interests" value="Law">
+            <label class="interest-label">Law</label>
 
-    <input type="checkbox" name="interests" value="Literary collections">
-    <label>Literary Collections</label>
+        </div>
+        <div class="col">
+            <input type="checkbox" name="interests" value="Literary collections">
+            <label class="interest-label label-too-long">Literary Collections</label>
 
-    <input type="checkbox" name="interests" value="Literary criticism">
-    <label>Literary Criticism</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <input type="checkbox" name="interests" value="Literary criticism">
+            <label class="interest-label label-too-long">Literary Criticism</label>
 
-    <input type="checkbox" name="interests" value="Mathematics">
-    <label>Mathematics</label>
+        </div>
+        <div class="col">
+            <input type="checkbox" name="interests" value="Mathematics">
+            <label class="interest-label">Mathematics</label>
 
-    <input type="checkbox" name="interests" value="Medical">
-    <label>Medical</label>
+        </div>
+        <div class="col">
+            <input type="checkbox" name="interests" value="Medical">
+            <label class="interest-label">Medical</label>
+        </div>
+        <div class="col">
+            <input type="checkbox" name="interests" value="Music">
+            <label class="interest-label">Music</label>
 
-    <input type="checkbox" name="interests" value="Music">
-    <label>Music</label>
+        </div>
+        <div class="col">
+            <input type="checkbox" name="interests" value="Nature">
+            <label class="interest-label">Nature</label>
 
-    <input type="checkbox" name="interests" value="Nature">
-    <label>Nature</label>
+        </div>
+        <div class="col">
+            <input type="checkbox" name="interests" value="Philosophy">
+            <label class="interest-label">Philosophy</label>
 
-    <input type="checkbox" name="interests" value="Philosophy">
-    <label>Philosophy</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <input type="checkbox" name="interests" value="Photography">
+            <label class="interest-label">Photography</label>
 
-    <input type="checkbox" name="interests" value="Photography">
-    <label>Photography</label>
+        </div>
+        <div class="col">
 
-    <input type="checkbox" name="interests" value="Poetry">
-    <label>Poetry</label>
+            <input type="checkbox" name="interests" value="Poetry">
+            <label class="interest-label">Poetry</label>
 
-    <input type="checkbox" name="interests" value="Political Science">
-    <label>Political Science</label>
+        </div>
+        <div class="col">
+            <input type="checkbox" name="interests" value="Political Science">
+            <label class="interest-label">Political Science</label>
 
-    <input type="checkbox" name="interests" value="Psychology">
-    <label>Psychology</label>
+        </div>
+        <div class="col">
 
-    <input type="checkbox" name="interests" value="Self-Help">
-    <label>Self-help</label>
+            <input type="checkbox" name="interests" value="Psychology">
+            <label class="interest-label">Psychology</label>
 
-    <input type="checkbox" name="interests" value="Technology">
-    <label>Technology</label>
+        </div>
+        <div class="col">
+            <input type="checkbox" name="interests" value="Self-Help">
+            <label class="interest-label">Self-help</label>
 
-    <input type="checkbox" name="interests" value="Transportation">
-    <label>Transportation</label>
+        </div>
+        <div class="col">
 
-    <input type="checkbox" name="interests" value="Travel">
-    <label>Travel</label>
+            <input type="checkbox" name="interests" value="Technology">
+            <label class="interest-label">Technology</label>
 
-    <input type="checkbox" name="interests" value="True Crime">
-    <label>True Crime</label>
+        </div>
+    </div>
 
-    <input type="checkbox" name="interests" value="Young Adult Fiction">
-    <label>Young Adult Fiction</label>
+    <div class="row">
+        <div class="col-2">
 
-    <input type="checkbox" name="interests" value="Young Adult Nonfiction">
-    <label>Young Adult Nonfiction</label>
+            <input type="checkbox" name="interests" value="Transportation">
+            <label class="interest-label">Transportation</label>
 
-    <input type="submit">
-</form>
+
+        </div>
+        <div class="col-2">
+
+            <input type="checkbox" name="interests" value="Travel">
+            <label class="interest-label">Travel</label>
+
+        </div>
+        <div class="col-2">
+            <input type="checkbox" name="interests" value="True Crime">
+            <label class="interest-label">True Crime</label>
+
+        </div>
+        <div class="col-2">
+
+            <input type="checkbox" name="interests" value="Young Adult Fiction">
+            <label class="interest-label label-too-long">Young Adult Fiction</label>
+
+        </div>
+        <div class="col-3">
+
+            <input type="checkbox" name="interests" value="Young Adult Nonfiction">
+            <label class="interest-label label-too-long" >Young Adult Nonfiction</label>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <button class="btn  text-center btn-lg btn-primary btn-block" id="interest-button" type="submit">Submit</button>
+        </form>
+        </div>
+    </div>
+
+</div>
 
 {%if all_interests_for_a_user%}
 
-<table>
-    <tr>
-        <th>Your Interests</th>
-    <tr>
+<div class="container">
+<h6>Your Interests</h6>
+<table class="table table-dark">
+<tbody>
 {% for interest in all_interests_for_a_user %}
 <tr>
 <td>
@@ -130,9 +282,10 @@
 </td>
 <td>{{ interest.interest.interest }}</td>
 </tr>
-
 {% endfor %}
 {% endif %}
-
-
+</tbody>
+</table>
+</div>
+</body>
 {% endblock %}

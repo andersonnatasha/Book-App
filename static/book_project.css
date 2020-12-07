@@ -48,7 +48,7 @@
 
 .navbar-logged-in {background-color: transparent ;
       height: 75px;
-      padding-left: 17.5%;}
+      padding-left: 3%;}
 
 .navbar-brand:hover{color: green;}
 
@@ -143,7 +143,12 @@ label{ font-family: 'Montserrat', sans-serif
   padding-left: 3%;
   padding-right:3%;
   display: none;
+  cursor: pointer;
+  border: solid 1px black;
+  border-radius: .3rem;
 }
+
+
 
 
 body{
@@ -176,7 +181,7 @@ body{
   padding: 15px;
   margin: auto;}
 
-.account-details{
+.pre-login-background{
   height: 1500px;
   /* background-position: center;
   background-repeat: no-repeat;
@@ -226,7 +231,10 @@ body{
           left: 50%;
           -ms-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
-          border-radius: .1rem;}
+          border-radius: .1rem;
+          cursor: pointer;}
+
+.book-image:hover{opacity: .4;}
 
 .book-outterdiv{
               display: inline-block;
@@ -245,18 +253,13 @@ body{
   padding-bottom: 1em;
   border-radius: .3rem;}
 
-/* html, body{height: 100%;} */
 
 .homepage-after-login{
-  height: 2000px;
+  height: 3000px;
   color: white;
-  padding-top: 7%;
   padding-left: 15%;
   background: linear-gradient(0deg, rgba(20,20,20,1) 92%, rgba(43,42,41,1) 100%);
 }
-
-
-#prior-to-login-homepage{height:100%;}
 
 
 .bg{
@@ -333,7 +336,7 @@ body{
 #sign-up-button-on-log-in-page{color:black}
 
 
-.btn-primary:hover, .btn-primary:focus, #sign-up-button-on-log-in-page:hover, #sign-up-button:hover, .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary {
+.btn-primary:hover, .btn-primary:focus, #interest-button:hover, #sign-up-button-on-log-in-page:hover, #sign-up-button:hover, .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary {
 color: #fff;
 background-color:rgba(0,114,129,1);
 border-color: rgba(0,114,129,1); /*set the color you want here*/
@@ -351,5 +354,25 @@ border-color: rgba(0,114,129,1); /*set the color you want here*/
 #create-bookshelf-button:hover{color: green;}
 
 .dropdown-toggle:hover, .nav-link:hover {color:green}
+
 .fa-plus-circle{cursor: pointer; display: inline;}
+
+#interest-header{display:block; color: white; margin-bottom: 2%; padding-top: 9%;}
+#interest-background{
+  height: 2000px;background: linear-gradient(0deg, rgba(20,20,20,1) 92%, rgba(43,42,41,1) 100%);
+  padding-left: 13.5%;
+}
+.interest-label{padding-left: 3%; color:white; font-size: 100;}
+
+#interest-button{background-color: black;
+  border:black;
+color: white;
+width: 10%;
+margin-left: auto;
+margin-right: auto;
+margin-top: 2%;}
+
+#interest-nav{background-color:rgba(20,20,20,1); padding-left: 17%;}
+
+.label-too-long{font-size: 85%;}
 

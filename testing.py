@@ -310,13 +310,13 @@ class BookAppTestsDatabase(unittest.TestCase):
     def test_view_liked_books_page(self):
         result = self.client.get('/liked-books',)
         self.assertEqual(200, result.status_code)
-        self.assertIn(b"Your Liked Books", result.data)
+        self.assertIn(b"Liked Books", result.data)
 
 
     def test_view_to_be_read_books_page(self):
         result = self.client.get('/to-be-read-books',)
         self.assertEqual(200, result.status_code)
-        self.assertIn(b"Your TBR List", result.data)
+        self.assertIn(b"To Be Read List", result.data)
 
 
     def test_marking_a_new_book_in_library_as_read(self):
@@ -330,7 +330,7 @@ class BookAppTestsDatabase(unittest.TestCase):
                                         'isbn_13': '9780804149716'})
         self.assertEqual(200, result.status_code)
         read_book = model.BookInLibrary.query.get((4,1))
-        self.assertIn(b"Added to your read books.", result.data)
+        self.assertIn(b"Added to your Read Books", result.data)
         self.assertEqual('Another Country', read_book.book.title)
         self.assertEqual(True, read_book.read)
         self.assertEqual(datetime, type(read_book.read_date))

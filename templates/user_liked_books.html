@@ -1,64 +1,129 @@
 {% extends 'base.html' %}
 
-{% block title %} {{ session['profile_name'] }} - Liked Books {% endblock %}
+{% block title %} {{ session['profile_name'] }} - TBR List {% endblock %}
 
 {% block body %}
+
 <body class="homepage-after-login">
+  <!-- Static navigation bar -->
+  <nav class="navbar navbar-expand-md navbar-expand-sm navbar-logged-in">
+    <a class="navbar-brand" href="/">Doggeared</a>
+    <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse"
+    data-target="#navbarResponsive" aria-controls="navbarSupportedContent"
+    aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <form action='/search-a-book' class="form-inline my-2 my-lg-0">
+        <input name=search class="form-control ml-sm-2 mr-auto" type="search" placeholder="Search" aria-label="Search">
+      </form>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{session['profile_name']}}
+          </a>
+            <div id="profile-name-dropdown" class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <div id="your-interest-button-div">
+              <a class="dropdown-item" id="your-interest-button" href="/interests">Your interests</a>
+            </div>
+              <form action="/log-out" class="form-inline my-2 my-lg-0">
+                <input id="log-out-button" type="submit" value="Log Out">
+              </form>
+            </div>
+        </li>
+      </ul>
 
+    </div>
+  </nav>
 
-
-  <ul class="nav navbar-nav">
-    <li class="active"><a href="#">Home</a></li>
-    <li><a href="#about">About</a></li>
-    <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span class="nav-label">Services</span> <span class="caret"></span></a>
-        <ul class=" dropdown-menu">
-            <li class="sublist"><a href="#">Service A</a></li>
-            <li class="sublist"><a href="#">Service B</a></li>
-            <li class="dropdown-submenu sublist">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <span class="nav-label">Service C</span><span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li><a  href="#">Service C1</a></li>
-                    <li><a  href="#">Service C2</a></li>
-                    <li><a  href="#">Service C3</a></li>
-                    <li><a  href="#">Service C4</a></li>
-                    <li><a  href="#">Service C5</a></li>
-                </ul>
-            </li>
+  <!-- Side nav bar -->
+  <div class="wrapper">
+    <nav id="sidebar">
+        <ul class="list-unstyled components">
+          <li><a class="side-nav-items" href="/"> <i class="fas fa-home fa-lg"> </i></a></li>
         </ul>
-    </li>
-</ul>
-<h2>Your Liked Books</h2>
-<a href="/">Search for more books</a>
+        <p>YOUR LIBRARY</p>
+        <ul class="list-unstyled components">
+          <li><a class="side-nav-items" href="/read-books">Read Books</a></li>
+          <li><a class="side-nav-items" href="/liked-books">Liked Books</a></li>
+          <li><a class="side-nav-items" href="/to-be-read-books">To Be Read List</a></li>
+        </ul>
+        <p>BOOKSHELVES</p>
+        <ul id="bookshelf-names" class="list-unstyled components">
+            {% for bookshelf in bookshelves %}
+            <li><a class="side-nav-items" href="/{{bookshelf.name}}-bookshelf">{{bookshelf.name}}</a></li>
+          {% endfor %}
+          </ul>
+          <div id="create-bookshelf-button" >
+            <i class="fas fa-plus-circle"></i><h6 class="create-bookshelf-button-text" >New Bookshelf</h6>
+          </div>
+    </nav>
+</div>
 
-  <table>
+
+<!-- Container-fluid so it spans the entire page -->
+<div class="container-fluid">
+  <!-- Chosen for you heading -->
+  <div class="row">
+      <section class="col-md-4 col-sm-1 homepage-heading">
+          <H2>To Be Read List</H2>
+          <h3 id="removed-message"></h3>
+      </section>
+  </div>
+</div>
+
+
+<table class="table table-dark">
+  <thead>
     <tr>
-      <th></th>
-      <th>Title</th>
-      <th>Author</th>
-      <th>Read Date</th>
+      <th scope="col"></th>
+      <th scope="col">Title</th>
+      <th scope="col">Author</th>
+      <th scope="col">Read Date</th>
+      <th scope="col"></th>
     </tr>
+  </thead>
+  <tbody>
     {% for liked_book in liked_books %}
-    <tr>
-
-      <td>
-        <form action="/handle-remove-liked-book" method="POST">
-          <input name="isbn_13" type="hidden" value="{{ liked_book.book.isbn_13 }}">
-          <input type="submit" value="Remove">
+  <tr>
+    <td>
+    </td>
+       <td>
+        {{ liked_book.book.title }}
+       </td>
+       {% for author_name in liked_book.book.authors %}
+       <td>{{ author_name.full_name }}</td>
+       {% endfor %}
+       <td>{{ liked_book.read_date }} <td>
+        <td>
+          <form class="remove-book" id="{{ liked_book.book.isbn_13 }}" action="/handle-remove-liked-book" method="POST">
+          <input name="isbn_13" type="hidden" value="{{  liked_book.book.isbn_13 }}">
+          <button class="remove-button" type="submit">
+            <i class="fas fa-times" id="{{liked_book.book.isbn_13}}"></i>
+            </button>
           </form>
-      </td>
-         <td>
-           {{ liked_book.book.title }}
-         </td>
-         {% for author_name in liked_book.book.authors %}
-         <td>{{ author_name.full_name }}</td>
-         {% endfor %}
-         <td>{{ liked_book.liked_date }}</td>
-    </tr>
-    {% endfor %}
+        </td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
 
-  </table>
-  <script src="/static/homepage.js"></script>
- <script src="/static/markBook.js"></script>
+
+<div id="outside-margin">
+  <div id="modal">
+    <div id="modal-content">
+      <form id="create-bookshelf">
+      <p><label>Name: </label></p>
+      <input id="bookshelf-name" type="text" name="bookshelf_name">
+      <input type="submit">
+      <input id="cancel" type="reset" value="Cancel">
+    </form>
+   </div>
+  </div>
+
 </body>
-  {% endblock %}
+<script src="/static/homepage.js"></script>
+<script src="/static/markBook.js"></script>
+{% endblock %}
+
+

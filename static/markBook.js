@@ -26,8 +26,8 @@ $('.heart-icon').on('click', (evt) => {
   const button = $(evt.target);
   const buttonId = button.attr('id');
 
-  if (button[0].style === "color: green"){
-    (button[0].style = "color: white");
+  if (button[0].style === "color: white"){
+    (button[0].addClass('liked-heart') = "color: white");
     console.log("first condition");
     console.log(button[0]);
   } else {
@@ -83,7 +83,6 @@ $('.add-to-bookshelf').on('submit', (evt) => {
   const modal = $(`#modal-bookshelf${buttonId}`);
   const modalContent = $(`#modal-content-bookshelf${buttonId}`);
   const cancelButton = $(`#cancel${buttonId}`);
-  const body = $('.homepage-after-login');
 
 
   modalContent[0].style.display = 'flex';

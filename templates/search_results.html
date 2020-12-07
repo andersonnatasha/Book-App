@@ -1,11 +1,58 @@
-{% extends 'base.html' %}
-
-{% block title %} Book Results {% endblock %}
-
-{% block body %}
 
 
+<!doctype html height="100%;">
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/book_project.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.11/css/all.css">
+    <link rel="shortcut icon" href="#">
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.js"
+      integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+      crossorigin="anonymous"></script>
+    <title>
+      {% block title %}{% endblock %}
+    </title>
+
+    {% block head %}{% endblock %}
+  </head>
+
+<title>
+  {% if session['user_id'] %}
+    {{session['profile_name']}} - Library
+  {% else %}
+    Doggeared
+  {%endif%}
+  </title>
+
+  {% if session['user_id'] %}
   <body class="homepage-after-login">
+    <body>
+      <script src="https://code.jquery.com/jquery-3.4.1.js"
+      integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+      crossorigin="anonymous"></script>
+
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"></script>
+
+      {% for msg in get_flashed_messages() %}
+        <p class="flash=msg">
+          {{ msg }}
+        </p>
+      {% endfor %}
 
   <!-- Static navigation bar -->
   <nav class="navbar navbar-expand-md navbar-expand-sm navbar-logged-in">
@@ -24,15 +71,17 @@
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             {{session['profile_name']}}
           </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="/interests">Your interests</a>
+            <div id="profile-name-dropdown" class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <div id="your-interest-button-div">
+              <a class="dropdown-item" id="your-interest-button" href="/interests">Your interests</a>
+            </div>
+              <form action="/log-out" class="form-inline my-2 my-lg-0">
+                <input id="log-out-button" type="submit" value="Log Out">
+              </form>
             </div>
         </li>
       </ul>
 
-    <form action="/log-out" class="form-inline my-2 my-lg-0">
-      <input type="submit" value="Logout">
-    </form>
     </div>
   </nav>
 
@@ -40,7 +89,7 @@
   <div class="wrapper">
     <nav id="sidebar">
         <ul class="list-unstyled components">
-          <li><a class="side-nav-items" href="/"> <i class="fas fa-home"> </i></a></li>
+          <li><a class="side-nav-items" href="/"> <i class="fas fa-home fa-lg"> </i></a></li>
         </ul>
         <p>YOUR LIBRARY</p>
         <ul class="list-unstyled components">
@@ -54,7 +103,9 @@
             <li><a class="side-nav-items" href="/{{bookshelf.name}}-bookshelf">{{bookshelf.name}}</a></li>
           {% endfor %}
           </ul>
-        <button id="create-bookshelf-button">New Bookshelf</button>
+          <div id="create-bookshelf-button" >
+          <i class="fas fa-plus-circle"></i><h6 class="create-bookshelf-button-text" >New Bookshelf</h6>
+        </div>
     </nav>
 </div>
 
@@ -62,7 +113,7 @@
   <div class="container-fluid">
       <!-- Chosen for you heading -->
       <div class="row">
-          <section class="col-md-4 col-sm-1 homepage-heading">
+          <section class="col-md-12 col-sm-1 homepage-heading">
               <H2>{{keyword}}</H2>
           </section>
       </div>
@@ -91,16 +142,38 @@
                     </li>
                   <li>
                       <button class="dropdown-item to-be-read-button" id="{{book.isbn_13}}" type="button">TBR</button></li>
-
-                  <li class="dropdown-submenu">
-                    <button class="dropdown-item dropdown-toggle">Add to Bookshelf</button>
-                    <ul class="dropdown-menu">
-                      <li><button class="dropdown-item" href="#">Subsubmenu action</button></li>
+                      <div class="dropdown-divider"></div>
+                      <form class="add-to-bookshelf" id="{{book.isbn_13}}">
+                        <select class="add-to-bookshelf-dropdown" id="add-to-bookshelf-name{{book.isbn_13}}" name="add-to-bookshelf">
+                          <option value="">Add to Bookshelf</option>
+                          {% for bookshelf in bookshelves %}
+                          <option value="{{ bookshelf.name }}">{{ bookshelf.name }}</option>
+                          {% endfor %}
+                        </select>
+                          <input id="add-to-bookshelf-title{{book.isbn_13}}" name="title" type="hidden" value="{{ book.title }}">
+                          <input id="add-to-bookshelf-subtitle{{book.isbn_13}}" name="subtitle" type="hidden" value="{{ book.subtitle }}">
+                          <input id="add-to-bookshelf-authors{{book.isbn_13}}" name="authors" type="hidden" value="{{ book.authors }}">
+                          <input id="add-to-bookshelf-description{{book.isbn_13}}" name="description" type='hidden' value="{{ book.description }}">
+                          <input id="add-to-bookshelf-categories{{book.isbn_13}}" name="categories" type='hidden' value="{{ book.categories }}">
+                          <input id="add-to-bookshelf-image-link{book.isbn_13}}" name="image_link" type="hidden" value="{{ book.thumbnail }}">
+                          <input id="add-to-bookshelf-isbn-13{{book.isbn_13}}"name="isbn_13" type="hidden" value="{{ book.isbn_13 }}">
+                          <input type="submit">
+                      </form>
+                      <div class="modal-bookshelf" id="modal-bookshelf{{book.isbn_13}}">
+                        <div class="modal-content" id="modal-content-bookshelf{{book.isbn_13}}">
+                        <form id="book-on-bookshelf-status{{book.isbn_13}}">
+                          <input class="modal-bookshelf-button" value="read" type="submit">
+                          <input class="modal-bookshelf-button" value="liked" type="submit">
+                          <input class="modal-bookshelf-button" value="tbr" type="submit">
+                          <input id="cancel{{book.isbn_13}}" type="reset" value="cancel">
+                        </form>
+                        </div>
+                      </div>
                     </ul>
                   </li>
                 </ul>
               </div>
-            <img class="book-image" id="book-image{{book.isbn_13}}" src="{{book.thumbnail}}">
+            <img class="book-image" id="{{book.isbn_13}}" src="{{book.thumbnail}}">
             <div class="book-title">
                 <i class="far fa-heart heart-icon" id="{{book.isbn_13}}"></i> {{book.title}}
             </div>
@@ -113,12 +186,11 @@
               {%endif%}
             {% endfor %}
             </div>
-            <div class="book-description" id="book-description{{book.isbn_13}}">
-                {{ book.description }}
-            </div>
+                <p class="book-description"  id="book-description{{book.isbn_13}}"> {{ book.description }}</p>
             <div id="to-be-read-message{{book.isbn_13}}"></div>
             <div id="read-message{{book.isbn_13}}"></div>
             <div id="liked-message{{book.isbn_13}}"></div>
+            <div id="add-to-bookshelf-message{{book.isbn_13}}"></div>
             <form class="mark-as-read book-tag" id="{{book.isbn_13}}">
               <input id="read-book-title{{book.isbn_13}}" name="title" type="hidden" value="{{ book.title }}">
               <input id="read-book-subtitle{{book.isbn_13}}" name="subtitle" type="hidden" value="{{ book.subtitle }}">
@@ -146,39 +218,10 @@
                 <input id="to-be-read-book-image-link{book.isbn_13}}" name="image_link" type="hidden" value="{{ book.thumbnail }}">
                 <input id="to-be-read-book-isbn-13{{book.isbn_13}}"name="isbn_13" type="hidden" value="{{ book.isbn_13 }}">
               </form>
-              <form class="add-to-bookshelf" id="{{book.isbn_13}}">
-                <select id="add-to-bookshelf-name{{book.isbn_13}}" name="add-to-bookshelf">
-                  <option value="">Add to Bookshelf</option>
-                  {% for bookshelf in bookshelves %}
-                  <option value="{{ bookshelf.name }}">{{ bookshelf.name }}</option>
-                  {% endfor %}
-                </select>
-                  <input id="add-to-bookshelf-title{{book.isbn_13}}" name="title" type="hidden" value="{{ book.title }}">
-                  <input id="add-to-bookshelf-subtitle{{book.isbn_13}}" name="subtitle" type="hidden" value="{{ book.subtitle }}">
-                  <input id="add-to-bookshelf-authors{{book.isbn_13}}" name="authors" type="hidden" value="{{ book.authors }}">
-                  <input id="add-to-bookshelf-description{{book.isbn_13}}" name="description" type='hidden' value="{{ book.description }}">
-                  <input id="add-to-bookshelf-categories{{book.isbn_13}}" name="categories" type='hidden' value="{{ book.categories }}">
-                  <input id="add-to-bookshelf-image-link{book.isbn_13}}" name="image_link" type="hidden" value="{{ book.thumbnail }}">
-                  <input id="add-to-bookshelf-isbn-13{{book.isbn_13}}"name="isbn_13" type="hidden" value="{{ book.isbn_13 }}">
-                  <input type="submit">
-                  <span id="add-to-bookshelf-message{{book.isbn_13}}"></span>
-              </form>
-              <div class="modal-bookshelf" id="modal-bookshelf{{book.isbn_13}}">
-                <div class="modal-content" id="modal-content-bookshelf{{book.isbn_13}}">
-                <form id="book-on-bookshelf-status{{book.isbn_13}}">
-                  <input value="read" type="submit">
-                  <input value="liked" type="submit">
-                  <input value="tbr" type="submit">
-                  <input id="cancel{{book.isbn_13}}" type="reset" value="cancel">
-                </form>
-                </div>
-                </div>
           </div>
         </div>
       </div>
       {%endfor%}
-
-
 
       <div id="outside-margin">
         <div id="modal">
@@ -192,7 +235,80 @@
          </div>
         </div>
 
+
+
 </body>
-<script src="/static/homepage.js"></script>
-<script src="/static/markBook.js"></script>
-{% endblock %}
+
+  {% else %}
+ <body id="prior-to-login-homepage" height="100%;">
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+    integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+    crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+
+    {% for msg in get_flashed_messages() %}
+      <p class="flash=msg">
+        {{ msg }}
+      </p>
+    {% endfor %}
+
+    {% block body %}{% endblock %}
+
+  <nav id="prior-to-log-in-nav-bar" class="navbar fixed-top navbar-expand-md">
+    <a class="navbar-brand ml-auto" href="/">Doggeared</a>
+    <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse"
+    data-target="#navbarResponsive" aria-controls="navbarSupportedContent"
+    aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a id="sign-up" class="nav-link" href="/sign-up">Sign up<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a id="sign-up" class="nav-link" href="/log-in">Log in</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+
+    <div class="bg">
+            <div class="container-fluid">
+              <!--Grid row-->
+              <div class="row">
+                <!--Grid column-->
+                <div class="col-md-12 col-sm-12">
+                  <p id="slogan-text">A Reader's Best Friend</p>
+                </div>
+              </div>
+                <!--Grid column-->
+                <div class="row">
+                <div class="col-md-12 col-sm-12">
+                  <p id="slogan-text-pt2">Never forget a book again</p>
+                </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+
+
+
+  <nav class="navbar fixed-bottom">
+    <a class="navbar-brand" href="/">Doggeared</a>
+  </nav>
+  {% endif %}
+</body>
+
+  <script src="/static/homepage.js"></script>
+  <script src="/static/markBook.js"></script>
+</html>

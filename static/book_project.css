@@ -418,3 +418,5 @@ margin-left: 30%;}
 text-align: center;}
 
 #log-out-button:hover, #log-out-button:hover, #your-interest-button:hover {cursor: pointer; color: green; background-color:rgba(20,20,20,.2)}
+
+.liked-heart{color:green}

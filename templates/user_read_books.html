@@ -22,15 +22,17 @@
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             {{session['profile_name']}}
           </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="/interests">Your interests</a>
+            <div id="profile-name-dropdown" class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <div id="your-interest-button-div">
+              <a class="dropdown-item" id="your-interest-button" href="/interests">Your interests</a>
+            </div>
+              <form action="/log-out" class="form-inline my-2 my-lg-0">
+                <input id="log-out-button" type="submit" value="Log Out">
+              </form>
             </div>
         </li>
       </ul>
 
-    <form action="/log-out" class="form-inline my-2 my-lg-0">
-      <input type="submit" value="Logout">
-    </form>
     </div>
   </nav>
 
@@ -65,6 +67,7 @@
   <div class="row">
       <section class="col-md-4 col-sm-1 homepage-heading">
           <H2>Read Books</H2>
+          <h3 id="removed-message"></h3>
       </section>
   </div>
 </div>
@@ -84,21 +87,32 @@
   {% for read_book in read_books %}
   <tr>
     <td>
-      <form action="/handle-remove-read-book" method="POST">
-        <input name="isbn_13" type="hidden" value="{{ read_book.book.isbn_13 }}">
-        <input type="submit" value="Remove">
-        <div id="liked-message{{read_book.book.isbn_13}}"></div>
-        </form>
     </td>
        <td>
         <i class="far fa-heart heart-icon" id="{{read_book.book.isbn_13}}"></i>
         {{ read_book.book.title }}
+        <form class="mark-as-liked book-tag" id="{{read_book.book.isbn_13}}" method="POST">
+          <input id="liked-book-title{{read_book.book.isbn_13}}" name="title" type="hidden" value="{{ read_book.book.title }}">
+          <input id="liked-book-subtitle{{read_book.book.isbn_13}}" name="subtitle" type="hidden" value="{{ read_book.book.subtitle }}">
+          <input id="liked-book-authors{{read_book.book.isbn_13}}" name="authors" type="hidden" value="{{ read_book.book.authors }}">
+          <input id="liked-book-description{{read_book.book.isbn_13}}" name="description" type='hidden' value="{{ read_book.book.description }}">
+          <input id="liked-book-categories{{read_book.book.isbn_13}}" name="categories" type='hidden' value="{{ read_book.book.categories }}">
+          <input id="liked-book-image-link{{read_book.book.isbn_13}}" name="image_link" type="hidden" value="{{ read_book.book.thumbnail }}">
+          <input id="liked-book-isbn-13{{read_book.book.isbn_13}}" name="isbn_13" type="hidden" value="{{ read_book.book.isbn_13 }}">
+        </form>
        </td>
        {% for author_name in read_book.book.authors %}
        <td>{{ author_name.full_name }}</td>
        {% endfor %}
        <td>{{ read_book.read_date }} <td>
-        <td><i class="fas fa-times"></i></td>
+        <td>
+          <form class="remove-book" id="{{ read_book.book.isbn_13 }}" action="/handle-remove-read-book" method="POST">
+          <input name="isbn_13" type="hidden" value="{{ read_book.book.isbn_13 }}">
+          <button class="remove-button" type="submit">
+            <i class="fas fa-times" id="{{read_book.book.isbn_13}}"></i>
+            </button>
+          </form>
+        </td>
   </tr>
   {% endfor %}
 </tbody>

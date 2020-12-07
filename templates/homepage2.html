@@ -71,15 +71,17 @@
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             {{session['profile_name']}}
           </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="/interests">Your interests</a>
+            <div id="profile-name-dropdown" class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <div id="your-interest-button-div">
+              <a class="dropdown-item" id="your-interest-button" href="/interests">Your interests</a>
+            </div>
+              <form action="/log-out" class="form-inline my-2 my-lg-0">
+                <input id="log-out-button" type="submit" value="Log Out">
+              </form>
             </div>
         </li>
       </ul>
 
-    <form action="/log-out" class="form-inline my-2 my-lg-0">
-      <input type="submit" value="Logout">
-    </form>
     </div>
   </nav>
 
@@ -156,14 +158,13 @@
                           <input id="add-to-bookshelf-image-link{book.isbn_13}}" name="image_link" type="hidden" value="{{ book.thumbnail }}">
                           <input id="add-to-bookshelf-isbn-13{{book.isbn_13}}"name="isbn_13" type="hidden" value="{{ book.isbn_13 }}">
                           <input type="submit">
-                          <span id="add-to-bookshelf-message{{book.isbn_13}}"></span>
                       </form>
                       <div class="modal-bookshelf" id="modal-bookshelf{{book.isbn_13}}">
                         <div class="modal-content" id="modal-content-bookshelf{{book.isbn_13}}">
                         <form id="book-on-bookshelf-status{{book.isbn_13}}">
-                          <input value="read" type="submit">
-                          <input value="liked" type="submit">
-                          <input value="tbr" type="submit">
+                          <input class="modal-bookshelf-button" value="read" type="submit">
+                          <input class="modal-bookshelf-button" value="liked" type="submit">
+                          <input class="modal-bookshelf-button" value="tbr" type="submit">
                           <input id="cancel{{book.isbn_13}}" type="reset" value="cancel">
                         </form>
                         </div>
@@ -189,6 +190,7 @@
             <div id="to-be-read-message{{book.isbn_13}}"></div>
             <div id="read-message{{book.isbn_13}}"></div>
             <div id="liked-message{{book.isbn_13}}"></div>
+            <div id="add-to-bookshelf-message{{book.isbn_13}}"></div>
             <form class="mark-as-read book-tag" id="{{book.isbn_13}}">
               <input id="read-book-title{{book.isbn_13}}" name="title" type="hidden" value="{{ book.title }}">
               <input id="read-book-subtitle{{book.isbn_13}}" name="subtitle" type="hidden" value="{{ book.subtitle }}">

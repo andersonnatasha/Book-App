@@ -83,10 +83,11 @@ $('.add-to-bookshelf').on('submit', (evt) => {
   const modal = $(`#modal-bookshelf${buttonId}`);
   const modalContent = $(`#modal-content-bookshelf${buttonId}`);
   const cancelButton = $(`#cancel${buttonId}`);
+  const body = $('.homepage-after-login');
 
 
-  modalContent[0].style.display = 'flex'
-  modal[0].style.display ='block'
+  modalContent[0].style.display = 'flex';
+  modal[0].style.display ='block';
 
   cancelButton.on('click', () => {
     modalContent[0].style.display = 'none'

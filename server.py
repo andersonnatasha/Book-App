@@ -32,11 +32,11 @@ def homepage():
         search_results = google_books_api.show_recommended_books()
         bookshelves = crud.get_user_bookshelves(session['user_id'])
         bookshelves = bookshelves[::-1]
-        return render_template('homepage2.html',search_results=search_results, bookshelves=bookshelves)
+        return render_template('homepage.html',search_results=search_results, bookshelves=bookshelves)
 
     else:
         bookshelves = None
-        return render_template('homepage2.html', bookshelves=bookshelves)
+        return render_template('homepage.html', bookshelves=bookshelves)
 
 @app.route('/sign-up')
 def sign_up():

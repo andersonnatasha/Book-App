@@ -12,7 +12,7 @@ def search_a_book():
     keyword = request.args.get('search', '')
 
     url = 'https://www.googleapis.com/books/v1/volumes'
-    payload = {'q': keyword, 'maxResults': 20, 'apikey': API_KEY}
+    payload = {'q': keyword, 'maxResults': 10, 'apikey': API_KEY}
 
     res = requests.get(url, params=payload)
 

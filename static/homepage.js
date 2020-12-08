@@ -31,7 +31,7 @@ $('#create-bookshelf').on('submit', (evt) => {
         const bookshelfName = res.name;
         $('#bookshelf-names').prepend('<li></li>');
         $('#bookshelf-names li:first-child').html(`<a href=${bookshelfName}-bookshelf>${bookshelfName}</a>`);
-        $('#bookshelf-name').val("")
+        $('#bookshelf-name').val("");
         modalContent.style.display = 'none';
         modal.style.display ='none';
         });

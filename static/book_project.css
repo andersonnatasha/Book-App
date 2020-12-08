@@ -336,15 +336,8 @@ body{
 
 .homepage-heading{margin-left: 2.3%;}
 
-/* .drop-down-button{
-
-  position: absolute;
-        right: 6%;
-        top: 10%;
-  width:20%;
-  height:20%;
-  background-color: yellow;
-} */
+#homepage-sub-text{color: white;}
+#homepage-sub-text:hover{color: green;}
 
 .dropdown-menu.show{ margin-left: 70%;
                   margin-top:10%;
@@ -401,7 +394,8 @@ margin-top: 2%;}
 .label-too-long{font-size: 85%;}
 
 .add-to-bookshelf-dropdown{border: none;
-                          padding-left:17px ;}
+                          margin-left:25px ;
+                        width: 80%;}
 
 .fa-times{cursor: pointer;}
 .fa-times:hover{color: red;}
@@ -420,3 +414,11 @@ text-align: center;}
 #log-out-button:hover, #log-out-button:hover, #your-interest-button:hover {cursor: pointer; color: green; background-color:rgba(20,20,20,.2)}
 
 .liked-heart{color:green}
+
+#add-to-bookshelf-submit{border: none; background-color: transparent; margin-left: 30%;}
+
+a {color: white}
+
+a.side-nav-items{overflow: hidden;
+  white-space: nowrap;
+  display: inline-block;}

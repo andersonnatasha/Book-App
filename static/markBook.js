@@ -121,6 +121,7 @@ $('.add-to-bookshelf').on('submit', (evt) => {
       $(`#add-to-bookshelf-message${formInput['isbn_13']}`).html(res).delay(1000).fadeOut(2500, 'linear' );
       modalContent[0].style.display = 'none';
       modal[0].style.display ='none';
+      $(".dropdown-menu show").removeClass(".show");
     })
   }
 });

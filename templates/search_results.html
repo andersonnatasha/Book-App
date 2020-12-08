@@ -107,7 +107,7 @@
                           <input id="add-to-bookshelf-categories{{book.isbn_13}}" name="categories" type='hidden' value="{{ book.categories }}">
                           <input id="add-to-bookshelf-image-link{book.isbn_13}}" name="image_link" type="hidden" value="{{ book.thumbnail }}">
                           <input id="add-to-bookshelf-isbn-13{{book.isbn_13}}"name="isbn_13" type="hidden" value="{{ book.isbn_13 }}">
-                          <input type="submit">
+                          <input id="add-to-bookshelf-submit" type="submit">
                       </form>
                       <div class="modal-bookshelf" id="modal-bookshelf{{book.isbn_13}}">
                         <div class="modal-content" id="modal-content-bookshelf{{book.isbn_13}}">

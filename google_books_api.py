@@ -18,7 +18,6 @@ def search_a_book():
 
     data = res.json()
 
-
     search_results = []
 
     if keyword != '':
@@ -48,7 +47,11 @@ def search_a_book():
 
                 search_results.append(search_result)
 
+    if keyword != "":
         search_result_and_keyword = [search_results, keyword]
+    else:
+        search_result_and_keyword = None
+
     return search_result_and_keyword
 
 
@@ -63,11 +66,18 @@ def show_recommended_books():
         keyword = keyword.interest
         url = 'https://www.googleapis.com/books/v1/volumes'
         keyword = f'subject: {keyword}'
-        payload = {'q': keyword, 'maxResults': 10, 'startIndex': randint(0,500), 'apikey': API_KEY}
+        randint_high = 1000
+        payload = {'q': keyword, 'maxResults': 10, 'startIndex': randint(0,randint_high), 'apikey': API_KEY}
 
         res = requests.get(url, params=payload)
 
         data = res.json()
+
+        while not data.get('items'):
+            randint_high -= 100
+            payload = {'q': keyword, 'maxResults': 10, 'startIndex': randint(0,randint_high), 'apikey': API_KEY}
+            res = requests.get(url, params=payload)
+            data = res.json()
 
         for n in range(len(data['items'])):
 

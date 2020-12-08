@@ -140,8 +140,6 @@ def add_interest_to_db(interest):
     interest_object = crud.get_interest_by_name(interest)
     if interest_object == None:
         interest_object = crud.create_interest(interest)
-    else:
-        pass
 
     return interest_object
 
@@ -225,7 +223,11 @@ def show_search_a_book():
         search_result_and_keyword = google_books_api.search_a_book()
         bookshelves = crud.get_user_bookshelves(session['user_id'])
         bookshelves = bookshelves[::-1]
-        return render_template('search_results.html', search_results=search_result_and_keyword[0], keyword=search_result_and_keyword[1], bookshelves=bookshelves)
+
+        if search_result_and_keyword != None:
+            return render_template('search_results.html', search_results=search_result_and_keyword[0], keyword=search_result_and_keyword[1], bookshelves=bookshelves)
+        else:
+            return redirect("/")
     else:
         flash('Please log in.')
         return redirect("/log-in")
@@ -490,6 +492,14 @@ def mark_book_as_liked():
     categories_in_db = add_category_to_db(categories_list)
     book_category = add_book_category_to_db(book, categories_in_db)
     message = add_book_to_liked_list(book_in_library)
+
+    for author in authors_list:
+        interest = add_interest_to_db(author)
+        user_interest = add_user_interest_to_db(user_id, interest)
+
+    for category in categories_list:
+        category = add_interest_to_db(category)
+        user_interest = add_user_interest_to_db(user_id, category)
 
     return message
 

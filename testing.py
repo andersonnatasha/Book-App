@@ -7,70 +7,70 @@ from test_data import test_data
 from datetime import datetime
 
 
-class BookAppTests(unittest.TestCase):
-    """Testing intergration of Flask server"""
+# class BookAppTests(unittest.TestCase):
+#     """Testing intergration of Flask server"""
 
-    def setUp(self):
-        """Do before every test."""
+#     def setUp(self):
+#         """Do before every test."""
 
-        self.client = app.test_client()
-        app.config['TESTING'] = True
-
-
-    def test_homepage_before_login(self):
-        """Test that homepage version if user is not logged in renders"""
-        result = self.client.get('/')
-        self.assertEqual(200, result.status_code)
-        self.assertIn(b'''A Reader's Best Friend''', result.data)
+#         self.client = app.test_client()
+#         app.config['TESTING'] = True
 
 
-    def test_sign_up_page(self):
-        """Test that sign up page renders."""
-
-        result = self.client.get('/sign-up')
-        self.assertEqual(200, result.status_code)
-        self.assertIn(b'Whats your email?', result.data)
-
-
-    def test_login_page(self):
-        """Test that login page renders."""
-
-        result = self.client.get('/log-in')
-        self.assertEqual(200, result.status_code)
-        self.assertIn(b'''Don't have an account''', result.data)
+#     def test_homepage_before_login(self):
+#         """Test that homepage version if user is not logged in renders"""
+#         result = self.client.get('/')
+#         self.assertEqual(200, result.status_code)
+#         self.assertIn(b'''A Reader's Best Friend''', result.data)
 
 
-    def test_interests_page_before_login(self):
-        result = self.client.get('/')
-        self.assertEqual(200, result.status_code)
+#     def test_sign_up_page(self):
+#         """Test that sign up page renders."""
+
+#         result = self.client.get('/sign-up')
+#         self.assertEqual(200, result.status_code)
+#         self.assertIn(b'Whats your email?', result.data)
 
 
-    def test_read_books_page_before_user_logged_in(self):
-        result = self.client.get('/read-books',
-                                 follow_redirects=True)
-        self.assertEqual(200, result.status_code)
-        self.assertIn(b'Please log in to see your read books.', result.data)
+#     def test_login_page(self):
+#         """Test that login page renders."""
+
+#         result = self.client.get('/log-in')
+#         self.assertEqual(200, result.status_code)
+#         self.assertIn(b'''Don't have an account''', result.data)
 
 
-    def test_liked_books_page_before_user_logged_in(self):
-        result = self.client.get('/liked-books',
-                                 follow_redirects=True)
-        self.assertEqual(200, result.status_code)
-        self.assertIn(b'Please log in to see your liked books.', result.data)
+#     def test_interests_page_before_login(self):
+#         result = self.client.get('/')
+#         self.assertEqual(200, result.status_code)
 
 
-    def test_to_be_read_books_page_before_user_logged_in(self):
-        result = self.client.get('/to-be-read-books',
-                                 follow_redirects=True)
-        self.assertEqual(200, result.status_code)
-        self.assertIn(b'Please log in to see your tbr list.', result.data)
+#     def test_read_books_page_before_user_logged_in(self):
+#         result = self.client.get('/read-books',
+#                                  follow_redirects=True)
+#         self.assertEqual(200, result.status_code)
+#         self.assertIn(b'Please log in to see your read books.', result.data)
 
 
-    def test_search_a_book_page_before_user_logged_in(self):
-        result = self.client.get('/search-a-book',
-                                 follow_redirects=True)
-        self.assertEqual(200, result.status_code)
-        self.assertIn(b'Please log in.', result.data)
+#     def test_liked_books_page_before_user_logged_in(self):
+#         result = self.client.get('/liked-books',
+#                                  follow_redirects=True)
+#         self.assertEqual(200, result.status_code)
+#         self.assertIn(b'Please log in to see your liked books.', result.data)
+
+
+#     def test_to_be_read_books_page_before_user_logged_in(self):
+#         result = self.client.get('/to-be-read-books',
+#                                  follow_redirects=True)
+#         self.assertEqual(200, result.status_code)
+#         self.assertIn(b'Please log in to see your tbr list.', result.data)
+
+
+#     def test_search_a_book_page_before_user_logged_in(self):
+#         result = self.client.get('/search-a-book',
+#                                  follow_redirects=True)
+#         self.assertEqual(200, result.status_code)
+#         self.assertIn(b'Please log in.', result.data)
 
 
 class BookAppTestsDatabase(unittest.TestCase):
@@ -292,11 +292,7 @@ class BookAppTestsDatabase(unittest.TestCase):
                                   query_string={'search': 'Another Country'})
         self.assertEqual(200, result.status_code)
         self.assertIn(b'Another Country', result.data)
-        self.assertIn(b'Read', result.data)
-        self.assertIn(b'Liked', result.data)
-        self.assertIn(b'TBR', result.data)
-        self.assertIn(b'Add to Bookshelf', result.data)
-        self.assertIn(b'<img src="http://books.google', result.data)
+        self.assertIn(b'src="http://books.google', result.data)
         self.assertIn(b'James Baldwin', result.data)
         self.assertIn(b'Nominated as one of', result.data)
 

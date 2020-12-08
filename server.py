@@ -4,7 +4,7 @@ from flask import (Flask, render_template, request, flash, session,
 from model import connect_to_db
 
 import crud
-import google_books_api
+import helper_functions
 
 from jinja2 import StrictUndefined
 
@@ -20,25 +20,6 @@ app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
 
 app.secret_key = environ['FLASK_KEY']
 
-QUOTES = ['''Reading is an act of civilization; it’s one of the greatest
-        acts of civilization because it takes the free raw material of the
-        mind and builds castles of possibilities. —Ben Okri''',
-        '''Reading is a discount ticket to everywhere. —Mary Schmich''',
-        '''We read in bed because reading is halfway between life and dreaming,
-        our own consciousness in someone else’s mind. —Anna Quindlen''',
-        '''It’s no use of talking unless people understand what you say.” -Zora Neale Hurston''',
-        '''“We write for the same reason that we walk, talk, climb mountains or swim the oceans –
-        because we can. We have some impulse within us that makes us want to explain ourselves to
-        other human beings.” – Maya Angelou''',
-        '''“If there’s a book you really want to read, but it hasn’t been written yet,
-        then you must write it.” -Toni Morrison''',
-        '''“The ability of writers to imagine what is not the self,
-        to familiarize the strange and mystify the familiar, is the test of their power.” -Toni Morrison''',
-        '''“Many stories matter. Stories have been used to dispossess and to malign. But stories can also be
-        used to empower, and to humanize. Stories can break the dignity of a people. But stories can also repair
-        that broken dignity.” ― Chimamanda Ngozi Adichie''',
-        '''“Poetry is a political act because it involves telling the truth.” ― June Jordan''']
-
 
 @app.route('/')
 def homepage():
@@ -49,7 +30,7 @@ def homepage():
         bookshelves = crud.get_user_bookshelves(session['user_id'])
         bookshelves = bookshelves[::-1]
 
-        search_results = google_books_api.show_recommended_books()
+        search_results = helper_functions.show_recommended_books()
         bookshelves = crud.get_user_bookshelves(session['user_id'])
         bookshelves = bookshelves[::-1]
         return render_template('homepage.html',search_results=search_results, bookshelves=bookshelves)
@@ -101,7 +82,7 @@ def handle_sign_up():
 @app.route('/log-in')
 def log_in():
     """User log in."""
-    quote = choice(QUOTES)
+    quote = helper_functions.choose_random_quote()
     return render_template('log_in.html', quote=quote)
 
 @app.route('/log-out')
@@ -148,7 +129,7 @@ def get_user_interests():
     if session.get('user_id'):
         all_interests_for_a_user = crud.get_all_interests_for_user(session['user_id'])
         session['log_in_occurrences'] = crud.get_user_login_occurrences(crud.get_user_by_id(session['user_id']))
-        quote = choice(QUOTES)
+        quote = helper_functions.choose_random_quote()
         return render_template('get_user_interests.html', all_interests_for_a_user=all_interests_for_a_user, quote=quote)
     else:
         return redirect ("/")
@@ -199,7 +180,7 @@ def show_read_books():
         read_books = crud.get_read_books_by_user_id(session['user_id'])
         bookshelves = crud.get_user_bookshelves(session['user_id'])
         bookshelves = bookshelves[::-1]
-        quote = choice(QUOTES)
+        quote = helper_functions.choose_random_quote()
         return render_template('user_read_books.html', user=user, read_books=read_books, bookshelves=bookshelves, quote=quote)
     else:
         flash('Please log in to see your read books.')
@@ -215,7 +196,7 @@ def show_liked_books():
         liked_books = crud.get_liked_books_by_user_id(session['user_id'])
         bookshelves = crud.get_user_bookshelves(session['user_id'])
         bookshelves = bookshelves[::-1]
-        quote = choice(QUOTES)
+        quote = chelper_functions.choose_random_quote()
         return render_template('user_liked_books.html', user=user, liked_books=liked_books, bookshelves=bookshelves, quote=quote)
     else:
         flash('Please log in to see your liked books.')
@@ -231,7 +212,7 @@ def show_to_be_read_books():
         to_be_read_books = crud.get_to_be_read_books_by_user_id(session['user_id'])
         bookshelves = crud.get_user_bookshelves(session['user_id'])
         bookshelves = bookshelves[::-1]
-        quote = choice(QUOTES)
+        quote = helper_functions.choose_random_quote()
         return render_template('user_to_be_read_books.html', user=user, to_be_read_books=to_be_read_books, bookshelves=bookshelves, quote=quote)
     else:
         flash('Please log in to see your tbr list.')
@@ -242,10 +223,10 @@ def show_to_be_read_books():
 def show_search_a_book():
     """Show results from user's book search."""
     if session.get('user_id'):
-        search_result_and_keyword = google_books_api.search_a_book()
+        search_result_and_keyword = helper_functions.search_a_book()
         bookshelves = crud.get_user_bookshelves(session['user_id'])
         bookshelves = bookshelves[::-1]
-        quote = choice(QUOTES)
+        quote = helper_functions.choose_random_quote()
         if search_result_and_keyword != None:
             return render_template('search_results.html', search_results=search_result_and_keyword[0], keyword=search_result_and_keyword[1], bookshelves=bookshelves, quote=quote)
         else:
@@ -643,7 +624,7 @@ def show_bookshelf_details(bookshelf_name):
     books_on_bookshelf = crud.get_all_books_on_a_bookshelf(bookshelf_name, user_id)
     bookshelves = crud.get_user_bookshelves(session['user_id'])
     bookshelves = bookshelves[::-1]
-    quote = choice (QUOTES)
+    quote = helper_functions.choose_random_quote()
 
     return render_template('bookshelf_details.html', books_on_bookshelf=books_on_bookshelf, bookshelf_name=bookshelf_name, bookshelves=bookshelves, quote=quote)
 

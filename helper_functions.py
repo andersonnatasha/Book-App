@@ -108,3 +108,24 @@ def show_recommended_books():
     return search_results
 
 
+def choose_random_quote():
+    quotes = ['''Reading is an act of civilization; it’s one of the greatest
+        acts of civilization because it takes the free raw material of the
+        mind and builds castles of possibilities. —Ben Okri''',
+        '''Reading is a discount ticket to everywhere. —Mary Schmich''',
+        '''We read in bed because reading is halfway between life and dreaming,
+        our own consciousness in someone else’s mind. —Anna Quindlen''',
+        '''It’s no use of talking unless people understand what you say.” -Zora Neale Hurston''',
+        '''“We write for the same reason that we walk, talk, climb mountains or swim the oceans –
+        because we can. We have some impulse within us that makes us want to explain ourselves to
+        other human beings.” – Maya Angelou''',
+        '''“If there’s a book you really want to read, but it hasn’t been written yet,
+        then you must write it.” -Toni Morrison''',
+        '''“The ability of writers to imagine what is not the self,
+        to familiarize the strange and mystify the familiar, is the test of their power.” -Toni Morrison''',
+        '''“Many stories matter. Stories have been used to dispossess and to malign. But stories can also be
+        used to empower, and to humanize. Stories can break the dignity of a people. But stories can also repair
+        that broken dignity.” ― Chimamanda Ngozi Adichie''',
+        '''“Poetry is a political act because it involves telling the truth.” ― June Jordan''']
+
+    return choice(quote)

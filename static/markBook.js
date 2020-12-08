@@ -26,14 +26,10 @@ $('.heart-icon').on('click', (evt) => {
   const button = $(evt.target);
   const buttonId = button.attr('id');
 
-  if (button[0].style === "color: white"){
-    (button[0].addClass('liked-heart') = "color: white");
-    console.log("first condition");
-    console.log(button[0]);
-  } else {
-      button[0].style = "color:green";
-      console.log("first condition");
-  };
+  if (button.attr("style", "color:white")){
+    button.attr("style", "color:green");
+  }
+
 
 
   const formInput = {

@@ -76,7 +76,7 @@ class Author(db.Model):
                           primary_key=True,
                           autoincrement=True
                           )
-    full_name = db.Column(db.String(70),
+    full_name = db.Column(db.String(150),
                       nullable=False)
     book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
 

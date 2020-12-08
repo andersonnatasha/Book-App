@@ -67,9 +67,9 @@
   <div class="row">
       <section class="col-md-4 col-sm-1 homepage-heading">
           <H2>Read Books</H2>
-          <h3 id="removed-message"></h3>
       </section>
   </div>
+</div>
 </div>
 
 
@@ -92,12 +92,6 @@
         <i class="far fa-heart heart-icon" id="{{read_book.book.isbn_13}}"></i>
         {{ read_book.book.title }}
         <form class="mark-as-liked book-tag" id="{{read_book.book.isbn_13}}" method="POST">
-          <input id="liked-book-title{{read_book.book.isbn_13}}" name="title" type="hidden" value="{{ read_book.book.title }}">
-          <input id="liked-book-subtitle{{read_book.book.isbn_13}}" name="subtitle" type="hidden" value="{{ read_book.book.subtitle }}">
-          <input id="liked-book-authors{{read_book.book.isbn_13}}" name="authors" type="hidden" value="{{ read_book.book.authors }}">
-          <input id="liked-book-description{{read_book.book.isbn_13}}" name="description" type='hidden' value="{{ read_book.book.description }}">
-          <input id="liked-book-categories{{read_book.book.isbn_13}}" name="categories" type='hidden' value="{{ read_book.book.categories }}">
-          <input id="liked-book-image-link{{read_book.book.isbn_13}}" name="image_link" type="hidden" value="{{ read_book.book.thumbnail }}">
           <input id="liked-book-isbn-13{{read_book.book.isbn_13}}" name="isbn_13" type="hidden" value="{{ read_book.book.isbn_13 }}">
         </form>
        </td>
@@ -117,8 +111,6 @@
   {% endfor %}
 </tbody>
 </table>
-
-
 <div id="outside-margin">
   <div id="modal">
     <div id="modal-content">

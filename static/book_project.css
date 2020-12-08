@@ -16,7 +16,8 @@
 
 
 
-/* .modal-bookshelf-button{} */
+.modal-bookshelf-button{border: none; background-color: transparent; font-family: 'Montserrat', sans-serif; font-size: 125%; cursor: pointer;}
+.modal-bookshelf-button:hover{color:green}
 
 .modal-content {
   display: none ;
@@ -413,11 +414,13 @@ text-align: center;}
 
 #log-out-button:hover, #log-out-button:hover, #your-interest-button:hover {cursor: pointer; color: green; background-color:rgba(20,20,20,.2)}
 
+#interest-heading{color:white; font-family: 'Montserrat'}
 .liked-heart{color:green}
 
 #add-to-bookshelf-submit{border: none; background-color: transparent; margin-left: 30%;}
 
 a {color: white}
+a:hover{color:green}
 
 a.side-nav-items{overflow: hidden;
   white-space: nowrap;

@@ -92,19 +92,13 @@
         <i class="far fa-heart heart-icon" id="{{to_be_read_book.book.isbn_13}}"></i>
         {{ to_be_read_book.book.title }}
         <form class="mark-as-liked book-tag" id="{{to_be_read_book.book.isbn_13}}" method="POST">
-          <input id="liked-book-title{{to_be_read_book.book.isbn_13}}" name="title" type="hidden" value="{{ to_be_read_book.book.title }}">
-          <input id="liked-book-subtitle{{to_be_read_book.book.isbn_13}}" name="subtitle" type="hidden" value="{{ to_be_read_book.book.subtitle }}">
-          <input id="liked-book-authors{{to_be_read_book.book.isbn_13}}" name="authors" type="hidden" value="{{ to_be_read_book.book.authors }}">
-          <input id="liked-book-description{{to_be_read_book.book.isbn_13}}" name="description" type='hidden' value="{{ to_be_read_book.book.description }}">
-          <input id="liked-book-categories{{to_be_read_book.book.isbn_13}}" name="categories" type='hidden' value="{{ to_be_read_book.book.categories }}">
-          <input id="liked-book-image-link{{to_be_read_book.book.isbn_13}}" name="image_link" type="hidden" value="{{ to_be_read_book.book.thumbnail }}">
           <input id="liked-book-isbn-13{{to_be_read_book.book.isbn_13}}" name="isbn_13" type="hidden" value="{{ to_be_read_book.book.isbn_13 }}">
         </form>
        </td>
        {% for author_name in to_be_read_book.book.authors %}
        <td>{{ author_name.full_name }}</td>
        {% endfor %}
-       <td>{{ to_be_read_book.read_date }} <td>
+       <td>{{ to_be_read_book.to_be_read_date }} <td>
         <td>
           <form class="remove-book" id="{{ to_be_read_book.book.isbn_13 }}" action="/handle-remove-to-be-read-book" method="POST">
           <input name="isbn_13" type="hidden" value="{{ to_be_read_book.book.isbn_13 }}">

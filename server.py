@@ -151,8 +151,6 @@ def add_user_interest_to_db(user_id, interest):
     user_interest = crud.get_user_interest(user_id, interest.interest_id)
     if user_interest == None:
         user_interest = crud.create_user_interest(user_id, interest.interest_id)
-    else:
-        pass
 
     return user_interest
 
@@ -292,7 +290,7 @@ def add_author_to_db(authors):
                 author_object = crud.create_author(author)
                 authors_in_db.append(author_object)
             else:
-                pass
+                authors_in_db.append(author_object)
     else:
         authors_in_db = None
 
@@ -474,13 +472,13 @@ def mark_book_as_liked():
 
     # get the title/subtitle/authors/image link/categories/description
     # from book user submitted as read
-    title = request.form.get('title')
-    subtitle = request.form.get('subtitle')
+    title = request.form.get('title', '')
+    subtitle = request.form.get('subtitle', '')
     authors = request.form.get('authors', '')
-    image_link = request.form.get('image_link')
+    image_link = request.form.get('image_link', '')
     categories = request.form.get('categories', '')
-    description = request.form.get('description')
-    isbn_13 = request.form.get('isbn_13')
+    description = request.form.get('description', '')
+    isbn_13 = request.form.get('isbn_13', '')
 
     authors_list = remove_illegal_characters_to_make_list(authors)
     categories_list = remove_illegal_characters_to_make_list(categories)
@@ -619,8 +617,10 @@ def show_bookshelf_details(bookshelf_name):
     bookshelf_name = bookshelf_name
     user_id = session['user_id']
     books_on_bookshelf = crud.get_all_books_on_a_bookshelf(bookshelf_name, user_id)
+    bookshelves = crud.get_user_bookshelves(session['user_id'])
+    bookshelves = bookshelves[::-1]
 
-    return render_template('bookshelf_details.html', books_on_bookshelf=books_on_bookshelf, bookshelf_name=bookshelf_name)
+    return render_template('bookshelf_details.html', books_on_bookshelf=books_on_bookshelf, bookshelf_name=bookshelf_name, bookshelves=bookshelves)
 
 
 def add_book_to_bookshelf(book_in_library, bookshelf):
@@ -666,11 +666,17 @@ def handle_adding_book_to_bookshelf():
     bookshelf = crud.get_a_bookshelf(user_id, bookshelf_name)
     book_on_bookshelf = add_book_to_bookshelf(book_in_library, bookshelf)
 
-    if book_tag == 'read':
+    if book_tag == 'Read':
         add_book_to_read_list(book_in_library)
-    elif book_tag == 'liked':
+    elif book_tag == 'Liked':
         add_book_to_liked_list(book_in_library)
-    elif book_tag =='tbr':
+        for author in authors_list:
+            interest = add_interest_to_db(author)
+            user_interest = add_user_interest_to_db(user_id, interest)
+        for category in categories_list:
+            category = add_interest_to_db(category)
+            user_interest = add_user_interest_to_db(user_id, category)
+    elif book_tag =='TBR':
         add_book_to_to_be_read_list(book_in_library)
 
     return f'Book added to {bookshelf_name} bookshelf.'

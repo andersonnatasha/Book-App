@@ -269,15 +269,18 @@
 {%if all_interests_for_a_user%}
 
 <div class="container">
-<h6>Your Interests</h6>
+<h6 id="interest-heading">Your Interests</h6>
 <table class="table table-dark">
 <tbody>
 {% for interest in all_interests_for_a_user %}
 <tr>
 <td>
+
 <form action="/handle-remove-interest" method="POST">
     <input name="interest" type="hidden" value="{{ interest.interest.interest }}">
-    <input type="submit" value="Remove">
+    <button class="remove-button" type="submit">
+        <i class="fas fa-times" ></i>
+        </button>
     </form>
 </td>
 <td>{{ interest.interest.interest }}</td>

@@ -163,10 +163,10 @@
                       <div class="modal-bookshelf" id="modal-bookshelf{{book.isbn_13}}">
                         <div class="modal-content" id="modal-content-bookshelf{{book.isbn_13}}">
                         <form id="book-on-bookshelf-status{{book.isbn_13}}">
-                          <input class="modal-bookshelf-button" value="read" type="submit">
-                          <input class="modal-bookshelf-button" value="liked" type="submit">
-                          <input class="modal-bookshelf-button" value="tbr" type="submit">
-                          <input id="cancel{{book.isbn_13}}" type="reset" value="cancel">
+                          <input class="modal-bookshelf-button" value="Read" type="submit">
+                          <input class="modal-bookshelf-button" value="Liked" type="submit">
+                          <input class="modal-bookshelf-button" value="TBR" type="submit">
+                          <input class="modal-bookshelf-button" id="cancel{{book.isbn_13}}" type="reset" value="Cancel">
                         </form>
                         </div>
                       </div>
@@ -192,7 +192,7 @@
             <div id="read-message{{book.isbn_13}}"></div>
             <div id="liked-message{{book.isbn_13}}"></div>
             <div id="add-to-bookshelf-message{{book.isbn_13}}"></div>
-            <form class="mark-as-read book-tag" id="{{book.isbn_13}}">
+            <form class="mark-as-read book-tag" id="{{book.isbn_13}}" method="POST">
               <input id="read-book-title{{book.isbn_13}}" name="title" type="hidden" value="{{ book.title }}">
               <input id="read-book-subtitle{{book.isbn_13}}" name="subtitle" type="hidden" value="{{ book.subtitle }}">
               <input id="read-book-authors{{book.isbn_13}}" name="authors" type="hidden" value="{{ book.authors }}">
@@ -210,7 +210,7 @@
               <input id="liked-book-image-link{{book.isbn_13}}" name="image_link" type="hidden" value="{{ book.thumbnail }}">
               <input id="liked-book-isbn-13{{book.isbn_13}}" name="isbn_13" type="hidden" value="{{ book.isbn_13 }}">
             </form>
-            <form class="mark-as-to-be-read book-tag" id="{{book.isbn_13}}">
+            <form class="mark-as-to-be-read book-tag" id="{{book.isbn_13}}" method="POST">
                 <input id="to-be-read-book-title{{book.isbn_13}}" name="title" type="hidden" value="{{ book.title }}">
                 <input id="to-be-read-book-subtitle{{book.isbn_13}}" name="subtitle" type="hidden" value="{{ book.subtitle }}">
                 <input id="to-be-read-book-authors{{book.isbn_13}}" name="authors" type="hidden" value="{{ book.authors }}">

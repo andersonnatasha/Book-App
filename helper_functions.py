@@ -3,6 +3,7 @@ import os
 import requests
 import crud
 from random import randint
+from random import choice
 
 API_KEY = os.environ['GOOGLEBOOKS_KEY']
 
@@ -128,4 +129,4 @@ def choose_random_quote():
         that broken dignity.” ― Chimamanda Ngozi Adichie''',
         '''“Poetry is a political act because it involves telling the truth.” ― June Jordan''']
 
-    return choice(quote)
+    return choice(quotes)

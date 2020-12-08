@@ -13,7 +13,7 @@ from os import environ
 from datetime import datetime
 
 from random import randint
-from random import choice
+
 
 app = Flask(__name__)
 app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
@@ -196,7 +196,7 @@ def show_liked_books():
         liked_books = crud.get_liked_books_by_user_id(session['user_id'])
         bookshelves = crud.get_user_bookshelves(session['user_id'])
         bookshelves = bookshelves[::-1]
-        quote = chelper_functions.choose_random_quote()
+        quote = helper_functions.choose_random_quote()
         return render_template('user_liked_books.html', user=user, liked_books=liked_books, bookshelves=bookshelves, quote=quote)
     else:
         flash('Please log in to see your liked books.')

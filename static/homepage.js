@@ -52,6 +52,20 @@ $('.book-image').on('click', (evt) => {
 });
 
 
+$('.fa-home').on('click', () => {
+  const spinner = $('.spinner-border');
+  const quote = $('.loading-quote');
+  console.log(quote[0])
+  spinner[0].style.display = "block";
+  quote[0].style.display = "block";
+})
 
 
+$('.navbar-brand').on('click', () => {
+  const spinner = $('.spinner-border');
+  const quote = $('.loading-quote');
+  console.log(quote[0])
+  spinner[0].style.display = "block";
+  quote[0].style.display = "block";
+})
 

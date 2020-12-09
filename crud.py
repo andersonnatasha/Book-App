@@ -202,9 +202,8 @@ def get_book_on_bookshelf(book_in_library, bookshelf, user_id):
 
 def get_all_books_on_a_bookshelf(bookshelf_name, user_id):
 
-    bookshelf = Bookshelf.query.filter(Bookshelf.name == bookshelf_name).first()
 
-    return BookOnBookshelf.query.filter(BookOnBookshelf.user_id==user_id, BookOnBookshelf.bookshelf_id==bookshelf.bookshelf_id).all()
+    return BookOnBookshelf.query.filter(Bookshelf.name==bookshelf_name, Bookshelf.user_id ==user_id).all()
 
 def mark_book_as_read(book_in_library, read_status_update, liked_status):
     """Update book tags to indicate book is categorized as read."""

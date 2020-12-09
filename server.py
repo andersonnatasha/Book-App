@@ -34,7 +34,6 @@ def homepage():
         bookshelves = crud.get_user_bookshelves(session['user_id'])
         bookshelves = bookshelves[::-1]
         return render_template('homepage.html',search_results=search_results, bookshelves=bookshelves)
-
     else:
         bookshelves = None
         return render_template('homepage.html', bookshelves=bookshelves)
@@ -263,8 +262,6 @@ def add_book_to_db(title, subtitle, description, image_link, isbn_13):
     book = crud.get_book_by_isbn_13(isbn_13)
     if book == None:
         book = crud.create_book(title, subtitle, description, image_link, isbn_13)
-    else:
-        pass
 
     return book
 
@@ -339,8 +336,7 @@ def add_category_to_db(categories):
             if category_object == None:
                 category_object = crud.create_category(category)
                 categories_in_db.append(category_object)
-            else:
-                pass
+
     else:
         categories_in_db = None
 

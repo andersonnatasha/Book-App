@@ -68,7 +68,7 @@ def show_recommended_books():
         url = 'https://www.googleapis.com/books/v1/volumes'
         keyword = f'subject: {keyword}'
         randint_high = 1000
-        payload = {'q': keyword, 'maxResults': 10, 'startIndex': randint(0,randint_high), 'apikey': API_KEY}
+        payload = {'q': keyword, 'maxResults': 15, 'startIndex': randint(0,randint_high), 'apikey': API_KEY}
 
         res = requests.get(url, params=payload)
 

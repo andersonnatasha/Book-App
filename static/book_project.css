@@ -4,14 +4,16 @@
   position: fixed;
   left: 50%;
   top: 50%;
-  width: 35%;
-  height: 20%;
+  width: 25%;
+  height: 25%;
   transform: translate(-50%, -50%);
   border: 1px solid black;
   padding:10px;
   border-radius: .3rem;
   background-color:#1b1a1a;
-  padding:3%
+  padding:3%;
+  margin-left:auto;
+  margin-right: auto;
 }
 
 
@@ -448,3 +450,12 @@ a.side-nav-items{overflow: hidden;
     /* transform: translate(-50%, -50%); */
 
     /* padding:3%} */
+
+    html {
+      overflow: scroll;
+      overflow-x: hidden;
+  }
+  ::-webkit-scrollbar {
+      width: 0px;  /* Remove scrollbar space */
+      background: transparent;  /* Optional: just make scrollbar invisible */
+  }

@@ -7,70 +7,70 @@ from test_data import test_data
 from datetime import datetime
 
 
-# class BookAppTests(unittest.TestCase):
-#     """Testing intergration of Flask server"""
+class BookAppTests(unittest.TestCase):
+    """Testing intergration of Flask server"""
 
-#     def setUp(self):
-#         """Do before every test."""
+    def setUp(self):
+        """Do before every test."""
 
-#         self.client = app.test_client()
-#         app.config['TESTING'] = True
-
-
-#     def test_homepage_before_login(self):
-#         """Test that homepage version if user is not logged in renders"""
-#         result = self.client.get('/')
-#         self.assertEqual(200, result.status_code)
-#         self.assertIn(b'''A Reader's Best Friend''', result.data)
+        self.client = app.test_client()
+        app.config['TESTING'] = True
 
 
-#     def test_sign_up_page(self):
-#         """Test that sign up page renders."""
-
-#         result = self.client.get('/sign-up')
-#         self.assertEqual(200, result.status_code)
-#         self.assertIn(b'Whats your email?', result.data)
-
-
-#     def test_login_page(self):
-#         """Test that login page renders."""
-
-#         result = self.client.get('/log-in')
-#         self.assertEqual(200, result.status_code)
-#         self.assertIn(b'''Don't have an account''', result.data)
+    def test_homepage_before_login(self):
+        """Test that homepage version if user is not logged in renders"""
+        result = self.client.get('/')
+        self.assertEqual(200, result.status_code)
+        self.assertIn(b'''A Reader's Best Friend''', result.data)
 
 
-#     def test_interests_page_before_login(self):
-#         result = self.client.get('/')
-#         self.assertEqual(200, result.status_code)
+    def test_sign_up_page(self):
+        """Test that sign up page renders."""
+
+        result = self.client.get('/sign-up')
+        self.assertEqual(200, result.status_code)
+        self.assertIn(b'Whats your email?', result.data)
 
 
-#     def test_read_books_page_before_user_logged_in(self):
-#         result = self.client.get('/read-books',
-#                                  follow_redirects=True)
-#         self.assertEqual(200, result.status_code)
-#         self.assertIn(b'Please log in to see your read books.', result.data)
+    def test_login_page(self):
+        """Test that login page renders."""
+
+        result = self.client.get('/log-in')
+        self.assertEqual(200, result.status_code)
+        self.assertIn(b'''Don't have an account''', result.data)
 
 
-#     def test_liked_books_page_before_user_logged_in(self):
-#         result = self.client.get('/liked-books',
-#                                  follow_redirects=True)
-#         self.assertEqual(200, result.status_code)
-#         self.assertIn(b'Please log in to see your liked books.', result.data)
+    def test_interests_page_before_login(self):
+        result = self.client.get('/')
+        self.assertEqual(200, result.status_code)
 
 
-#     def test_to_be_read_books_page_before_user_logged_in(self):
-#         result = self.client.get('/to-be-read-books',
-#                                  follow_redirects=True)
-#         self.assertEqual(200, result.status_code)
-#         self.assertIn(b'Please log in to see your tbr list.', result.data)
+    def test_read_books_page_before_user_logged_in(self):
+        result = self.client.get('/read-books',
+                                 follow_redirects=True)
+        self.assertEqual(200, result.status_code)
+        self.assertIn(b'Please log in to see your read books.', result.data)
 
 
-#     def test_search_a_book_page_before_user_logged_in(self):
-#         result = self.client.get('/search-a-book',
-#                                  follow_redirects=True)
-#         self.assertEqual(200, result.status_code)
-#         self.assertIn(b'Please log in.', result.data)
+    def test_liked_books_page_before_user_logged_in(self):
+        result = self.client.get('/liked-books',
+                                 follow_redirects=True)
+        self.assertEqual(200, result.status_code)
+        self.assertIn(b'Please log in to see your liked books.', result.data)
+
+
+    def test_to_be_read_books_page_before_user_logged_in(self):
+        result = self.client.get('/to-be-read-books',
+                                 follow_redirects=True)
+        self.assertEqual(200, result.status_code)
+        self.assertIn(b'Please log in to see your tbr list.', result.data)
+
+
+    def test_search_a_book_page_before_user_logged_in(self):
+        result = self.client.get('/search-a-book',
+                                 follow_redirects=True)
+        self.assertEqual(200, result.status_code)
+        self.assertIn(b'Please log in.', result.data)
 
 
 class BookAppTestsDatabase(unittest.TestCase):
@@ -419,13 +419,7 @@ class BookAppTestsDatabase(unittest.TestCase):
 
         read_book_in_library = model.BookInLibrary.query.filter(model.BookInLibrary.read == True).first()
         result = self.client.post('/mark-as-liked',
-                                  data = {'title': read_book_in_library.book.title,
-                                          'subtitle': read_book_in_library.book.subtitle,
-                                          'authors': read_book_in_library.book.authors,
-                                          'image_link': read_book_in_library.book.image_link,
-                                          'categories': read_book_in_library.book.categories,
-                                          'description': read_book_in_library.book.description,
-                                          'isbn_13': read_book_in_library.book.isbn_13})
+                                  data = {'isbn_13': read_book_in_library.book.isbn_13})
 
         self.assertEqual(200, result.status_code)
         updated_book_in_library = model.BookInLibrary.query.get((1,1))
@@ -441,13 +435,7 @@ class BookAppTestsDatabase(unittest.TestCase):
 
         to_be_read_book_in_library = model.BookInLibrary.query.filter(model.BookInLibrary.to_be_read == True).first()
         result = self.client.post('/mark-as-liked',
-                                  data = {'title': to_be_read_book_in_library.book.title,
-                                          'subtitle': to_be_read_book_in_library.book.subtitle,
-                                          'authors': to_be_read_book_in_library.book.authors,
-                                          'image_link': to_be_read_book_in_library.book.image_link,
-                                          'categories': to_be_read_book_in_library.book.categories,
-                                          'description': to_be_read_book_in_library.book.description,
-                                          'isbn_13': to_be_read_book_in_library.book.isbn_13})
+                                  data = {'isbn_13': to_be_read_book_in_library.book.isbn_13})
 
         self.assertEqual(200, result.status_code)
         updated_book_in_library = model.BookInLibrary.query.get((3,1))

@@ -1,6 +1,6 @@
 """CRUD operations"""
 
-from model import db, User, Book, Author, Category, BookCategory, Bookshelf, BookInLibrary, BookOnBookshelf, BookAuthor, Interest, UserInterest, connect_to_db
+from model import (db, User, Book, Author, Category, BookCategory, Bookshelf, BookInLibrary, BookOnBookshelf, BookAuthor, Interest, UserInterest, connect_to_db
 from datetime import datetime
 
 

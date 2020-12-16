@@ -244,7 +244,7 @@ body{
           width: 50%;
           height:57%;
           border: 1px gold solid;
-          border-spacing: 10px;
+          /* border-spacing: 10px; */
           /* text-align: center; */
           margin: 0;
           position: absolute;

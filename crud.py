@@ -1,6 +1,7 @@
 """CRUD operations"""
 
-from model import (db, User, Book, Author, Category, BookCategory, Bookshelf, BookInLibrary, BookOnBookshelf, BookAuthor, Interest, UserInterest, connect_to_db
+from model import (db, User, Book, Author, Category, BookCategory, Bookshelf, BookInLibrary, BookOnBookshelf,
+                   BookAuthor, Interest, UserInterest, connect_to_db)
 from datetime import datetime
 
 
@@ -427,7 +428,6 @@ def get_all_interests_for_user(user_id):
     """Return a userinterest by a user id."""
 
     return UserInterest.query.filter(UserInterest.user_id ==user_id).all()
-
 
 
 if __name__ == '__main__':

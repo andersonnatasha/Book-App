@@ -86,6 +86,7 @@ class Author(db.Model):
         return f'<Author author_id={self.author_id} full_name={self.full_name}>'
 
 class BookAuthor(db.Model):
+    """A book and author combination."""
 
     __tablename__ = 'books_authors'
 
@@ -137,6 +138,26 @@ class BookCategory(db.Model):
 
     def __repr__(self):
         return f'<BookCategory book_id={self.book_id} category_id={self.category_id}>'
+
+
+class RecommendedBook(db.Model):
+    """A recommended book for a user."""
+
+    __tablename__ = 'recommended_books'
+
+    recommended_book_id = db.Column(db.Integer,
+                                     primary_key=True,
+                                     autoincrement=True
+                                    )
+    book_id = db.Column(db.Integer,
+                         db.ForeignKey('books.book_id')
+                         )
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey('users.user_id')
+                        )
+    def __repr__(self):
+        return f'<RecommendedBook recommended_book_id={self.recommended_book_id}>'
+
 
 
 class Bookshelf(db.Model):

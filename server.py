@@ -85,6 +85,7 @@ def log_in():
     quote = helper_functions.choose_random_quote()
     return render_template('log_in.html', quote=quote)
 
+
 @app.route('/log-out')
 def handle_logging_out():
     """Log a user out."""
@@ -145,6 +146,7 @@ def add_interest_to_db(interest):
 
     return interest_object
 
+
 def add_user_interest_to_db(user_id, interest):
     """Add userinterest to db"""
 
@@ -170,6 +172,7 @@ def handle_user_interests():
         user_interest = add_user_interest_to_db(user_id, interest)
 
     return redirect('/')
+
 
 @app.route('/read-books')
 def show_read_books():
@@ -265,6 +268,7 @@ def add_book_to_db(title, subtitle, description, image_link, isbn_13):
         book = crud.create_book(title, subtitle, description, image_link, isbn_13)
 
     return book
+
 
 def add_book_to_library(book, user_id):
     """Add book to user library"""
@@ -409,6 +413,7 @@ def add_book_to_to_be_read_list(book_in_library):
         message = 'Added to your TBR list'
 
     return message
+
 
 def delete_book_from_read_list(isbn_13, user_id):
     """Remove book from user's read list."""
@@ -683,6 +688,7 @@ def handle_adding_book_to_bookshelf():
         add_book_to_to_be_read_list(book_in_library)
 
     return f'Book added to {bookshelf_name} bookshelf.'
+
 
 if __name__ == '__main__':
     connect_to_db(app)

@@ -146,7 +146,7 @@ def handle_user_interests():
 
     for keyword in keywords:
         interest = helper_functions.add_interest_to_db(keyword)
-        user_interest = helper_functions.add_user_interest_to_db(user_id, interest)
+        helper_functions.add_user_interest_to_db(user_id, interest)
 
     return redirect('/')
 
@@ -238,11 +238,10 @@ def mark_book_as_read():
     book = helper_functions.add_book_to_db(title, subtitle, description, image_link, isbn_13)
     book_in_library = helper_functions.add_book_to_library(book, user_id)
     authors_in_db = helper_functions.add_author_to_db(authors_list)
-    book_author = helper_functions.add_book_author_to_db(book, authors_in_db)
+    helper_functions.add_book_author_to_db(book, authors_in_db)
     categories_in_db = helper_functions.add_category_to_db(categories_list)
-    book_category = helper_functions.add_book_category_to_db(book, categories_in_db)
+    helper_functions.add_book_category_to_db(book, categories_in_db)
     message = helper_functions.add_book_to_read_list(book_in_library)
-
 
     return message
 
@@ -270,18 +269,18 @@ def mark_book_as_liked():
     book = helper_functions.add_book_to_db(title, subtitle, description, image_link, isbn_13)
     book_in_library = helper_functions.add_book_to_library(book, user_id)
     authors_in_db = helper_functions.add_author_to_db(authors_list)
-    book_author = helper_functions.add_book_author_to_db(book, authors_in_db)
-    categories_in_db = helper_functions.add_category_to_db(categories_list)
-    book_category = helper_functions.add_book_category_to_db(book, categories_in_db)
+    helper_functions.add_book_author_to_db(book, authors_in_db)
+    helper_functions.add_category_to_db(categories_list)
+    helper_functions.add_book_category_to_db(book, categories_in_db)
     message = helper_functions.add_book_to_liked_list(book_in_library)
 
     for author in authors_list:
         interest = helper_functions.add_interest_to_db(author)
-        user_interest = helper_functions.add_user_interest_to_db(user_id, interest)
+        helper_functions.add_user_interest_to_db(user_id, interest)
 
     for category in categories_list:
         category = helper_functions.add_interest_to_db(category)
-        user_interest = helper_functions.add_user_interest_to_db(user_id, category)
+        helper_functions.add_user_interest_to_db(user_id, category)
 
     return message
 
@@ -308,9 +307,9 @@ def mark_book_as_to_be_read():
     book = helper_functions.add_book_to_db(title, subtitle, description, image_link, isbn_13)
     book_in_library = helper_functions.add_book_to_library(book, user_id)
     authors_in_db = helper_functions.add_author_to_db(authors_list)
-    book_author = helper_functions.add_book_author_to_db(book, authors_in_db)
+    helper_functions.add_book_author_to_db(book, authors_in_db)
     categories_in_db = helper_functions.add_category_to_db(categories_list)
-    book_category = helper_functions.add_book_category_to_db(book, categories_in_db)
+    helper_functions.add_book_category_to_db(book, categories_in_db)
     message = helper_functions.add_book_to_to_be_read_list(book_in_library)
 
     return message
@@ -386,7 +385,7 @@ def create_bookshelf():
 
     bookshelf_name = request.form.get('bookshelfName')
 
-    bookshelf = crud.create_bookshelf(bookshelf_name, user_id)
+    crud.create_bookshelf(bookshelf_name, user_id)
 
     bookshelves_objects = crud.get_user_bookshelves(user_id)
 
@@ -434,11 +433,11 @@ def handle_adding_book_to_bookshelf():
     book = helper_functions.add_book_to_db(title, subtitle, description, image_link, isbn_13)
     book_in_library = helper_functions.add_book_to_library(book, user_id)
     authors_in_db = helper_functions.add_author_to_db(authors_list)
-    book_author = helper_functions.add_book_author_to_db(book, authors_in_db)
+    helper_functions.add_book_author_to_db(book, authors_in_db)
     categories_in_db = helper_functions.add_category_to_db(categories_list)
-    book_category = helper_functions.add_book_category_to_db(book, categories_in_db)
+    helper_functions.add_book_category_to_db(book, categories_in_db)
     bookshelf = crud.get_a_bookshelf(user_id, bookshelf_name)
-    book_on_bookshelf = helper_functions.add_book_to_bookshelf(book_in_library, bookshelf)
+    helper_functions.add_book_to_bookshelf(book_in_library, bookshelf)
 
     if book_tag == 'Read':
         helper_functions.add_book_to_read_list(book_in_library)
@@ -446,10 +445,10 @@ def handle_adding_book_to_bookshelf():
         helper_functions.add_book_to_liked_list(book_in_library)
         for author in authors_list:
             interest = helper_functions.add_interest_to_db(author)
-            user_interest = helper_functions.add_user_interest_to_db(user_id, interest)
+            helper_functions.add_user_interest_to_db(user_id, interest)
         for category in categories_list:
             category = helper_functions.add_interest_to_db(category)
-            user_interest = helper_functions.add_user_interest_to_db(user_id, category)
+            helper_functions.add_user_interest_to_db(user_id, category)
     elif book_tag =='TBR':
         helper_functions.add_book_to_to_be_read_list(book_in_library)
 

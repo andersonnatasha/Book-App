@@ -136,29 +136,6 @@ def get_user_interests():
         return redirect ("/")
 
 
-def add_interest_to_db(interest):
-    """Add interest to db."""
-
-    # Check to see if interest already exist in db.
-    interest_object = crud.get_interest_by_name(interest)
-    if interest_object == None:
-        interest_object = crud.create_interest(interest)
-
-    return interest_object
-
-
-def add_user_interest_to_db(user_id, interest):
-    """Add userinterest to db"""
-
-    # Check if userinterest is in database already;
-    # If userinterest doesn't exist, create userinterest.
-    user_interest = crud.get_user_interest(user_id, interest.interest_id)
-    if user_interest == None:
-        user_interest = crud.create_user_interest(user_id, interest.interest_id)
-
-    return user_interest
-
-
 @app.route('/handle-user-interests', methods=['POST'])
 def handle_user_interests():
     """Handle user interests from form to add to db."""
@@ -168,8 +145,8 @@ def handle_user_interests():
     keywords = request.form.getlist('interests')
 
     for keyword in keywords:
-        interest = add_interest_to_db(keyword)
-        user_interest = add_user_interest_to_db(user_id, interest)
+        interest = helper_functions.add_interest_to_db(keyword)
+        user_interest = helper_functions.add_user_interest_to_db(user_id, interest)
 
     return redirect('/')
 
@@ -239,206 +216,6 @@ def show_search_a_book():
         return redirect("/log-in")
 
 
-def remove_illegal_characters_to_make_list(string):
-    """Remove illegal characters from from strings to convert to a list."""
-
-    illegal_characters = ["[", "]", "'"]
-
-    valid_list = []
-    if (string != "''") or (string != None):
-        for letter in string:
-            if letter in illegal_characters:
-                continue
-            else:
-                valid_list.append(letter)
-                valid_string = "".join(valid_list)
-                valid_list = valid_string.split(",")
-    else:
-        valid_list = None
-
-    return valid_list
-
-
-def add_book_to_db(title, subtitle, description, image_link, isbn_13):
-    """Add book to db."""
-
-    # Check if the book is already in the database; If not in db, create book.
-    book = crud.get_book_by_isbn_13(isbn_13)
-    if book == None:
-        book = crud.create_book(title, subtitle, description, image_link, isbn_13)
-
-    return book
-
-
-def add_book_to_library(book, user_id):
-    """Add book to user library"""
-
-    # Check if book is already in user library;
-    # If not in user library, create bookinlibrary.
-    book_in_library = crud.get_book_in_library(book, user_id)
-    if book_in_library == None:
-        book_in_library = crud.create_a_book_in_library(book, user_id)
-
-    return book_in_library
-
-
-def add_author_to_db(authors):
-    """Add authors to db."""
-
-    # Takes in authors as list
-    # Check if author is in database;
-    # If author doesn't exists, create author
-
-    if authors != None:
-        authors_in_db = []
-        for author in authors:
-            author_object = crud.get_author_by_full_name(author)
-            if author_object == None:
-                author_object = crud.create_author(author)
-                authors_in_db.append(author_object)
-            else:
-                authors_in_db.append(author_object)
-    else:
-        authors_in_db = None
-
-    return authors_in_db
-
-
-def add_book_author_to_db(book, authors_in_db):
-    """Add bookauthor to db."""
-
-    # Authors_in_db is a list
-    # Check if bookauthor is in database;
-    # If bookauthor doesn't exist, create bookauthor
-    if authors_in_db != None:
-        book_authors_in_db = []
-        for author in authors_in_db:
-            book_author_object = crud.get_book_author(book.book_id, author.author_id)
-            if book_author_object == None:
-                book_author_object = crud.create_book_author(book.book_id, author.author_id)
-
-                book_authors_in_db.append(book_author_object)
-
-    else:
-        book_authors_in_db = None
-
-
-    print(book_authors_in_db)
-
-    return book_authors_in_db
-
-
-def add_category_to_db(categories):
-    """Add category to db."""
-
-    # Categories as a list
-    # Check if category is already in database;
-    # If category doesn't exist, create category
-    if categories != None:
-        categories_in_db = []
-        for category in categories:
-            category_object = crud.get_category_by_name(category)
-            if category_object == None:
-                category_object = crud.create_category(category)
-                categories_in_db.append(category_object)
-
-    else:
-        categories_in_db = None
-
-    return categories_in_db
-
-
-def add_book_category_to_db(book, categories_in_db):
-    """Create new bookcategory in database."""
-
-    # Categories_in_db is a list
-    # Check if bookcategory is in database already;
-    # If bookcategory doesn't exist, create bookcategory.
-    if categories_in_db != None:
-        book_categories_in_db = []
-        for category in categories_in_db:
-            book_category_object = crud.get_book_category(book.book_id, category.category_id)
-            if book_category_object == None:
-                book_category_object = crud.create_book_category(book.book_id, category.category_id)
-
-                book_categories_in_db.append(book_category_object)
-    else:
-        book_categories_in_db = None
-
-    return book_categories_in_db
-
-
-def add_book_to_read_list(book_in_library):
-    """Add book to user read list."""
-
-    # Check if book is already on marked as a liked book for user
-    # if so, flash message. If not mark as liked
-
-    if book_in_library.read == True:
-        message = '''You've already added this book to your Read Books'''
-    else:
-        read_status_update = True
-        liked_status = False
-        crud.mark_book_as_read(book_in_library, read_status_update, liked_status)
-        message = 'Added to your Read Books'
-
-    return message
-
-
-def add_book_to_liked_list(book_in_library):
-    """Add a bok to a user liked list."""
-
-    if book_in_library.liked == True:
-        read_status_update = True
-        liked_status = False
-        crud.remove_liked_tag(book_in_library, read_status_update, liked_status)
-        message = 'Removed from your Liked Books'
-    else:
-        read_status_update = True
-        liked_status = True
-        crud.mark_book_as_liked(book_in_library, read_status_update, liked_status)
-        message = 'Added to your Liked Books'
-
-    return message
-
-def add_book_to_to_be_read_list(book_in_library):
-    """Add a book to a user liked list."""
-
-    if book_in_library.to_be_read == True:
-        message = 'This book is already on your TBR list.'
-    else:
-        read_status_update = False
-        liked_status = False
-        crud.mark_book_as_to_be_read(book_in_library, read_status_update, liked_status)
-        message = 'Added to your TBR list'
-
-    return message
-
-
-def delete_book_from_read_list(isbn_13, user_id):
-    """Remove book from user's read list."""
-
-    book = crud.get_book_by_isbn_13(isbn_13)
-    book_in_library = crud.get_book_in_library(book, user_id)
-    crud.delete_book_from_library(book_in_library)
-
-
-def remove_liked_tag(book_in_library):
-    """Remove book as liked."""
-
-    read_status_update = True
-    liked_status = False
-    crud.remove_liked_tag(book_in_library, read_status_update, liked_status)
-
-
-def delete_book_from_to_be_read_list(isbn_13, user_id):
-    """Remove book from user's read list."""
-
-    book = crud.get_book_by_isbn_13(isbn_13)
-    book_in_library = crud.get_book_in_library(book, user_id)
-    crud.delete_book_from_library(book_in_library)
-
-
 @app.route('/mark-as-read', methods=['POST'])
 def mark_book_as_read():
     """Mark a book as read in a user library."""
@@ -455,16 +232,16 @@ def mark_book_as_read():
     description = request.form.get('description')
     isbn_13 = request.form.get('isbn_13')
 
-    authors_list = remove_illegal_characters_to_make_list(authors)
-    categories_list = remove_illegal_characters_to_make_list(categories)
+    authors_list = helper_functions.remove_illegal_characters_to_make_list(authors)
+    categories_list = helper_functions.remove_illegal_characters_to_make_list(categories)
 
-    book = add_book_to_db(title, subtitle, description, image_link, isbn_13)
-    book_in_library = add_book_to_library(book, user_id)
-    authors_in_db = add_author_to_db(authors_list)
-    book_author = add_book_author_to_db(book, authors_in_db)
-    categories_in_db = add_category_to_db(categories_list)
-    book_category = add_book_category_to_db(book, categories_in_db)
-    message = add_book_to_read_list(book_in_library)
+    book = helper_functions.add_book_to_db(title, subtitle, description, image_link, isbn_13)
+    book_in_library = helper_functions.add_book_to_library(book, user_id)
+    authors_in_db = helper_functions.add_author_to_db(authors_list)
+    book_author = helper_functions.add_book_author_to_db(book, authors_in_db)
+    categories_in_db = helper_functions.add_category_to_db(categories_list)
+    book_category = helper_functions.add_book_category_to_db(book, categories_in_db)
+    message = helper_functions.add_book_to_read_list(book_in_library)
 
 
     return message
@@ -487,24 +264,24 @@ def mark_book_as_liked():
     description = request.form.get('description', '')
     isbn_13 = request.form.get('isbn_13', '')
 
-    authors_list = remove_illegal_characters_to_make_list(authors)
-    categories_list = remove_illegal_characters_to_make_list(categories)
+    authors_list = helper_functions.remove_illegal_characters_to_make_list(authors)
+    categories_list = helper_functions.remove_illegal_characters_to_make_list(categories)
 
-    book = add_book_to_db(title, subtitle, description, image_link, isbn_13)
-    book_in_library = add_book_to_library(book, user_id)
-    authors_in_db = add_author_to_db(authors_list)
-    book_author = add_book_author_to_db(book, authors_in_db)
-    categories_in_db = add_category_to_db(categories_list)
-    book_category = add_book_category_to_db(book, categories_in_db)
-    message = add_book_to_liked_list(book_in_library)
+    book = helper_functions.add_book_to_db(title, subtitle, description, image_link, isbn_13)
+    book_in_library = helper_functions.add_book_to_library(book, user_id)
+    authors_in_db = helper_functions.add_author_to_db(authors_list)
+    book_author = helper_functions.add_book_author_to_db(book, authors_in_db)
+    categories_in_db = helper_functions.add_category_to_db(categories_list)
+    book_category = helper_functions.add_book_category_to_db(book, categories_in_db)
+    message = helper_functions.add_book_to_liked_list(book_in_library)
 
     for author in authors_list:
-        interest = add_interest_to_db(author)
-        user_interest = add_user_interest_to_db(user_id, interest)
+        interest = helper_functions.add_interest_to_db(author)
+        user_interest = helper_functions.add_user_interest_to_db(user_id, interest)
 
     for category in categories_list:
-        category = add_interest_to_db(category)
-        user_interest = add_user_interest_to_db(user_id, category)
+        category = helper_functions.add_interest_to_db(category)
+        user_interest = helper_functions.add_user_interest_to_db(user_id, category)
 
     return message
 
@@ -525,16 +302,16 @@ def mark_book_as_to_be_read():
     description = request.form.get('description')
     isbn_13 = request.form.get('isbn_13')
 
-    authors_list = remove_illegal_characters_to_make_list(authors)
-    categories_list = remove_illegal_characters_to_make_list(categories)
+    authors_list = helper_functions.remove_illegal_characters_to_make_list(authors)
+    categories_list = helper_functions.remove_illegal_characters_to_make_list(categories)
 
-    book = add_book_to_db(title, subtitle, description, image_link, isbn_13)
-    book_in_library = add_book_to_library(book, user_id)
-    authors_in_db = add_author_to_db(authors_list)
-    book_author = add_book_author_to_db(book, authors_in_db)
-    categories_in_db = add_category_to_db(categories_list)
-    book_category = add_book_category_to_db(book, categories_in_db)
-    message = add_book_to_to_be_read_list(book_in_library)
+    book = helper_functions.add_book_to_db(title, subtitle, description, image_link, isbn_13)
+    book_in_library = helper_functions.add_book_to_library(book, user_id)
+    authors_in_db = helper_functions.add_author_to_db(authors_list)
+    book_author = helper_functions.add_book_author_to_db(book, authors_in_db)
+    categories_in_db = helper_functions.add_category_to_db(categories_list)
+    book_category = helper_functions.add_book_category_to_db(book, categories_in_db)
+    message = helper_functions.add_book_to_to_be_read_list(book_in_library)
 
     return message
 
@@ -546,7 +323,7 @@ def remove_from_read_list():
     user_id = session['user_id']
     isbn_13 = request.form.get('isbn_13')
 
-    delete_book_from_read_list(isbn_13, user_id)
+    helper_functions.delete_book_from_read_list(isbn_13, user_id)
 
     return redirect('/read-books')
 
@@ -560,7 +337,7 @@ def remove_from_liked_list():
 
     book = crud.get_book_by_isbn_13(isbn_13)
     book_in_library = crud.get_book_in_library(book, user_id)
-    remove_liked_tag(book_in_library)
+    helper_functions.remove_liked_tag(book_in_library)
 
     return redirect('/liked-books')
 
@@ -572,7 +349,7 @@ def remove_from_to_be_read_list():
     user_id = session['user_id']
     isbn_13 = request.form.get('isbn_13')
 
-    delete_book_from_to_be_read_list(isbn_13, user_id)
+    helper_functions.delete_book_from_to_be_read_list(isbn_13, user_id)
 
     return redirect('/to-be-read-books')
 
@@ -631,17 +408,6 @@ def show_bookshelf_details(bookshelf_name):
     return render_template('bookshelf_details.html', books_on_bookshelf=books_on_bookshelf, bookshelf_name=bookshelf_name, bookshelves=bookshelves, quote=quote)
 
 
-def add_book_to_bookshelf(book_in_library, bookshelf):
-    """Check to see if book_in_library is already on bookshelf and if not add it."""
-
-    user_id = session['user_id']
-    book_on_bookshelf = crud.get_book_on_bookshelf(book_in_library, bookshelf, user_id)
-    print(f'its on the shelf already {book_on_bookshelf}')
-    if book_on_bookshelf == None:
-        date_added = datetime.now()
-        book_on_bookshelf = crud.create_a_book_on_a_bookshelf(book_in_library, bookshelf, date_added)
-    print(f'it has to be created on the shelf  {book_on_bookshelf}')
-    return book_on_bookshelf
 
 
 @app.route('/handle-adding-book-to-bookshelf', methods=['POST'])
@@ -662,30 +428,30 @@ def handle_adding_book_to_bookshelf():
     bookshelf_name = request.form.get('bookshelf_name')
     book_tag = request.form.get('book_tag')
 
-    authors_list = remove_illegal_characters_to_make_list(authors)
-    categories_list = remove_illegal_characters_to_make_list(categories)
+    authors_list = helper_functions.remove_illegal_characters_to_make_list(authors)
+    categories_list = helper_functions.remove_illegal_characters_to_make_list(categories)
 
-    book = add_book_to_db(title, subtitle, description, image_link, isbn_13)
-    book_in_library = add_book_to_library(book, user_id)
-    authors_in_db = add_author_to_db(authors_list)
-    book_author = add_book_author_to_db(book, authors_in_db)
-    categories_in_db = add_category_to_db(categories_list)
-    book_category = add_book_category_to_db(book, categories_in_db)
+    book = helper_functions.add_book_to_db(title, subtitle, description, image_link, isbn_13)
+    book_in_library = helper_functions.add_book_to_library(book, user_id)
+    authors_in_db = helper_functions.add_author_to_db(authors_list)
+    book_author = helper_functions.add_book_author_to_db(book, authors_in_db)
+    categories_in_db = helper_functions.add_category_to_db(categories_list)
+    book_category = helper_functions.add_book_category_to_db(book, categories_in_db)
     bookshelf = crud.get_a_bookshelf(user_id, bookshelf_name)
-    book_on_bookshelf = add_book_to_bookshelf(book_in_library, bookshelf)
+    book_on_bookshelf = helper_functions.add_book_to_bookshelf(book_in_library, bookshelf)
 
     if book_tag == 'Read':
-        add_book_to_read_list(book_in_library)
+        helper_functions.add_book_to_read_list(book_in_library)
     elif book_tag == 'Liked':
-        add_book_to_liked_list(book_in_library)
+        helper_functions.add_book_to_liked_list(book_in_library)
         for author in authors_list:
-            interest = add_interest_to_db(author)
-            user_interest = add_user_interest_to_db(user_id, interest)
+            interest = helper_functions.add_interest_to_db(author)
+            user_interest = helper_functions.add_user_interest_to_db(user_id, interest)
         for category in categories_list:
-            category = add_interest_to_db(category)
-            user_interest = add_user_interest_to_db(user_id, category)
+            category = helper_functions.add_interest_to_db(category)
+            user_interest = helper_functions.add_user_interest_to_db(user_id, category)
     elif book_tag =='TBR':
-        add_book_to_to_be_read_list(book_in_library)
+        helper_functions.add_book_to_to_be_read_list(book_in_library)
 
     return f'Book added to {bookshelf_name} bookshelf.'
 

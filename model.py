@@ -159,7 +159,6 @@ class RecommendedBook(db.Model):
         return f'<RecommendedBook recommended_book_id={self.recommended_book_id}>'
 
 
-
 class Bookshelf(db.Model):
     """A user's bookself."""
 

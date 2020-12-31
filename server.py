@@ -31,18 +31,20 @@ def homepage():
         bookshelves = crud.get_user_bookshelves(session['user_id'])
         bookshelves = bookshelves[::-1]
 
-        search_results = helper_functions.show_recommended_books()
+        # TODO: FIX SEARCH RESULT
+        search_results = crud.get_recommended_books(user_id)
+        # search_results = helper_functions.show_recommended_books("dog")
         bookshelves = crud.get_user_bookshelves(session['user_id'])
         bookshelves = bookshelves[::-1]
-        return render_template('homepage.html',search_results=search_results, bookshelves=bookshelves)
+        return render_template('homepage.html', search_results=search_results, bookshelves=bookshelves)
     else:
         bookshelves = None
         return render_template('homepage.html', bookshelves=bookshelves)
 
+
 @app.route('/sign-up')
 def sign_up():
     """Register a user."""
-
 
     return render_template('sign_up.html')
 
@@ -62,7 +64,8 @@ def handle_sign_up():
 
     time_created = datetime.now()
 
-    birthday = datetime.strptime(f'{birth_month}/{birth_day}/{birth_year}', ('%B/%d/%Y'))
+    birthday = datetime.strptime(
+        f'{birth_month}/{birth_day}/{birth_year}', ('%B/%d/%Y'))
 
     user = crud.get_user_by_email(email)
 
@@ -74,7 +77,7 @@ def handle_sign_up():
         return redirect('/sign-up')
     else:
         crud.create_user(email, password, profile_name,
-                        birthday, gender, time_created)
+                         birthday, gender, time_created)
         flash('Account created! Please sign in.')
         return redirect('/log-in')
 
@@ -128,12 +131,14 @@ def get_user_interests():
     """View get interests page."""
 
     if session.get('user_id'):
-        all_interests_for_a_user = crud.get_all_interests_for_user(session['user_id'])
-        session['log_in_occurrences'] = crud.get_user_login_occurrences(crud.get_user_by_id(session['user_id']))
+        all_interests_for_a_user = crud.get_all_interests_for_user(
+            session['user_id'])
+        session['log_in_occurrences'] = crud.get_user_login_occurrences(
+            crud.get_user_by_id(session['user_id']))
         quote = helper_functions.choose_random_quote()
         return render_template('get_user_interests.html', all_interests_for_a_user=all_interests_for_a_user, quote=quote)
     else:
-        return redirect ("/")
+        return redirect("/")
 
 
 @app.route('/handle-user-interests', methods=['POST'])
@@ -147,6 +152,7 @@ def handle_user_interests():
     for keyword in keywords:
         interest = helper_functions.add_interest_to_db(keyword)
         helper_functions.add_user_interest_to_db(user_id, interest)
+        helper_functions.add_recommended_books_to_db(interest)
 
     return redirect('/')
 
@@ -189,7 +195,8 @@ def show_to_be_read_books():
 
     if session.get('user_id'):
         user = crud.get_user_by_id(session['user_id'])
-        to_be_read_books = crud.get_to_be_read_books_by_user_id(session['user_id'])
+        to_be_read_books = crud.get_to_be_read_books_by_user_id(
+            session['user_id'])
         bookshelves = crud.get_user_bookshelves(session['user_id'])
         bookshelves = bookshelves[::-1]
         quote = helper_functions.choose_random_quote()
@@ -232,10 +239,13 @@ def mark_book_as_read():
     description = request.form.get('description')
     isbn_13 = request.form.get('isbn_13')
 
-    authors_list = helper_functions.remove_illegal_characters_to_make_list(authors)
-    categories_list = helper_functions.remove_illegal_characters_to_make_list(categories)
+    authors_list = helper_functions.remove_illegal_characters_to_make_list(
+        authors)
+    categories_list = helper_functions.remove_illegal_characters_to_make_list(
+        categories)
 
-    book = helper_functions.add_book_to_db(title, subtitle, description, image_link, isbn_13)
+    book = helper_functions.add_book_to_db(
+        title, subtitle, description, image_link, isbn_13)
     book_in_library = helper_functions.add_book_to_library(book, user_id)
     authors_in_db = helper_functions.add_author_to_db(authors_list)
     helper_functions.add_book_author_to_db(book, authors_in_db)
@@ -250,7 +260,6 @@ def mark_book_as_read():
 def mark_book_as_liked():
     """Mark a book as liked in a user library."""
 
-
     user_id = session['user_id']
 
     # get the title/subtitle/authors/image link/categories/description
@@ -263,10 +272,13 @@ def mark_book_as_liked():
     description = request.form.get('description', '')
     isbn_13 = request.form.get('isbn_13', '')
 
-    authors_list = helper_functions.remove_illegal_characters_to_make_list(authors)
-    categories_list = helper_functions.remove_illegal_characters_to_make_list(categories)
+    authors_list = helper_functions.remove_illegal_characters_to_make_list(
+        authors)
+    categories_list = helper_functions.remove_illegal_characters_to_make_list(
+        categories)
 
-    book = helper_functions.add_book_to_db(title, subtitle, description, image_link, isbn_13)
+    book = helper_functions.add_book_to_db(
+        title, subtitle, description, image_link, isbn_13)
     book_in_library = helper_functions.add_book_to_library(book, user_id)
     authors_in_db = helper_functions.add_author_to_db(authors_list)
     helper_functions.add_book_author_to_db(book, authors_in_db)
@@ -301,10 +313,13 @@ def mark_book_as_to_be_read():
     description = request.form.get('description')
     isbn_13 = request.form.get('isbn_13')
 
-    authors_list = helper_functions.remove_illegal_characters_to_make_list(authors)
-    categories_list = helper_functions.remove_illegal_characters_to_make_list(categories)
+    authors_list = helper_functions.remove_illegal_characters_to_make_list(
+        authors)
+    categories_list = helper_functions.remove_illegal_characters_to_make_list(
+        categories)
 
-    book = helper_functions.add_book_to_db(title, subtitle, description, image_link, isbn_13)
+    book = helper_functions.add_book_to_db(
+        title, subtitle, description, image_link, isbn_13)
     book_in_library = helper_functions.add_book_to_library(book, user_id)
     authors_in_db = helper_functions.add_author_to_db(authors_list)
     helper_functions.add_book_author_to_db(book, authors_in_db)
@@ -315,7 +330,7 @@ def mark_book_as_to_be_read():
     return message
 
 
-@app.route('/handle-remove-read-book' , methods=['POST'])
+@app.route('/handle-remove-read-book', methods=['POST'])
 def remove_from_read_list():
     """Delete book from user read list."""
 
@@ -341,7 +356,7 @@ def remove_from_liked_list():
     return redirect('/liked-books')
 
 
-@app.route('/handle-remove-to-be-read-book' , methods=['POST'])
+@app.route('/handle-remove-to-be-read-book', methods=['POST'])
 def remove_from_to_be_read_list():
     """Delete book from user read list."""
 
@@ -399,14 +414,13 @@ def show_bookshelf_details(bookshelf_name):
 
     bookshelf_name = bookshelf_name
     user_id = session['user_id']
-    books_on_bookshelf = crud.get_all_books_on_a_bookshelf(bookshelf_name, user_id)
+    books_on_bookshelf = crud.get_all_books_on_a_bookshelf(
+        bookshelf_name, user_id)
     bookshelves = crud.get_user_bookshelves(session['user_id'])
     bookshelves = bookshelves[::-1]
     quote = helper_functions.choose_random_quote()
 
     return render_template('bookshelf_details.html', books_on_bookshelf=books_on_bookshelf, bookshelf_name=bookshelf_name, bookshelves=bookshelves, quote=quote)
-
-
 
 
 @app.route('/handle-adding-book-to-bookshelf', methods=['POST'])
@@ -427,10 +441,13 @@ def handle_adding_book_to_bookshelf():
     bookshelf_name = request.form.get('bookshelf_name')
     book_tag = request.form.get('book_tag')
 
-    authors_list = helper_functions.remove_illegal_characters_to_make_list(authors)
-    categories_list = helper_functions.remove_illegal_characters_to_make_list(categories)
+    authors_list = helper_functions.remove_illegal_characters_to_make_list(
+        authors)
+    categories_list = helper_functions.remove_illegal_characters_to_make_list(
+        categories)
 
-    book = helper_functions.add_book_to_db(title, subtitle, description, image_link, isbn_13)
+    book = helper_functions.add_book_to_db(
+        title, subtitle, description, image_link, isbn_13)
     book_in_library = helper_functions.add_book_to_library(book, user_id)
     authors_in_db = helper_functions.add_author_to_db(authors_list)
     helper_functions.add_book_author_to_db(book, authors_in_db)
@@ -449,7 +466,7 @@ def handle_adding_book_to_bookshelf():
         for category in categories_list:
             category = helper_functions.add_interest_to_db(category)
             helper_functions.add_user_interest_to_db(user_id, category)
-    elif book_tag =='TBR':
+    elif book_tag == 'TBR':
         helper_functions.add_book_to_to_be_read_list(book_in_library)
 
     return f'Book added to {bookshelf_name} bookshelf.'

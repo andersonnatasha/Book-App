@@ -1,19 +1,21 @@
 """CRUD operations"""
 
-from model import (db, User, Book, Author, Category, BookCategory, Bookshelf, BookInLibrary, BookOnBookshelf,
-                   BookAuthor, Interest, UserInterest, connect_to_db)
+from model import (db, User, Book, Author, Category, BookCategory, Bookshelf, BookInLibrary,
+                   BookOnBookshelf, BookAuthor, Interest, RecommendedBook,
+                   UserInterest, connect_to_db)
+
 from datetime import datetime
 
 
 def create_user(email, password, profile_name, birthday, gender, time_created):
     """Create and return a new user."""
 
-    user = User(email = email,
-                password = password,
-                profile_name = profile_name,
-                birthday = birthday,
-                gender = gender,
-                time_created = time_created)
+    user = User(email=email,
+                password=password,
+                profile_name=profile_name,
+                birthday=birthday,
+                gender=gender,
+                time_created=time_created)
     db.session.add(user)
     db.session.commit()
 
@@ -44,7 +46,7 @@ def log_login_occurrence(user):
     if user.login_occurrences == None:
         user.login_occurrences = 0
     else:
-        user.login_occurrences =+ 1
+        user.login_occurrences = + 1
 
     db.session.add(user)
     db.session.commit()
@@ -53,10 +55,10 @@ def log_login_occurrence(user):
 def create_book(title, subtitle, description, image_link, isbn_13):
     """Create and return a new book."""
 
-    book = Book(title = title,
-                subtitle = subtitle,
-                description = description,
-                image_link = image_link,
+    book = Book(title=title,
+                subtitle=subtitle,
+                description=description,
+                image_link=image_link,
                 isbn_13=isbn_13)
 
     db.session.add(book)
@@ -68,13 +70,13 @@ def create_book(title, subtitle, description, image_link, isbn_13):
 def get_book_by_isbn_13(isbn_13):
     """Return a book by title."""
 
-    return Book.query.filter(Book.isbn_13==isbn_13).first()
+    return Book.query.filter(Book.isbn_13 == isbn_13).first()
 
 
 def create_author(full_name):
     """Create and return an author."""
 
-    author = Author(full_name = full_name)
+    author = Author(full_name=full_name)
 
     db.session.add(author)
     db.session.commit()
@@ -85,13 +87,13 @@ def create_author(full_name):
 def get_author_by_full_name(author_full_name):
     """Return author by by full_name."""
 
-    return Author.query.filter(Author.full_name==author_full_name).first()
+    return Author.query.filter(Author.full_name == author_full_name).first()
 
 
 def create_book_author(book_id, author_id):
     """Create and return an author for a specific book."""
 
-    book_author = BookAuthor(book_id = book_id, author_id = author_id)
+    book_author = BookAuthor(book_id=book_id, author_id=author_id)
 
     db.session.add(book_author)
     db.session.commit()
@@ -113,7 +115,7 @@ def get_book_author(book_id, author_id):
 def create_category(category):
     """Create and return a category."""
 
-    category = Category(category = category)
+    category = Category(category=category)
 
     db.session.add(category)
     db.session.commit()
@@ -132,7 +134,7 @@ def get_category_by_name(category):
 def create_book_category(book_id, category_id):
     """Create and return a category for a specific book."""
 
-    book_category = BookCategory(book_id = book_id, category_id = category_id)
+    book_category = BookCategory(book_id=book_id, category_id=category_id)
 
     db.session.add(book_category)
     db.session.commit()
@@ -154,7 +156,7 @@ def get_book_category(book_id, category_id):
 def create_a_book_in_library(book, user_id):
     """Create and return a book in a user library."""
 
-    book_in_library = BookInLibrary(book = book, user_id = user_id)
+    book_in_library = BookInLibrary(book=book, user_id=user_id)
 
     db.session.add(book_in_library)
     db.session.commit()
@@ -178,17 +180,17 @@ def delete_book_from_library(book_in_library):
     db.session.commit()
 
 
-
 def create_a_book_on_a_bookshelf(book_in_library, bookshelf, date_added):
     """Add a book to a users particular bookshelf."""
 
-
-    book_on_bookshelf = BookOnBookshelf(book_id=book_in_library.book.book_id, bookshelf_id=bookshelf.bookshelf_id, user_id=book_in_library.user_id, date_added=date_added)
+    book_on_bookshelf = BookOnBookshelf(book_id=book_in_library.book.book_id,
+                                        bookshelf_id=bookshelf.bookshelf_id, user_id=book_in_library.user_id, date_added=date_added)
 
     db.session.add(book_on_bookshelf)
     db.session.commit()
 
     return book_on_bookshelf
+
 
 def get_book_on_bookshelf(book_in_library, bookshelf, user_id):
     """Get a book on a users particular bookshelf."""
@@ -197,14 +199,16 @@ def get_book_on_bookshelf(book_in_library, bookshelf, user_id):
     bookshelf_id = bookshelf.bookshelf_id
     user_id = user_id
 
-    book_on_bookshelf = BookOnBookshelf.query.filter(BookOnBookshelf.book_id==book_id, BookOnBookshelf.bookshelf_id==bookshelf_id, BookOnBookshelf.user_id==user_id).first()
+    book_on_bookshelf = BookOnBookshelf.query.filter(
+        BookOnBookshelf.book_id == book_id, BookOnBookshelf.bookshelf_id == bookshelf_id, BookOnBookshelf.user_id == user_id).first()
 
     return book_on_bookshelf
 
+
 def get_all_books_on_a_bookshelf(bookshelf_name, user_id):
 
+    return BookOnBookshelf.query.filter(Bookshelf.name == bookshelf_name, Bookshelf.user_id == user_id).all()
 
-    return BookOnBookshelf.query.filter(Bookshelf.name==bookshelf_name, Bookshelf.user_id ==user_id).all()
 
 def mark_book_as_read(book_in_library, read_status_update, liked_status):
     """Update book tags to indicate book is categorized as read."""
@@ -310,7 +314,8 @@ def remove_interest(interest, user_id):
     user_id = user_id
 
     interest = Interest.query.filter(Interest.interest == interest).first()
-    user_interest = UserInterest.query.filter(UserInterest.user_id == user_id, UserInterest.interest_id==interest.interest_id).first()
+    user_interest = UserInterest.query.filter(
+        UserInterest.user_id == user_id, UserInterest.interest_id == interest.interest_id).first()
     db.session.delete(user_interest)
     db.session.commit()
 
@@ -319,11 +324,11 @@ def remove_book_from_bookshelf(user_id, isbn_13, bookshelf_name):
     """Remove book from a user's bookshelf."""
 
     book = get_book_by_isbn_13(isbn_13)
-    bookshelf = Bookshelf.query.filter(Bookshelf.user_id == user_id, Bookshelf.name == bookshelf_name).first()
+    bookshelf = Bookshelf.query.filter(
+        Bookshelf.user_id == user_id, Bookshelf.name == bookshelf_name).first()
 
-    book_on_bookshelf = BookOnBookshelf.query.filter(BookOnBookshelf.user_id==user_id, BookOnBookshelf.book_id==book.book_id, BookOnBookshelf.bookshelf_id == bookshelf.bookshelf_id).first()
-
-
+    book_on_bookshelf = BookOnBookshelf.query.filter(
+        BookOnBookshelf.user_id == user_id, BookOnBookshelf.book_id == book.book_id, BookOnBookshelf.bookshelf_id == bookshelf.bookshelf_id).first()
 
     db.session.delete(book_on_bookshelf)
     db.session.commit()
@@ -333,7 +338,8 @@ def get_read_books_by_user_id(user_id):
     """Get read books in a user's library by a user id."""
 
     user = User.query.get(user_id)
-    read_books_in_library = BookInLibrary.query.filter((BookInLibrary.user_id == user.user_id ) & (BookInLibrary.read == True)).all()
+    read_books_in_library = BookInLibrary.query.filter(
+        (BookInLibrary.user_id == user.user_id) & (BookInLibrary.read == True)).all()
 
     return read_books_in_library
 
@@ -342,7 +348,8 @@ def get_liked_books_by_user_id(user_id):
     """Get liked books in a user's library by a user id."""
 
     user = User.query.get(user_id)
-    liked_books_in_library = BookInLibrary.query.filter((BookInLibrary.user_id == user.user_id ) & (BookInLibrary.liked == True)).all()
+    liked_books_in_library = BookInLibrary.query.filter(
+        (BookInLibrary.user_id == user.user_id) & (BookInLibrary.liked == True)).all()
 
     return liked_books_in_library
 
@@ -351,7 +358,8 @@ def get_to_be_read_books_by_user_id(user_id):
     """Return to be read books in a user's library by a user id."""
 
     user = User.query.get(user_id)
-    to_be_read_books_in_library = BookInLibrary.query.filter((BookInLibrary.user_id == user.user_id ) & (BookInLibrary.to_be_read == True)).all()
+    to_be_read_books_in_library = BookInLibrary.query.filter(
+        (BookInLibrary.user_id == user.user_id) & (BookInLibrary.to_be_read == True)).all()
 
     return to_be_read_books_in_library
 
@@ -360,7 +368,8 @@ def create_bookshelf(name, user_id):
     """"Create and return a user's bookshelf."""
 
     time_created = datetime.now()
-    bookshelf = Bookshelf(name = name, user_id = user_id, time_created = time_created)
+    bookshelf = Bookshelf(name=name, user_id=user_id,
+                          time_created=time_created)
 
     db.session.add(bookshelf)
     db.session.commit()
@@ -371,7 +380,7 @@ def create_bookshelf(name, user_id):
 def get_user_bookshelves(user_id):
     """Return all bookshelves for a particular user."""
 
-    return Bookshelf.query.filter(Bookshelf.user_id==user_id).all()
+    return Bookshelf.query.filter(Bookshelf.user_id == user_id).all()
 
 
 def get_a_bookshelf(user_id, bookshelf_name):
@@ -380,13 +389,13 @@ def get_a_bookshelf(user_id, bookshelf_name):
     user_id = user_id
     bookshelf_name = bookshelf_name
 
-    return Bookshelf.query.filter(Bookshelf.name==bookshelf_name, Bookshelf.user_id==user_id ).first()
+    return Bookshelf.query.filter(Bookshelf.name == bookshelf_name, Bookshelf.user_id == user_id).first()
 
 
 def create_interest(interest):
     """Create and return an interest."""
 
-    interest = Interest(interest = interest)
+    interest = Interest(interest=interest)
 
     db.session.add(interest)
     db.session.commit()
@@ -405,7 +414,7 @@ def get_interest_by_name(interest):
 def create_user_interest(user_id, interest_id):
     """Create and return a interest for a specific user."""
 
-    user_interest = UserInterest(user_id = user_id, interest_id = interest_id)
+    user_interest = UserInterest(user_id=user_id, interest_id=interest_id)
 
     db.session.add(user_interest)
     db.session.commit()
@@ -427,11 +436,24 @@ def get_user_interest(user_id, interest_id):
 def get_all_interests_for_user(user_id):
     """Return a userinterest by a user id."""
 
-    return UserInterest.query.filter(UserInterest.user_id ==user_id).all()
+    return UserInterest.query.filter(UserInterest.user_id == user_id).all()
+
+
+def create_recommended_book(book_id, user_id):
+    """Create a recommended book"""
+
+    recommended_book = RecommendedBook(book_id=book_id, user_id=user_id)
+
+    db.session.add(recommended_book)
+    db.session.commit()
+
+
+def get_recommended_books(user_id):
+    "Get all recommended books for a user."
+
+    return RecommendedBook.query.filter(RecommendedBook.user_id == user_id).all()
 
 
 if __name__ == '__main__':
     from server import app
     connect_to_db(app)
-
-

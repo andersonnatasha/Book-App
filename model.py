@@ -15,15 +15,15 @@ class User(db.Model):
                         autoincrement=True
                         )
     email = db.Column(db.String(50),
-                     unique=True,
-                     nullable=False,
-                     )
+                      unique=True,
+                      nullable=False,
+                      )
     password = db.Column(db.String(25),
                          nullable=False,
                          )
     profile_name = db.Column(db.String(50),
-                         nullable=False
-                          )
+                             nullable=False
+                             )
     birthday = db.Column(db.Date, nullable=False)
     time_created = db.Column(db.DateTime, nullable=False)
     gender = db.Column(db.String(17))
@@ -61,7 +61,7 @@ class Book(db.Model):
     categories = db.relationship('Category',
                                  secondary="books_categories",
                                  backref='books'
-                                )
+                                 )
 
     def __repr__(self):
         return f'<Book book_id={self.book_id} title={self.title}>'
@@ -76,14 +76,15 @@ class Author(db.Model):
                           primary_key=True,
                           autoincrement=True
                           )
-    full_name = db.Column(db.String(150),
-                      nullable=False)
+    full_name = db.Column(db.String(200),
+                          nullable=False)
     book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
 
     book = db.relationship('Book')
 
     def __repr__(self):
         return f'<Author author_id={self.author_id} full_name={self.full_name}>'
+
 
 class BookAuthor(db.Model):
     """A book and author combination."""
@@ -94,8 +95,8 @@ class BookAuthor(db.Model):
                         db.ForeignKey('books.book_id'),
                         primary_key=True,)
     author_id = db.Column(db.Integer,
-                         db.ForeignKey('authors.author_id'),
-                         primary_key=True,)
+                          db.ForeignKey('authors.author_id'),
+                          primary_key=True,)
 
     book = db.relationship('Book')
     author = db.relationship('Author')
@@ -134,29 +135,10 @@ class BookCategory(db.Model):
                             )
 
     book = db.relationship('Book')
-    category =db.relationship('Category')
+    category = db.relationship('Category')
 
     def __repr__(self):
         return f'<BookCategory book_id={self.book_id} category_id={self.category_id}>'
-
-
-class RecommendedBook(db.Model):
-    """A recommended book for a user."""
-
-    __tablename__ = 'recommended_books'
-
-    recommended_book_id = db.Column(db.Integer,
-                                     primary_key=True,
-                                     autoincrement=True
-                                    )
-    book_id = db.Column(db.Integer,
-                         db.ForeignKey('books.book_id')
-                         )
-    user_id = db.Column(db.Integer,
-                        db.ForeignKey('users.user_id')
-                        )
-    def __repr__(self):
-        return f'<RecommendedBook recommended_book_id={self.recommended_book_id}>'
 
 
 class Bookshelf(db.Model):
@@ -185,20 +167,20 @@ class BookInLibrary(db.Model):
     __tablename__ = 'books_in_library'
 
     book_id = db.Column(db.Integer,
-                         db.ForeignKey('books.book_id'),
-                         primary_key=True
-                         )
+                        db.ForeignKey('books.book_id'),
+                        primary_key=True
+                        )
     user_id = db.Column(db.Integer,
                         db.ForeignKey('users.user_id'),
                         primary_key=True
                         )
     notes = db.Column(db.Text)
     read = db.Column(db.Boolean)
-    read_date = db.Column(db.DateTime) # date read tag was added
-    liked  = db.Column(db.Boolean)
-    liked_date = db.Column(db.DateTime) # date liked tag was added
+    read_date = db.Column(db.DateTime)  # date read tag was added
+    liked = db.Column(db.Boolean)
+    liked_date = db.Column(db.DateTime)  # date liked tag was added
     to_be_read = db.Column(db.Boolean)
-    to_be_read_date = db.Column(db.DateTime) #date to be read tag was added
+    to_be_read_date = db.Column(db.DateTime)  # date to be read tag was added
 
     book = db.relationship('Book')
     user = db.relationship('User')
@@ -215,13 +197,13 @@ class BookOnBookshelf(db.Model):
     book_on_bookshelf_id = db.Column(db.Integer,
                                      primary_key=True,
                                      autoincrement=True
-                                    )
+                                     )
     bookshelf_id = db.Column(db.Integer,
-                            db.ForeignKey('bookshelves.bookshelf_id'),
-                            )
+                             db.ForeignKey('bookshelves.bookshelf_id'),
+                             )
     book_id = db.Column(db.Integer,
-                         db.ForeignKey('books.book_id')
-                         )
+                        db.ForeignKey('books.book_id')
+                        )
     user_id = db.Column(db.Integer,
                         db.ForeignKey('users.user_id')
                         )
@@ -231,9 +213,31 @@ class BookOnBookshelf(db.Model):
     book = db.relationship('Book')
     bookshelf = db.relationship('Bookshelf')
 
-
     def __repr__(self):
         return f'<BookOnBookshelf book_on_bookshelf_id={self.book_on_bookshelf_id} bookshelf={self.bookshelf_id}>'
+
+
+class RecommendedBook(db.Model):
+    """A recommended book for a user."""
+
+    __tablename__ = 'recommended_books'
+
+    recommended_book_id = db.Column(db.Integer,
+                                    primary_key=True,
+                                    autoincrement=True
+                                    )
+    book_id = db.Column(db.Integer,
+                        db.ForeignKey('books.book_id')
+                        )
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey('users.user_id')
+                        )
+
+    user = db.relationship('User')
+    book = db.relationship('Book')
+
+    def __repr__(self):
+        return f'<RecommendedBook recommended_book_id={self.recommended_book_id}>'
 
 
 class Interest(db.Model):
@@ -242,7 +246,7 @@ class Interest(db.Model):
     __tablename__ = 'interests'
 
     interest_id = db.Column(db.Integer,
-                  primary_key=True)
+                            primary_key=True)
     interest = db.Column(db.String(30))
 
     def __repr__(self):
@@ -259,13 +263,12 @@ class UserInterest(db.Model):
                         primary_key=True
                         )
     interest_id = db.Column(db.Integer,
-                        db.ForeignKey('interests.interest_id'),
-                        primary_key=True
-                        )
+                            db.ForeignKey('interests.interest_id'),
+                            primary_key=True
+                            )
 
     user = db.relationship('User')
     interest = db.relationship('Interest')
-
 
     def __repr__(self):
         return f'<UserInterest user_id={self.user_id} interest_id={self.interest_id}>'
@@ -282,7 +285,7 @@ def connect_to_db(flask_app, db_uri='postgresql:///bookslibrary', echo=True):
     print('Connected to the db!')
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     from server import app
 
     connect_to_db(app)

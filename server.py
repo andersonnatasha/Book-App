@@ -31,9 +31,7 @@ def homepage():
         bookshelves = crud.get_user_bookshelves(session['user_id'])
         bookshelves = bookshelves[::-1]
 
-        # TODO: FIX SEARCH RESULT
         search_results = crud.get_recommended_books(user_id)
-        # search_results = helper_functions.show_recommended_books("dog")
         bookshelves = crud.get_user_bookshelves(session['user_id'])
         bookshelves = bookshelves[::-1]
         return render_template('homepage.html', search_results=search_results, bookshelves=bookshelves)
@@ -152,9 +150,21 @@ def handle_user_interests():
     for keyword in keywords:
         interest = helper_functions.add_interest_to_db(keyword)
         helper_functions.add_user_interest_to_db(user_id, interest)
-        helper_functions.add_recommended_books_to_db(interest)
+        helper_functions.add_recommended_books_to_db(interest.interest)
 
     return redirect('/')
+
+
+@app.route('/handle-remove-interest', methods=['POST'])
+def handle_removing_interest_from_user_profile():
+    """Remove interest from technical profile."""
+
+    user_id = session['user_id']
+    interest = request.form.get('interest')
+
+    crud.remove_interest(interest, user_id)
+
+    return redirect('/interests')
 
 
 @app.route('/read-books')
@@ -378,18 +388,6 @@ def remove_from_particular_bookshelf():
     crud.remove_book_from_bookshelf(user_id, isbn_13, bookshelf_name)
 
     return redirect(f'/{bookshelf_name}-bookshelf')
-
-
-@app.route('/handle-remove-interest', methods=['POST'])
-def handle_removing_interest_from_user_profile():
-    """Remove interest from technical profile."""
-
-    user_id = session['user_id']
-    interest = request.form.get('interest')
-
-    crud.remove_interest(interest, user_id)
-
-    return redirect('/interests')
 
 
 @app.route('/create-bookshelf.json', methods=['POST'])

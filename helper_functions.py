@@ -262,43 +262,32 @@ def add_book_author_to_db(book, authors_in_db):
 def add_category_to_db(category):
     """Add category to db."""
 
-    # Categories as a list - not anymore
     # Check if category is already in database;
     # If category doesn't exist, create category
-    # if categories != None:
-    categories_in_db = []
-    # for category in categories:
+    # categories_in_db = []
     category_object = crud.get_category_by_name(category)
     if category_object == None:
         category_object = crud.create_category(category)
-        categories_in_db.append(category_object)
 
-    else:
-        categories_in_db = None
-
-    return categories_in_db
+    return category_object
 
 
-def add_book_category_to_db(book, categories_in_db):
+def add_book_category_to_db(book, category_object):
     """Create new bookcategory in database."""
 
     # Categories_in_db is a list
     # Check if bookcategory is in database already;
     # If bookcategory doesn't exist, create bookcategory.
-    if categories_in_db != None:
-        book_categories_in_db = []
-        for category in categories_in_db:
-            book_category_object = crud.get_book_category(
-                book.book_id, category.category_id)
-            if book_category_object == None:
-                book_category_object = crud.create_book_category(
-                    book.book_id, category.category_id)
-
-                book_categories_in_db.append(book_category_object)
+    if category_object != None:
+        book_category_object = crud.get_book_category(
+            book.book_id, category_object.category_id)
+        if book_category_object == None:
+            book_category_object = crud.create_book_category(
+                book.book_id, category_object.category_id)
     else:
-        book_categories_in_db = None
+        book_category_object = None
 
-    return book_categories_in_db
+    return book_category_object
 
 
 def add_book_to_read_list(book_in_library):
@@ -418,6 +407,7 @@ def add_recommended_books_to_db(interest):
                 search_result['categories'])
             for category in categories_list:
                 if category == interest:
+                    print(category, interest, book.title)
                     categories_in_db = add_category_to_db(category)
                     add_book_category_to_db(book, categories_in_db)
                     crud.create_recommended_book(book.book_id, user_id)

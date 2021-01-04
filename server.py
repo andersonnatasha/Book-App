@@ -259,8 +259,9 @@ def mark_book_as_read():
     book_in_library = helper_functions.add_book_to_library(book, user_id)
     authors_in_db = helper_functions.add_author_to_db(authors_list)
     helper_functions.add_book_author_to_db(book, authors_in_db)
-    categories_in_db = helper_functions.add_category_to_db(categories_list)
-    helper_functions.add_book_category_to_db(book, categories_in_db)
+    for category in categories_list:
+        category_in_db = helper_functions.add_category_to_db(category)
+        helper_functions.add_book_category_to_db(book, category_in_db)
     message = helper_functions.add_book_to_read_list(book_in_library)
 
     return message
@@ -292,8 +293,10 @@ def mark_book_as_liked():
     book_in_library = helper_functions.add_book_to_library(book, user_id)
     authors_in_db = helper_functions.add_author_to_db(authors_list)
     helper_functions.add_book_author_to_db(book, authors_in_db)
-    helper_functions.add_category_to_db(categories_list)
-    helper_functions.add_book_category_to_db(book, categories_in_db)
+    for category in categories_list:
+        category_in_db = helper_functions.add_category_to_db(category)
+        helper_functions.add_book_category_to_db(book, category_in_db)
+    message = helper_functions.add_book_to_read_list(book_in_library)
     message = helper_functions.add_book_to_liked_list(book_in_library)
 
     for author in authors_list:
@@ -333,8 +336,9 @@ def mark_book_as_to_be_read():
     book_in_library = helper_functions.add_book_to_library(book, user_id)
     authors_in_db = helper_functions.add_author_to_db(authors_list)
     helper_functions.add_book_author_to_db(book, authors_in_db)
-    categories_in_db = helper_functions.add_category_to_db(categories_list)
-    helper_functions.add_book_category_to_db(book, categories_in_db)
+    for category in categories_list:
+        category_in_db = helper_functions.add_category_to_db(category)
+        helper_functions.add_book_category_to_db(book, category_in_db)
     message = helper_functions.add_book_to_to_be_read_list(book_in_library)
 
     return message

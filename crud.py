@@ -454,6 +454,10 @@ def get_recommended_books(user_id):
     return RecommendedBook.query.filter(RecommendedBook.user_id == user_id).all()
 
 
+def remove_all_recommended_books_of_a_particular_interest(user_id, interest):
+    """Remove a all recommended books of a particular interest."""
+
+
 if __name__ == '__main__':
     from server import app
     connect_to_db(app)

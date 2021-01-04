@@ -214,49 +214,32 @@ def add_book_to_library(book, user_id):
     return book_in_library
 
 
-def add_author_to_db(authors):
+def add_author_to_db(author_full_name):
     """Add authors to db."""
 
-    # Takes in authors as list
     # Check if author is in database;
+    print("??????????>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<???????????")
+    print("??????????>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<???????????")
+    print(author_full_name)
+    print("??????????>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<???????????")
+    author_object = crud.get_author_by_full_name(author_full_name)
     # If author doesn't exists, create author
+    if author_object == None:
+        author_object = crud.create_author(author_full_name)
 
-    if authors != None:
-        authors_in_db = []
-        for author in authors:
-            author_object = crud.get_author_by_full_name(author)
-            if author_object == None:
-                author_object = crud.create_author(author)
-                authors_in_db.append(author_object)
-            else:
-                authors_in_db.append(author_object)
-    else:
-        authors_in_db = None
-
-    return authors_in_db
+    # return the author object
+    return author_object
 
 
-def add_book_author_to_db(book, authors_in_db):
+def add_book_author_to_db(book, author_object):
     """Add bookauthor to db."""
 
-    # Authors_in_db is a list
     # Check if bookauthor is in database;
-    # If bookauthor doesn't exist, create bookauthor
-    if authors_in_db != None:
-        book_authors_in_db = []
-        for author in authors_in_db:
-            book_author_object = crud.get_book_author(
-                book.book_id, author.author_id)
-            if book_author_object == None:
-                book_author_object = crud.create_book_author(
-                    book.book_id, author.author_id)
-
-                book_authors_in_db.append(book_author_object)
-
-    else:
-        book_authors_in_db = None
-
-    return book_authors_in_db
+    book_author_object = crud.get_book_author(
+        book.book_id, author_object.author_id)
+    if book_author_object == None:
+        book_author_object = crud.create_book_author(
+            book.book_id, author_object.author_id)
 
 
 def add_category_to_db(category):
@@ -275,19 +258,13 @@ def add_category_to_db(category):
 def add_book_category_to_db(book, category_object):
     """Create new bookcategory in database."""
 
-    # Categories_in_db is a list
     # Check if bookcategory is in database already;
     # If bookcategory doesn't exist, create bookcategory.
-    if category_object != None:
-        book_category_object = crud.get_book_category(
+    book_category_object = crud.get_book_category(
+        book.book_id, category_object.category_id)
+    if book_category_object == None:
+        book_category_object = crud.create_book_category(
             book.book_id, category_object.category_id)
-        if book_category_object == None:
-            book_category_object = crud.create_book_category(
-                book.book_id, category_object.category_id)
-    else:
-        book_category_object = None
-
-    return book_category_object
 
 
 def add_book_to_read_list(book_in_library):
@@ -387,10 +364,6 @@ def add_recommended_books_to_db(interest):
 
     user_id = session['user_id']
     search_results = show_recommended_books(interest)
-    print("?????????????????????????????/")
-    print("?????????????????????????????/")
-    print("?????????????????????????????/")
-    print(search_results)
 
     for search_result in search_results:
         book = add_book_to_db(
@@ -400,8 +373,9 @@ def add_recommended_books_to_db(interest):
         if search_result.get('authors'):
             authors_list = remove_illegal_characters_to_make_list(
                 search_result['authors'])
-            authors_in_db = add_author_to_db(authors_list)
-            add_book_author_to_db(book, authors_in_db)
+            for author in authors_list:
+                authors_in_db = add_author_to_db(author)
+                add_book_author_to_db(book, authors_in_db)
         if search_result.get('categories'):
             categories_list = remove_illegal_characters_to_make_list(
                 search_result['categories'])

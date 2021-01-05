@@ -63,51 +63,54 @@ def show_recommended_books(interest):
     """show recommended books."""
 
     search_results = []
-    startIndex = 0
-    while len(search_results) < 5:
-        url = 'https://www.googleapis.com/books/v1/volumes'
-        keyword = f'subject:{interest}'
-        payload = {'q': keyword, 'maxResults': 30,
-                   "startIndex": 0, 'apikey': API_KEY}
+    randint_high = 2000
+    url = 'https://www.googleapis.com/books/v1/volumes'
+    keyword = f'subject:{interest}'
+    payload = {'q': keyword, 'maxResults': 10, 'startIndex': randint(
+        0, randint_high), 'apikey': API_KEY}
 
+    res = requests.get(url, params=payload)
+
+    data = res.json()
+
+    while not data.get('items'):
+        if randint_high < 20:
+            randint_high += 20
+        else:
+            randint_high -= 20
+        payload = {'q': keyword, 'maxResults': 10, 'startIndex': randint(
+            0, randint_high), 'apikey': API_KEY}
         res = requests.get(url, params=payload)
-
         data = res.json()
-        print("?????????????????????????????????????????????@@@@@@@@@@@@@@@@@@@@")
-        print(f"START INDEX {startIndex}")
-        print(data)
-        print("?????????????????????????????????????????????@@@@@@@@@@@@@@@@@@@@")
 
-        for n in range(len(data['items'])):
+    for n in range(len(data['items'])):
 
-            search_result = {}
+        search_result = {}
 
-            base = data['items'][n]['volumeInfo']
-            search_result['isbn_13'] = None
+        base = data['items'][n]['volumeInfo']
+        search_result['isbn_13'] = None
 
-            if base.get('industryIdentifiers', None) and (base['industryIdentifiers'][-1]['type'] == 'ISBN_13') and (base.get('imageLinks')):
-                search_result['isbn_13'] = base['industryIdentifiers'][-1]['identifier']
+        if base.get('industryIdentifiers', None) and (base['industryIdentifiers'][-1]['type'] == 'ISBN_13') and (base.get('imageLinks')):
+            search_result['isbn_13'] = base['industryIdentifiers'][-1]['identifier']
 
-            elif base.get('industryIdentifiers', None) and (base['industryIdentifiers'][0]['type'] == 'ISBN_13') and (base.get('imageLinks')):
-                search_result['isbn_13'] = base['industryIdentifiers'][0]['identifier']
+        elif base.get('industryIdentifiers', None) and (base['industryIdentifiers'][0]['type'] == 'ISBN_13') and (base.get('imageLinks')):
+            search_result['isbn_13'] = base['industryIdentifiers'][0]['identifier']
 
-            if search_result['isbn_13'] != None:
+        if search_result['isbn_13'] != None:
 
-                keys_to_search_for_in_data = [
-                    'title', 'subtitle', 'authors', 'publishedDate', 'description', 'categories']
+            keys_to_search_for_in_data = [
+                'title', 'subtitle', 'authors', 'publishedDate', 'description', 'categories']
 
-                for key in keys_to_search_for_in_data:
-                    if key in base:
-                        search_result[key] = base[key]
+            for key in keys_to_search_for_in_data:
+                if key in base:
+                    search_result[key] = base[key]
 
-                if base.get('imageLinks'):
-                    search_result['thumbnail'] = base['imageLinks']['thumbnail']
+            if base.get('imageLinks'):
+                search_result['thumbnail'] = base['imageLinks']['thumbnail']
 
-                search_results.append(search_result)
-                print(f"SEARCH RESULTS{search_results}")
-                print(f"len: {len(search_results)}")
-
-    startIndex += 30
+            search_results.append(search_result)
+            print(f"SEARCH RESULTS{search_results}")
+            print(f"len: {len(search_results)}")
 
     return search_results
 

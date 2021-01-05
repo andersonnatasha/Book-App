@@ -150,9 +150,24 @@ def handle_user_interests():
     for keyword in keywords:
         interest = helper_functions.add_interest_to_db(keyword)
         helper_functions.add_user_interest_to_db(user_id, interest)
-        helper_functions.add_recommended_books_to_db(interest.interest)
+        helper_functions.add_recommended_books_to_db_by_category(
+            interest.interest)
 
     return redirect('/')
+
+
+@app.route('/add-more-recommended_books', methods=['POST'])
+def add_more_recommended_books():
+    """add more recommended books to db based on user interests"""
+
+    interests = crud.get_all_interests_for_user(session['user_id'])
+    for interest in interests:
+        helper_functions.add_recommended_books_to_db_by_category(
+            interest.interest.interest)
+        print(">>>>>>>>>>>>>>??????")
+        print(interest.interest.interest)
+
+    return redirect("/")
 
 
 @app.route('/handle-remove-interest', methods=['POST'])

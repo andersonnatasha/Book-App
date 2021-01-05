@@ -163,6 +163,8 @@ def handle_removing_interest_from_user_profile():
     interest = request.form.get('interest')
 
     crud.remove_interest(interest, user_id)
+    crud.remove_all_recommended_books_of_a_particular_interest(
+        user_id, interest)
 
     return redirect('/interests')
 
@@ -296,10 +298,16 @@ def mark_book_as_liked():
     for author in authors_list:
         authors_in_db = helper_functions.add_author_to_db(author)
         helper_functions.add_book_author_to_db(book, authors_in_db)
+        interest = helper_functions.add_interest_to_db(author)
+        helper_functions.add_user_interest_to_db(user_id, interest)
 
     for category in categories_list:
         category_in_db = helper_functions.add_category_to_db(category)
         helper_functions.add_book_category_to_db(book, category_in_db)
+        category = helper_functions.add_interest_to_db(category)
+        helper_functions.add_user_interest_to_db(user_id, category)
+        helper_functions.add_recommended_books_to_db_by_category(
+            category.interest)
     message = helper_functions.add_book_to_liked_list(book_in_library)
 
     return message
@@ -462,12 +470,6 @@ def handle_adding_book_to_bookshelf():
         helper_functions.add_book_to_read_list(book_in_library)
     elif book_tag == 'Liked':
         helper_functions.add_book_to_liked_list(book_in_library)
-        for author in authors_list:
-            interest = helper_functions.add_interest_to_db(author)
-            helper_functions.add_user_interest_to_db(user_id, interest)
-        for category in categories_list:
-            category = helper_functions.add_interest_to_db(category)
-            helper_functions.add_user_interest_to_db(user_id, category)
     elif book_tag == 'TBR':
         helper_functions.add_book_to_to_be_read_list(book_in_library)
 

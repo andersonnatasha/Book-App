@@ -455,7 +455,16 @@ def get_recommended_books(user_id):
 
 
 def remove_all_recommended_books_of_a_particular_interest(user_id, interest):
-    """Remove a all recommended books of a particular interest."""
+    """Remove all recommended books of a particular interest."""
+
+    recommended_books = get_recommended_books(user_id)
+
+    for recommended_book in recommended_books:
+        for category in recommended_book.book.categories:
+            if category.category == interest:
+                db.session.delete(recommended_book)
+
+    db.session.commit()
 
 
 if __name__ == '__main__':

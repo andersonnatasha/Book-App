@@ -13,7 +13,7 @@ from os import environ
 
 from datetime import datetime
 
-from random import randint
+from random import randint, choice
 
 
 app = Flask(__name__)
@@ -161,11 +161,9 @@ def add_more_recommended_books():
     """add more recommended books to db based on user interests"""
 
     interests = crud.get_all_interests_for_user(session['user_id'])
-    for interest in interests:
-        helper_functions.add_recommended_books_to_db_by_category(
-            interest.interest.interest)
-        print(">>>>>>>>>>>>>>??????")
-        print(interest.interest.interest)
+    interest = choice(interests)
+    helper_functions.add_recommended_books_to_db_by_category(
+        interest.interest.interest)
 
     return redirect("/")
 
@@ -313,8 +311,8 @@ def mark_book_as_liked():
     for author in authors_list:
         authors_in_db = helper_functions.add_author_to_db(author)
         helper_functions.add_book_author_to_db(book, authors_in_db)
-        interest = helper_functions.add_interest_to_db(author)
-        helper_functions.add_user_interest_to_db(user_id, interest)
+        # interest = helper_functions.add_interest_to_db(author)
+        # helper_functions.add_user_interest_to_db(user_id, interest)
 
     for category in categories_list:
         category_in_db = helper_functions.add_category_to_db(category)

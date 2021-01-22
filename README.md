@@ -31,7 +31,7 @@ At any point, user's can view their interests and either remove any or add more.
 
 Press any books to read the books description and press the description to have it disappear. If you like the sound of it, press the verticle ellipsis to reveal a drop-menu that will allow you to add the book to your To Be Read (TBR) Collection. You can also mark a book as Read this way.
 
-![] (https://media.giphy.com/media/kMXWGkpLrIrGWKEYvi/giphy.gif)
+![](https://media.giphy.com/media/kMXWGkpLrIrGWKEYvi/giphy.gif)
 
 ## Search for Books
 

@@ -29,7 +29,7 @@ At any point, user's can view their interests and either remove any or add more.
 
 ## Discover new books
 
-Press any books to read the books description and press the description to have it disappear. If you like the sound of it, press the verticle ellipsis to reveal a drop-menu that will allow you to add the book to your To Be Read (TBR) Collection. You can also mark a book as Read this way.
+Press any books to read the books description and press the description to have it disappear. If you like the sound of it, press the vertical ellipsis to reveal a drop-menu that will allow you to add the book to your To Be Read (TBR) Collection. You can also mark a book as Read this way.
 
 ![](https://media.giphy.com/media/kMXWGkpLrIrGWKEYvi/giphy.gif)
 
@@ -41,9 +41,11 @@ Have a book in mind? Type it in the search bar.
 
 ## Create a Bookshelf and Add Books
 
-Users can create as many books as they would like and then add books to bookshelves. Books can be added to multiple bookshelves. Adding a book to a bookshelf will prompt the user to specify is the book is Read, Liked, to To Be Read. The book will also appear in whichever list the user selects.
+Users can create as many books as they would like and then add books to bookshelves.
 
 ![](https://media.giphy.com/media/DFk6DzUq304noV2vhi/giphy.gif)
+
+Books can be added to multiple bookshelves. Adding a book to a bookshelf will prompt the user to specify is the book is Read, Liked, to To Be Read. The book will also appear in whichever list the user selects.
 
 ![](https://media.giphy.com/media/6HbMArufPAmSrcwyTu/giphy.gif)
 

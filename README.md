@@ -25,6 +25,7 @@ Once logged in, first time users will be asked to select their interest, which w
 ![](https://media.giphy.com/media/eLpJWK9I9nzQQwcIX5/giphy.gif)
 
 At any point, user's can view their interests and either remove any or add more.
+
 ![](https://media.giphy.com/media/sX40K5AsF7ZjZoajXS/giphy.gif)
 
 ## Discover new books
@@ -41,7 +42,7 @@ Have a book in mind? Type it in the search bar.
 
 ## Create a Bookshelf and Add Books
 
-Users can create as many books as they would like and then add books to bookshelves.
+Users can create as many books as they would like.
 
 ![](https://media.giphy.com/media/DFk6DzUq304noV2vhi/giphy.gif)
 

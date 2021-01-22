@@ -16,7 +16,9 @@ Google Books
 
 Participants create an account to join the platform.
 
-![](https://media.giphy.com/media/lT3QMn1DIEvwq6QQWB/giphy.gif)
+<p align="center">
+  <img src="https://media.giphy.com/media/lT3QMn1DIEvwq6QQWB/giphy.gif" />
+</p>
 
 ## Input Interests and Recieve Recommendations
 

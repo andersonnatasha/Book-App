@@ -308,6 +308,8 @@ def mark_book_as_liked():
     book = helper_functions.add_book_to_db(
         title, subtitle, description, image_link, isbn_13)
     book_in_library = helper_functions.add_book_to_library(book, user_id)
+    message = helper_functions.add_book_to_liked_list(book_in_library)
+
     for author in authors_list:
         authors_in_db = helper_functions.add_author_to_db(author)
         helper_functions.add_book_author_to_db(book, authors_in_db)
@@ -316,12 +318,12 @@ def mark_book_as_liked():
 
     for category in categories_list:
         category_in_db = helper_functions.add_category_to_db(category)
-        helper_functions.add_book_category_to_db(book, category_in_db)
-        category = helper_functions.add_interest_to_db(category)
-        helper_functions.add_user_interest_to_db(user_id, category)
-        helper_functions.add_recommended_books_to_db_by_category(
-            category.interest)
-    message = helper_functions.add_book_to_liked_list(book_in_library)
+        if not crud.get_book_category(book.book_id, category_in_db.category_id):
+            helper_functions.add_book_category_to_db(book, category_in_db)
+            category = helper_functions.add_interest_to_db(category)
+            helper_functions.add_user_interest_to_db(user_id, category)
+            helper_functions.add_recommended_books_to_db_by_category(
+                category.interest)
 
     return message
 
@@ -431,6 +433,7 @@ def create_bookshelf():
 
 @app.route('/<bookshelf_name>-bookshelf')
 def show_bookshelf_details(bookshelf_name):
+    """Show a user's bookshelf"""
 
     bookshelf_name = bookshelf_name
     user_id = session['user_id']
@@ -445,11 +448,9 @@ def show_bookshelf_details(bookshelf_name):
 
 @app.route('/handle-adding-book-to-bookshelf', methods=['POST'])
 def handle_adding_book_to_bookshelf():
+    """Add book to a user's bookshelf"""
 
     user_id = session['user_id']
-
-    # get the book that will be added to bookshelf
-    # get the shelf that will be added to bookshelf
 
     title = request.form.get('title')
     subtitle = request.form.get('subtitle')

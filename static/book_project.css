@@ -1,6 +1,5 @@
-
-
-#modal { display: none ;
+#modal {
+  display: none;
   position: fixed;
   left: 50%;
   top: 50%;
@@ -8,21 +7,27 @@
   height: 25%;
   transform: translate(-50%, -50%);
   border: 1px solid black;
-  padding:10px;
-  border-radius: .3rem;
-  background-color:#1b1a1a;
-  padding:3%;
-  margin-left:auto;
+  padding: 10px;
+  border-radius: 0.3rem;
+  background-color: #1b1a1a;
+  padding: 3%;
+  margin-left: auto;
   margin-right: auto;
 }
 
-
-
-.modal-bookshelf-button{border: none; background-color: transparent; font-family: 'Montserrat', sans-serif; font-size: 125%; cursor: pointer;}
-.modal-bookshelf-button:hover{color:green}
+.modal-bookshelf-button {
+  border: none;
+  background-color: transparent;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 125%;
+  cursor: pointer;
+}
+.modal-bookshelf-button:hover {
+  color: green;
+}
 
 .modal-content {
-  display: none ;
+  display: none;
   position: fixed;
   justify-content: space-between;
   padding-left: 10%;
@@ -40,8 +45,8 @@
   /* text-align: left; */
 }
 
-
-.modal-bookshelf { display: none ;
+.modal-bookshelf {
+  display: none;
   position: fixed;
   left: 50%;
   top: 50%;
@@ -49,14 +54,13 @@
   height: 120%;
   transform: translate(-50%, -50%);
   border: 1px solid black;
-  border-radius: .3rem;
-  background-color:white;
-  padding:10px;
+  border-radius: 0.3rem;
+  background-color: white;
+  padding: 10px;
 }
 
-
 .modal-content-bookshelf {
-  display: none ;
+  display: none;
   /* margin-left: auto;
   margin-right: auto;
   margin-top: auto;
@@ -64,34 +68,41 @@
   text-align: left;
 }
 
+.navbar-logged-in {
+  background-color: transparent;
+  height: 75px;
+  padding-left: 3%;
+}
 
+.navbar-brand:hover {
+  color: green;
+}
 
+.navbar-brand {
+  color: white;
+}
 
-.navbar-logged-in {background-color: transparent ;
-      height: 75px;
-      padding-left: 3%;}
+.nav-link {
+  color: white;
+}
 
-.navbar-brand:hover{color: green;}
-
-
-.navbar-brand{color: white;}
-
-.nav-link{color: white;}
-
-.fixed-bottom{background-color: #141414;}
-#prior-to-log-in-nav-bar{background-color: #141414;}
+.fixed-bottom {
+  background-color: #141414;
+}
+#prior-to-log-in-nav-bar {
+  background-color: #141414;
+}
 /*
 .navbar-toggler-icon{border-color:pink;} */
 
 .custom-toggler.navbar-toggler {
-          border-color: white;
-      }
-      /* Setting the stroke to green using rgb values (0, 128, 0) */
+  border-color: white;
+}
+/* Setting the stroke to green using rgb values (0, 128, 0) */
 
 .custom-toggler .navbar-toggler-icon {
-          background-image: url(
-"data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
-      }
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
 
 /* .circle {
   background: rgba(0,0,0,.3);
@@ -110,7 +121,6 @@
       border-right: 150px solid transparent;
       border-bottom: 300px solid #B7521E} */
 
-
 .wrapper {
   display: flex;
   width: 100%;
@@ -123,7 +133,7 @@
   left: 0;
   height: 100vh;
   z-index: 9999;
-  background:#1b1a1a;
+  background: #1b1a1a;
   color: #fff;
   transition: all 0.3s;
   font-family: 'Montserrat', sans-serif;
@@ -134,20 +144,24 @@
   /* margin-right:20px */
 }
 
-.side-nav-items{font-family: 'Montserrat', sans-serif;
-                color:white;
-                }
-
-.side-nav-items:hover{color:green}
-
-label{ font-family: 'Montserrat', sans-serif
+.side-nav-items {
+  font-family: 'Montserrat', sans-serif;
+  color: white;
 }
 
-#homepage-header{
+.side-nav-items:hover {
+  color: green;
+}
+
+label {
+  font-family: 'Montserrat', sans-serif;
+}
+
+#homepage-header {
   margin-left: 270px;
 }
 
-.book-description{
+.book-description {
   position: absolute;
   width: 300px;
   height: 250px;
@@ -157,27 +171,23 @@ label{ font-family: 'Montserrat', sans-serif
   margin: 0;
   top: 50%;
   left: 50%;
-  text-align:left;
+  text-align: left;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  background-color: rgba(46, 49, 49, .85);
+  background-color: rgba(46, 49, 49, 0.85);
   padding-left: 3%;
-  padding-right:3%;
+  padding-right: 3%;
   display: none;
   cursor: pointer;
   border: solid 1px black;
-  border-radius: .3rem;
+  border-radius: 0.3rem;
 }
 
-
-
-
-body{
+body {
   font-family: 'Montserrat', sans-serif;
 }
 
-
-#slogan-text{
+#slogan-text {
   font-family: 'Roboto', sans-serif;
   color: #2a1d17;
   font-size: 270%;
@@ -187,104 +197,120 @@ body{
   padding-right: 3%;
 }
 
-#slogan-text-pt2{
+#slogan-text-pt2 {
   font-family: 'Open Sans', sans-serif;
   color: #694946;
   font-size: 200%;
   text-align: right;
-  margin-top: -.2em;
+  margin-top: -0.2em;
   padding-right: 3%;
 }
 
-.form-sign-or-log-out{
+.form-sign-or-log-out {
   width: 100%;
   max-width: 500px;
   padding: 15px;
-  margin: auto;}
+  margin: auto;
+}
 
-.pre-login-background{
+.pre-login-background {
   height: 1500px;
   /* background-position: center;
   background-repeat: no-repeat;
   background-size: cover; */
-  background: linear-gradient(0deg, rgba(177,170,83,1) 0%, rgba(0,117,131,1) 100%);
+  background: linear-gradient(
+    0deg,
+    rgba(177, 170, 83, 1) 0%,
+    rgba(0, 117, 131, 1) 100%
+  );
 }
 
-.birthday-label{display: inline;
-              height:24px;
-              margin:55px}
+.birthday-label {
+  display: inline;
+  height: 24px;
+  margin: 55px;
+}
 
-.birthday{display: inline-block;
-        width: 149px;
-        height: 30px;
-        margin: 2px;}
+.birthday {
+  display: inline-block;
+  width: 149px;
+  height: 30px;
+  margin: 2px;
+}
 
-
-.sign-up-or-log-in-form{
+.sign-up-or-log-in-form {
   margin-top: 3%;
   color: black;
 }
 
-.gender-radio-button{
-  margin: 7px
+.gender-radio-button {
+  margin: 7px;
 }
 
-.account-header{margin-top:5%}
+.account-header {
+  margin-top: 5%;
+}
 
-
-.book-tag{
+.book-tag {
   display: inline-block;
 }
 
-#homepage-header{
-  margin-top: 7%
+#homepage-header {
+  margin-top: 7%;
 }
 
-.book-image{
-          width: 50%;
-          height:57%;
-          border: 1px gold solid;
-          /* border-spacing: 10px; */
-          /* text-align: center; */
-          margin: 0;
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          -ms-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
-          border-radius: .1rem;
-          cursor: pointer;}
+.book-image {
+  width: 50%;
+  height: 57%;
+  border: 1px gold solid;
+  /* border-spacing: 10px; */
+  /* text-align: center; */
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  border-radius: 0.1rem;
+  cursor: pointer;
+}
 
-.book-image:hover{opacity: .4;}
+.book-image:hover {
+  opacity: 0.4;
+}
 
-.book-outterdiv{
-              display: inline-block;
-              position: relative;
-              text-align: center;
-              height:90%;
-              width:95%
-              }
+.book-outterdiv {
+  display: inline-block;
+  position: relative;
+  text-align: center;
+  height: 90%;
+  width: 95%;
+}
 
-.book{margin: 1em;
-  background-color: rgba(46, 49, 49, .2);
-  width:90%;
+.book {
+  margin: 1em;
+  background-color: rgba(46, 49, 49, 0.2);
+  width: 90%;
   height: 85%;
   text-align: center;
   padding-top: 1em;
   padding-bottom: 1em;
-  border-radius: .4rem;}
+  border-radius: 0.4rem;
+}
 
-
-.homepage-after-login{
+.homepage-after-login {
   height: 3000px;
   color: white;
   padding-left: 15%;
-  background: linear-gradient(0deg, rgba(20,20,20,1) 92%, rgba(43,42,41,1) 100%);
+  background: linear-gradient(
+    0deg,
+    rgba(20, 20, 20, 1) 92%,
+    rgba(43, 42, 41, 1) 100%
+  );
 }
 
-
-.bg{
-  background-image: url("/static/images/dog-photo.jpg");
+.bg {
+  background-image: url('/static/images/dog-photo.jpg');
   height: 100%;
   background-position: center;
   background-repeat: no-repeat;
@@ -292,9 +318,7 @@ body{
   margin-top: 3%;
 }
 
-
-
-.book-author{
+.book-author {
   text-align: center;
   width: 70%;
   overflow: hidden;
@@ -305,137 +329,238 @@ body{
   margin-right: auto;
   position: relative;
   padding-top: 1em;
-  font-size: 90%;}
+  font-size: 90%;
+}
 
-
-.book-title{
-  top:2em;
-  height:20%;
+.book-title {
+  top: 2em;
+  height: 20%;
   padding: 5%;
-  width:80%;
+  width: 80%;
   margin-left: auto;
   margin-right: auto;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  display: inline-block;}
-
-
-.heart-icon{display: inline-block;
-          color: white;
-          }
-
-.heart-icon-selected{display: inline-block;
-  color:green;}
-
-.ellipsis{position: absolute;
-        right: 5.5%;
-        height:20%;
-        padding-top: 6.5%;
-        padding-right: 2%;
-        color:white;
-
-  }
-
-.homepage-heading{margin-left: 2.3%;}
-
-#homepage-sub-text{color: white;}
-#homepage-sub-text:hover{color: green;}
-
-.dropdown-menu.show{ margin-left: 70%;
-                  margin-top:10%;
-                  width:30px;
-                  font-size: 70%;}
-
-.book-col{height: 100%; width: 100%;}
-
-.sign-up-or-log-in-button{ background-color: black;
-                          border:black;
-                        color: white;}
-
-#sign-up-button-on-log-in-page{color:black}
-
-
-.btn-primary:hover, .btn-primary:focus, #interest-button:hover, #sign-up-button-on-log-in-page:hover, #sign-up-button:hover, .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary {
-color: #fff;
-background-color:rgba(0,114,129,1);
-border-color: rgba(0,114,129,1); /*set the color you want here*/
+  display: inline-block;
 }
 
-#log-in-link{color:#333c3d}
+.heart-icon {
+  display: inline-block;
+  color: white;
+}
 
-.table-dark{background-color:transparent;}
+.heart-icon-selected {
+  display: inline-block;
+  color: green;
+}
 
-.create-bookshelf-button-text{display: inline;
-                            margin-left: 4%; cursor: pointer;}
+.ellipsis {
+  position: absolute;
+  right: 5.5%;
+  height: 20%;
+  padding-top: 6.5%;
+  padding-right: 2%;
+  color: white;
+}
 
-.heart-icon:hover, .ellipsis:hover{cursor: pointer; color: green}
+.homepage-heading {
+  margin-left: 2.3%;
+}
 
-#create-bookshelf-button:hover{color: green;}
+#homepage-sub-text {
+  color: white;
+}
+#homepage-sub-text:hover {
+  color: green;
+}
 
-.dropdown-toggle:hover, .nav-link:hover {color:green}
+.dropdown-menu.show {
+  margin-left: 70%;
+  margin-top: 10%;
+  width: 30px;
+  font-size: 70%;
+}
 
-.fa-plus-circle{cursor: pointer; display: inline;}
+.book-col {
+  height: 100%;
+  width: 100%;
+}
 
-#interest-header{display:block; color: white; margin-bottom: 2%; padding-top: 9%;}
-#interest-background{
-  height: 2000px;background: linear-gradient(0deg, rgba(20,20,20,1) 92%, rgba(43,42,41,1) 100%);
+.sign-up-or-log-in-button {
+  background-color: black;
+  border: black;
+  color: white;
+}
+
+#sign-up-button-on-log-in-page {
+  color: black;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+#interest-button:hover,
+#sign-up-button-on-log-in-page:hover,
+#sign-up-button:hover,
+.btn-primary:active,
+.btn-primary.active,
+.open > .dropdown-toggle.btn-primary {
+  color: #fff;
+  background-color: rgba(0, 114, 129, 1);
+  border-color: rgba(0, 114, 129, 1); /*set the color you want here*/
+}
+
+#log-in-link {
+  color: #333c3d;
+}
+
+.table-dark {
+  background-color: transparent;
+}
+
+.create-bookshelf-button-text {
+  display: inline;
+  margin-left: 4%;
+  cursor: pointer;
+}
+
+.heart-icon:hover,
+.heart-icon-selected,
+.heart-icon:hover,
+.ellipsis:hover {
+  cursor: pointer;
+  color: green;
+}
+
+#create-bookshelf-button:hover {
+  color: green;
+}
+
+.dropdown-toggle:hover,
+.nav-link:hover {
+  color: green;
+}
+
+.fa-plus-circle {
+  cursor: pointer;
+  display: inline;
+}
+
+#interest-header {
+  display: block;
+  color: white;
+  margin-bottom: 2%;
+  padding-top: 9%;
+}
+#interest-background {
+  height: 2000px;
+  background: linear-gradient(
+    0deg,
+    rgba(20, 20, 20, 1) 92%,
+    rgba(43, 42, 41, 1) 100%
+  );
   padding-left: 13.5%;
 }
-.interest-label{padding-left: 3%; color:white; font-size: 100;}
+.interest-label {
+  padding-left: 3%;
+  color: white;
+  font-size: 100;
+}
 
-#interest-button{background-color: black;
-  border:black;
-color: white;
-width: 10%;
-margin-left: auto;
-margin-right: auto;
-margin-top: 2%;}
+#interest-button {
+  background-color: black;
+  border: black;
+  color: white;
+  width: 10%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2%;
+}
 
-#interest-nav{background-color:rgba(20,20,20,1); padding-left: 17%;}
+#interest-nav {
+  background-color: rgba(20, 20, 20, 1);
+  padding-left: 17%;
+}
 
-.label-too-long{font-size: 85%;}
+.label-too-long {
+  font-size: 85%;
+}
 
-.add-to-bookshelf-dropdown{border: none;
-                          margin-left:25px ;
-                        width: 80%;}
-
-.fa-times{cursor: pointer;}
-.fa-times:hover{color: red;}
-
-.remove-button{background: transparent;
-              border: none;
-            color:white}
-
-#log-out-button{background: transparent;
+.add-to-bookshelf-dropdown {
   border: none;
-margin-left: 30%;}
+  margin-left: 25px;
+  width: 80%;
+}
 
-#profile-name-dropdown{margin-left: 1px ;
-text-align: center;}
+.fa-times {
+  cursor: pointer;
+}
+.fa-times:hover {
+  color: red;
+}
 
-#log-out-button:hover, #log-out-button:hover, #your-interest-button:hover {cursor: pointer; color: green; background-color:rgba(20,20,20,.2)}
+.remove-button {
+  background: transparent;
+  border: none;
+  color: white;
+}
 
-#interest-heading{color:white; font-family: 'Montserrat'}
-.liked-heart{color:green}
+#log-out-button {
+  background: transparent;
+  border: none;
+  margin-left: 30%;
+}
 
-#add-to-bookshelf-submit{border: none; background-color: transparent; margin-left: 30%;}
+#profile-name-dropdown {
+  margin-left: 1px;
+  text-align: center;
+}
 
-a {color: white}
-a:hover{color:green}
+#log-out-button:hover,
+#log-out-button:hover,
+#your-interest-button:hover {
+  cursor: pointer;
+  color: green;
+  background-color: rgba(20, 20, 20, 0.2);
+}
 
-a.side-nav-items{overflow: hidden;
+#interest-heading {
+  color: white;
+  font-family: 'Montserrat';
+}
+.liked-heart {
+  color: green;
+}
+
+#add-to-bookshelf-submit {
+  border: none;
+  background-color: transparent;
+  margin-left: 30%;
+}
+
+a {
+  color: white;
+}
+a:hover {
+  color: green;
+}
+
+a.side-nav-items {
+  overflow: hidden;
   white-space: nowrap;
-  display: inline-block;}
+  display: inline-block;
+}
 
+.spinner-border {
+  display: none;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+}
 
-.spinner-border{display :none;
-    position: fixed;
-    left: 50%;
-    top: 50%;
-  z-index: 1;}
-
-.loading-quote{display :none;
+.loading-quote {
+  display: none;
   position: fixed;
   left: 30%;
   top: 55%;
@@ -444,18 +569,19 @@ a.side-nav-items{overflow: hidden;
   padding-right: 5%;
   z-index: 1;
   color: black;
-  background-color:rgba(255,255,255, 0.7);
+  background-color: rgba(255, 255, 255, 0.7);
   font-family: 'Montserrat';
-  border-radius: .3rem;}
-    /* transform: translate(-50%, -50%); */
+  border-radius: 0.3rem;
+}
+/* transform: translate(-50%, -50%); */
 
-    /* padding:3%} */
+/* padding:3%} */
 
-    html {
-      overflow: scroll;
-      overflow-x: hidden;
-  }
-  ::-webkit-scrollbar {
-      width: 0px;  /* Remove scrollbar space */
-      background: transparent;  /* Optional: just make scrollbar invisible */
-  }
+html {
+  overflow: scroll;
+  overflow-x: hidden;
+}
+::-webkit-scrollbar {
+  width: 0px; /* Remove scrollbar space */
+  background: transparent; /* Optional: just make scrollbar invisible */
+}

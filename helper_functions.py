@@ -15,7 +15,7 @@ def search_a_book(keyword=""):
     keyword = request.args.get('search', '')
 
     url = 'https://www.googleapis.com/books/v1/volumes'
-    payload = {'q': keyword, 'maxResults': 10, 'apikey': API_KEY}
+    payload = {'q': keyword, 'maxResults': 25, 'apikey': API_KEY}
 
     res = requests.get(url, params=payload)
 
@@ -74,10 +74,12 @@ def show_recommended_books(interest):
     data = res.json()
 
     while not data.get('items'):
-        if randint_high < 20:
-            randint_high += 20
+        print("{{{{{{{{{{{{{{{{{{{{{{{{{{{>")
+        print(randint_high)
+        if randint_high < 50:
+            randint_high += 50
         else:
-            randint_high -= 20
+            randint_high -= 50
         payload = {'q': keyword, 'maxResults': 10, 'startIndex': randint(
             0, randint_high), 'apikey': API_KEY}
         res = requests.get(url, params=payload)

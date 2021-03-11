@@ -17,13 +17,15 @@ $('.navbar-brand').on('click', () => {
 })
 
 
-$('#login-button').on('click', () => {
+$('#interest-button').on('click', () => {
   const spinner = $('.spinner-border');
   const quote = $('.loading-quote');
   console.log(quote[0])
   spinner[0].style.display = "block";
   quote[0].style.display = "block";
 })
+
+
 
 /// Creates modal for adding a new bookshelf
 const bookshelfModal = document.getElementById('modal');
@@ -56,7 +58,7 @@ $('#create-bookshelf').on('submit', (evt) => {
         $('#bookshelf-names').prepend('<li></li>');
         $('#bookshelf-names li:first-child').html(`<a href=${bookshelfName}-bookshelf>${bookshelfName}</a>`);
         $('#bookshelf-name').val("");
-        modalContent.style.display = 'none';
+        bookshelfModalContent.style.display = 'none';
         modal.style.display ='none';
         });
 });
@@ -103,15 +105,18 @@ $('.read-button').on('click', (evt) => {
 });
 
 
-$('.heart-icon').on('click', (evt) => {
+$('.fa-heart').on('click', (evt) => {
   evt.preventDefault();
   const button = $(evt.target);
   const buttonId = button.attr('id');
 
-  if (button.attr("style", "color:white")){
-    button.attr("style", "color:green");
-  }
+  // $('#button').toggleClass('heart-icon-selected');
 
+  // if (button.attr("style", "color:white")){
+  //   button.attr("style", "color:green");
+  if (button.hasClass('heart-icon')){
+    button.removeClass('heart-icon').addClass('heart-icon-selected');}
+    else{button.removeClass('heart-icon-selected').addClass('heart-icon')}
 
 
   const formInput = {
@@ -218,5 +223,3 @@ for (const bookRow of bookRows){
     bookCounter +=1;
   }
 }
-
-

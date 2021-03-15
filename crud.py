@@ -217,6 +217,7 @@ def mark_book_as_read(book_in_library, read_status_update, liked_status):
     if (book_in_library.read == None) and (book_in_library.to_be_read == None):
         book_in_library.read = True
         book_in_library.read_date = datetime.now()
+        print(book_in_library.read_date)
         book_in_library.liked = False
         book_in_library.liked_date = None
         book_in_library.to_be_read = False

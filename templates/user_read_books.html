@@ -101,7 +101,7 @@
        {% for author_name in read_book.book.authors %}
        <td>{{ author_name.full_name }}</td>
        {% endfor %}
-       <td>{{ read_book.read_date }} <td>
+       <td>{{ read_book.read_date.strftime("%Y-%m-%d") }} <td>
         <td>
           <form class="remove-book" id="{{ read_book.book.isbn_13 }}" action="/handle-remove-read-book" method="POST">
           <input name="isbn_13" type="hidden" value="{{ read_book.book.isbn_13 }}">

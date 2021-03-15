@@ -341,7 +341,11 @@ def add_book_to_bookshelf(book_in_library, bookshelf):
         book_in_library, bookshelf, user_id)
     print(f'its on the shelf already {book_on_bookshelf}')
     if book_on_bookshelf == None:
-        date_added = datetime.now()
+        date_added = datetime.now().strftime("%m-%d-%Y")
+        print(">>>>>????????>>>>>>>>>>>>>>>>>>>>>")
+        print(">>>>>????????>>>>>>>>>>>>>>>>>>>>>")
+        print(">>>>>????????>>>>>>>>>>>>>>>>>>>>>")
+        print(date_added)
         book_on_bookshelf = crud.create_a_book_on_a_bookshelf(
             book_in_library, bookshelf, date_added)
     print(f'it has to be created on the shelf  {book_on_bookshelf}')
